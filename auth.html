@@ -340,31 +340,90 @@ canvas#bgCanvas {
 }
 .back-link:hover { color: white; }
 
-/* ===== RIGHT: 3D CANVAS PANEL ===== */
+/* ===== RIGHT: 3D LOGO PANEL ===== */
 .visual-panel {
   position: relative;
-  background: linear-gradient(135deg, rgba(5,10,50,0.8), rgba(10,20,80,0.6));
+  background: linear-gradient(135deg, rgba(5,10,50,0.9), rgba(10,20,80,0.7));
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  perspective: 1000px;
 }
 
-canvas#logoCanvas {
+.logo-3d-wrap {
+  width: 340px;
+  height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  transform-style: preserve-3d;
+  position: relative;
+  z-index: 2;
+}
+
+.logo-3d-wrap:active { cursor: grabbing; }
+
+.logo-3d-wrap img {
   width: 100%;
   height: 100%;
-  cursor: grab;
-  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 0 30px rgba(59,91,252,0.5)) drop-shadow(0 0 60px rgba(17,38,219,0.3));
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.3s;
 }
 
-canvas#logoCanvas:active { cursor: grabbing; }
+.logo-3d-wrap:hover img {
+  filter: drop-shadow(0 0 40px rgba(59,91,252,0.7)) drop-shadow(0 0 80px rgba(17,38,219,0.5));
+}
+
+/* Glow ring behind logo */
+.logo-glow-ring {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,91,252,0.15) 0%, transparent 70%);
+  animation: pulseGlow 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+/* Orbiting particles */
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(100,150,255,0.15);
+  animation: orbitSpin linear infinite;
+}
+.orbit-ring-1 { width: 380px; height: 380px; animation-duration: 12s; }
+.orbit-ring-2 { width: 440px; height: 440px; animation-duration: 18s; animation-direction: reverse; border-color: rgba(100,150,255,0.08); }
+.orbit-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3b5bfc;
+  top: -3px;
+  left: 50%;
+  margin-left: -3px;
+  box-shadow: 0 0 8px rgba(59,91,252,0.8);
+}
+@keyframes orbitSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 .visual-caption {
   position: absolute;
   bottom: 2.5rem;
   text-align: center;
   pointer-events: none;
+  z-index: 3;
 }
 
 .visual-caption h3 {
@@ -392,6 +451,7 @@ canvas#logoCanvas:active { cursor: grabbing; }
   display: flex;
   align-items: center;
   gap: 6px;
+  z-index: 5;
 }
 
 /* Loading spinner */
@@ -559,7 +619,12 @@ canvas#logoCanvas:active { cursor: grabbing; }
     <!-- RIGHT: 3D LOGO -->
     <div class="visual-panel">
       <div class="drag-hint">🖱️ Sichqoncha bilan aylantiring</div>
-      <canvas id="logoCanvas"></canvas>
+      <div class="logo-glow-ring"></div>
+      <div class="orbit-ring orbit-ring-1"><div class="orbit-dot"></div></div>
+      <div class="orbit-ring orbit-ring-2"><div class="orbit-dot"></div></div>
+      <div class="logo-3d-wrap" id="logo3d">
+        <img src="logo.png" alt="Kohinoor Logo" draggable="false">
+      </div>
       <div class="visual-caption">
         <h3>Kohinoor Academy</h3>
         <p>Bilimingizni yangi darajaga oling</p>
@@ -775,242 +840,106 @@ function showToast(msg) {
   drawBg();
 })();
 
-// ===== 3D ROTATING K LOGO =====
+// ===== 3D LOGO — MOUSE DRAG ROTATE =====
 (function() {
-  const canvas = document.getElementById('logoCanvas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
+  const wrap = document.getElementById('logo3d');
+  if(!wrap) return;
 
-  let W, H;
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    W = canvas.width = rect.width;
-    H = canvas.height = rect.height;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // Mouse drag state
-  let rotX = 0.3, rotY = 0.5;
-  let targetRX = 0.3, targetRY = 0.5;
+  let rotX = -10, rotY = 15;
+  let targetRX = -10, targetRY = 15;
   let isDragging = false;
   let lastX = 0, lastY = 0;
   let autoRotate = true;
   let autoT = 0;
+  let rafId;
 
-  canvas.addEventListener('mousedown', e => {
+  // Mouse events
+  wrap.addEventListener('mousedown', e => {
     isDragging = true;
     autoRotate = false;
     lastX = e.clientX;
     lastY = e.clientY;
+    wrap.style.transition = 'none';
   });
+
   window.addEventListener('mousemove', e => {
     if(!isDragging) return;
     const dx = e.clientX - lastX;
     const dy = e.clientY - lastY;
-    targetRY += dx * 0.008;
-    targetRX += dy * 0.008;
+    targetRY += dx * 0.5;
+    targetRX -= dy * 0.5;
+    targetRX = Math.max(-45, Math.min(45, targetRX));
     lastX = e.clientX;
     lastY = e.clientY;
   });
+
   window.addEventListener('mouseup', () => {
+    if(!isDragging) return;
     isDragging = false;
-    setTimeout(() => { autoRotate = true; }, 2000);
+    setTimeout(() => { autoRotate = true; }, 2500);
   });
 
-  // Touch support
-  canvas.addEventListener('touchstart', e => {
+  // Touch events
+  wrap.addEventListener('touchstart', e => {
     isDragging = true;
     autoRotate = false;
     lastX = e.touches[0].clientX;
     lastY = e.touches[0].clientY;
-  });
+    e.preventDefault();
+  }, {passive: false});
+
   window.addEventListener('touchmove', e => {
     if(!isDragging) return;
     const dx = e.touches[0].clientX - lastX;
     const dy = e.touches[0].clientY - lastY;
-    targetRY += dx * 0.008;
-    targetRX += dy * 0.008;
+    targetRY += dx * 0.5;
+    targetRX -= dy * 0.5;
+    targetRX = Math.max(-45, Math.min(45, targetRX));
     lastX = e.touches[0].clientX;
     lastY = e.touches[0].clientY;
   });
+
   window.addEventListener('touchend', () => {
     isDragging = false;
-    setTimeout(() => { autoRotate = true; }, 2000);
+    setTimeout(() => { autoRotate = true; }, 2500);
   });
 
-  // Build K letter as 3D points
-  function makeKPoints() {
-    const pts = [];
-    const size = 0.9;
+  // Hover tilt effect
+  wrap.addEventListener('mousemove', e => {
+    if(isDragging) return;
+    const rect = wrap.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    targetRY = dx * 25;
+    targetRX = -dy * 20;
+  });
 
-    // Vertical bar of K
-    for(let y = -1; y <= 1; y += 0.06) {
-      for(let z = -0.12; z <= 0.12; z += 0.08) {
-        pts.push([-0.35*size, y*size, z*0.3]);
-      }
+  wrap.addEventListener('mouseleave', () => {
+    if(!isDragging && autoRotate) {
+      targetRX = -10;
+      targetRY = 15;
     }
-    // Upper diagonal of K
-    for(let t = 0; t <= 1; t += 0.04) {
-      const x = (-0.35 + t*0.75) * size;
-      const y = (t * 1.0) * size;
-      for(let z = -0.12; z <= 0.12; z += 0.08) {
-        pts.push([x, y, z*0.3]);
-      }
-    }
-    // Lower diagonal of K
-    for(let t = 0; t <= 1; t += 0.04) {
-      const x = (-0.35 + t*0.75) * size;
-      const y = (-t * 1.0) * size;
-      for(let z = -0.12; z <= 0.12; z += 0.08) {
-        pts.push([x, y, z*0.3]);
-      }
-    }
+  });
 
-    // Diamond shape (gem below K)
-    for(let i = 0; i < 80; i++) {
-      const theta = (i / 80) * Math.PI * 2;
-      const r = 0.12;
-      pts.push([
-        Math.cos(theta) * r * size,
-        -1.1 * size + Math.sin(theta) * r * size * 0.5,
-        Math.sin(theta) * r * 0.3
-      ]);
+  function animate() {
+    autoT += 0.01;
+
+    if(autoRotate && !isDragging) {
+      targetRY += 0.4;
+      targetRX = Math.sin(autoT * 0.5) * 12 - 5;
     }
 
-    return pts;
+    rotX += (targetRX - rotX) * 0.08;
+    rotY += (targetRY - rotY) * 0.08;
+
+    wrap.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+    rafId = requestAnimationFrame(animate);
   }
 
-  // Sphere of points around K
-  function makeSpherePoints(n, radius) {
-    const pts = [];
-    const phi = Math.PI * (3 - Math.sqrt(5));
-    for(let i = 0; i < n; i++) {
-      const y = 1 - (i / (n-1)) * 2;
-      const r = Math.sqrt(1 - y*y);
-      const theta = phi * i;
-      pts.push([Math.cos(theta)*r*radius, y*radius, Math.sin(theta)*r*radius]);
-    }
-    return pts;
-  }
-
-  const kPts = makeKPoints();
-  const spherePts = makeSpherePoints(300, 1.5);
-
-  // Rotate point
-  function rotatePoint(p, rx, ry) {
-    let [x, y, z] = p;
-    // Y rotation
-    let x1 = x*Math.cos(ry) - z*Math.sin(ry);
-    let z1 = x*Math.sin(ry) + z*Math.cos(ry);
-    // X rotation
-    let y2 = y*Math.cos(rx) - z1*Math.sin(rx);
-    let z2 = y*Math.sin(rx) + z1*Math.cos(rx);
-    return [x1, y2, z2];
-  }
-
-  function project(p, scale, cx, cy) {
-    const fov = 500;
-    const persp = fov / (fov + p[2] * scale);
-    return [cx + p[0]*scale*persp, cy + p[1]*scale*persp, p[2], persp];
-  }
-
-  function render() {
-    ctx.clearRect(0, 0, W, H);
-
-    autoT += 0.008;
-    if(autoRotate) {
-      targetRY += 0.006;
-      targetRX = Math.sin(autoT * 0.4) * 0.25;
-    }
-
-    rotX += (targetRX - rotX) * 0.07;
-    rotY += (targetRY - rotY) * 0.07;
-
-    const scale = Math.min(W, H) * 0.28;
-    const cx = W / 2;
-    const cy = H / 2;
-
-    // Draw sphere dots
-    const sProj = spherePts.map(p => {
-      const rot = rotatePoint(p, rotX, rotY);
-      return project(rot, scale, cx, cy);
-    });
-
-    sProj.forEach(p => {
-      const alpha = (p[2] + 1.8) / 3.6;
-      const size = p[3] * 1.2;
-      ctx.beginPath();
-      ctx.arc(p[0], p[1], Math.max(0.3, size*0.4), 0, Math.PI*2);
-      ctx.fillStyle = `rgba(100,160,255,${alpha * 0.25})`;
-      ctx.fill();
-    });
-
-    // Draw K letter dots
-    const kProj = kPts.map((p, i) => {
-      const rot = rotatePoint(p, rotX, rotY);
-      const proj = project(rot, scale, cx, cy);
-      proj.push(i >= kPts.length - 80); // is gem
-      return proj;
-    });
-
-    // Sort by Z depth
-    kProj.sort((a, b) => a[2] - b[2]);
-
-    kProj.forEach(p => {
-      const depth = (p[2] + 1.5) / 3;
-      const persp = p[3];
-      const isGem = p[4];
-
-      if(isGem) {
-        // Ruby gem points
-        const r = persp * scale * 0.025;
-        const grad = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], r*3);
-        grad.addColorStop(0, `rgba(255,80,80,${depth})`);
-        grad.addColorStop(1, `rgba(180,20,20,0)`);
-        ctx.beginPath();
-        ctx.arc(p[0], p[1], r*3, 0, Math.PI*2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-      } else {
-        // K letter points — blue/white glow
-        const r = persp * scale * 0.018;
-        const bright = 0.5 + depth * 0.5;
-
-        // Glow
-        const grad = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], r*4);
-        grad.addColorStop(0, `rgba(120,160,255,${bright * 0.8})`);
-        grad.addColorStop(0.5, `rgba(60,100,255,${bright * 0.4})`);
-        grad.addColorStop(1, `rgba(17,38,219,0)`);
-        ctx.beginPath();
-        ctx.arc(p[0], p[1], r*4, 0, Math.PI*2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        // Core
-        ctx.beginPath();
-        ctx.arc(p[0], p[1], r*1.2, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(200,220,255,${bright})`;
-        ctx.fill();
-      }
-    });
-
-    // Academy ring
-    const ringR = scale * 1.65;
-    const ringGrad = ctx.createLinearGradient(cx-ringR, cy, cx+ringR, cy);
-    ringGrad.addColorStop(0, 'rgba(59,91,252,0.1)');
-    ringGrad.addColorStop(0.5, 'rgba(100,150,255,0.2)');
-    ringGrad.addColorStop(1, 'rgba(59,91,252,0.1)');
-    ctx.beginPath();
-    ctx.arc(cx, cy, ringR, 0, Math.PI*2);
-    ctx.strokeStyle = ringGrad;
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-    requestAnimationFrame(render);
-  }
-
-  render();
+  animate();
 })();
 </script>
 </body>

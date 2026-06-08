@@ -354,6 +354,141 @@ footer strong{color:white;}
   .kohinoor-num{font-size:1.8rem;}
   nav{padding:0 1rem;}
 }
+
+/* ===== PROFILE DROPDOWN ===== */
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(126,115,194,0.12);
+  border: 1.5px solid rgba(126,115,194,0.25);
+  border-radius: 40px;
+  padding: 5px 14px 5px 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.profile-btn:hover {
+  background: rgba(126,115,194,0.22);
+  border-color: rgba(126,115,194,0.5);
+}
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,var(--primary),var(--secondary));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.profile-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--dark);
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile-chevron {
+  font-size: 0.65rem;
+  color: var(--muted);
+  transition: transform 0.2s;
+}
+.profile-btn.open .profile-chevron { transform: rotate(180deg); }
+
+/* Dropdown menu */
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(17,38,219,0.15), 0 0 0 1px rgba(126,115,194,0.1);
+  min-width: 220px;
+  padding: 8px;
+  z-index: 500;
+  display: none;
+  animation: dropIn 0.2s cubic-bezier(0.34,1.56,0.64,1);
+}
+.profile-dropdown.open { display: block; }
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dropdown-header {
+  padding: 10px 12px 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+.dropdown-email {
+  font-size: 0.78rem;
+  color: var(--muted);
+  word-break: break-all;
+}
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--text);
+  transition: background 0.15s;
+  border: none;
+  background: none;
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  text-align: left;
+}
+.dropdown-item:hover { background: var(--light); color: var(--secondary); }
+.dropdown-item .di-icon { font-size: 1rem; width: 20px; text-align: center; }
+.dropdown-item.admin-item { color: var(--secondary); font-weight: 600; }
+.dropdown-item.danger { color: var(--danger); }
+.dropdown-item.danger:hover { background: #fff1f2; }
+.dropdown-divider { height: 1px; background: var(--border); margin: 6px 0; }
+
+/* Mobile profile */
+.mob-profile-section {
+  padding: 1rem 0.5rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mob-profile-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,var(--primary),var(--secondary));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.mob-profile-avatar img { width:100%;height:100%;object-fit:cover;border-radius:50%; }
+.mob-profile-info { flex: 1; overflow: hidden; }
+.mob-profile-name { font-weight: 600; color: var(--dark); font-size: 0.92rem; }
+.mob-profile-email { font-size: 0.75rem; color: var(--muted); overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
 </style>
 </head>
 <body>
@@ -398,14 +533,56 @@ footer strong{color:white;}
     <a href="" target="_blank">📍 Filiallar</a>
     <a href="" target="_blank">💼 Karyera</a>
     <a onclick="showPage('results');closeMobileMenu()">🏆 Natijalar</a>
-    <div class="mob-auth-btns">
+    <!-- Mobile: kirmaganda -->
+    <div id="mob-auth-btns" class="mob-auth-btns">
       <button class="btn btn-outline" onclick="window.location.href='auth.html'">Kirish</button>
       <button class="btn btn-primary" onclick="window.location.href='auth.html'">Ro'yxatdan o'tish</button>
+    </div>
+    <!-- Mobile: kirgan foydalanuvchi -->
+    <div id="mob-profile-section" class="mob-profile-section" style="display:none;">
+      <div class="mob-profile-avatar" id="mobAvatar">?</div>
+      <div class="mob-profile-info">
+        <div class="mob-profile-name" id="mobName">—</div>
+        <div class="mob-profile-email" id="mobEmail">—</div>
+      </div>
+    </div>
+    <div id="mob-profile-menu" style="display:none;">
+      <a onclick="goProfile();closeMobileMenu()">👤 Profil ma'lumotlari</a>
+      <a id="mobAdminLink" onclick="goAdmin();closeMobileMenu()" style="display:none;color:var(--secondary);font-weight:600;">⚙️ Admin panel</a>
+      <a onclick="doSignOut()" style="color:var(--danger);">🚪 Hisobdan chiqish</a>
     </div>
   </div>
   <div class="nav-cta" id="nav-auth-area">
     <button class="btn btn-outline" onclick="window.location.href='auth.html'">Kirish</button>
     <button class="btn btn-primary" onclick="window.location.href='auth.html'">Ro'yxatdan o'tish</button>
+  </div>
+
+  <!-- PROFILE (kirgan foydalanuvchilar uchun) -->
+  <div id="nav-profile-area" style="display:none; position:relative;">
+    <button class="profile-btn" id="profileBtn" onclick="toggleProfileDropdown()">
+      <div class="profile-avatar" id="navAvatar">?</div>
+      <span class="profile-name" id="navName">Profil</span>
+      <span class="profile-chevron">▼</span>
+    </button>
+    <div class="profile-dropdown" id="profileDropdown">
+      <div class="dropdown-header">
+        <div style="font-weight:600;font-size:0.9rem;color:var(--dark);margin-bottom:2px;" id="dropdownName">—</div>
+        <div class="dropdown-email" id="dropdownEmail">—</div>
+      </div>
+      <button class="dropdown-item" onclick="goProfile()">
+        <span class="di-icon">👤</span> Profil ma'lumotlari
+      </button>
+      <div id="adminMenuItem" style="display:none;">
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item admin-item" onclick="goAdmin()">
+          <span class="di-icon">⚙️</span> Admin panel
+        </button>
+      </div>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item danger" onclick="doSignOut()">
+        <span class="di-icon">🚪</span> Hisobdan chiqish
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -577,6 +754,65 @@ footer strong{color:white;}
       </div>
     </div>
     <div class="achievements" id="achievements-list"></div>
+  </div>
+</div>
+
+<!-- PAGE: PROFILE -->
+<div class="page" id="page-profile">
+  <div class="section" style="max-width:680px;">
+    <div class="section-header" style="text-align:left;margin-bottom:2rem;">
+      <button onclick="showPage('home')" style="background:none;border:none;color:var(--primary);cursor:pointer;font-size:0.88rem;display:flex;align-items:center;gap:6px;margin-bottom:1rem;font-family:'DM Sans',sans-serif;">
+        ← Bosh sahifaga qaytish
+      </button>
+      <div class="tag">👤 MENING PROFILIM</div>
+      <h2 style="color:white;margin-top:0.5rem;">Profil ma'lumotlari</h2>
+    </div>
+
+    <!-- Avatar qismi -->
+    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+      <div style="position:relative;">
+        <div id="profilePageAvatar" style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:white;overflow:hidden;border:3px solid rgba(255,255,255,0.2);font-family:'Playfair Display',serif;">?</div>
+        <label for="avatarInput" style="position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--secondary);color:white;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.75rem;border:2px solid white;" title="Rasm o'zgartirish">✏️</label>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="handleAvatarChange(event)">
+      </div>
+      <div>
+        <div id="profilePageName" style="font-size:1.2rem;font-weight:700;color:white;font-family:'Playfair Display',serif;">—</div>
+        <div id="profilePageEmail" style="font-size:0.85rem;color:rgba(255,255,255,0.55);margin-top:3px;">—</div>
+        <div id="profilePageProvider" style="margin-top:8px;"></div>
+      </div>
+    </div>
+
+    <!-- Ism o'zgartirish -->
+    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:1.8rem;margin-bottom:1.5rem;">
+      <h3 style="color:white;font-size:1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:8px;">✏️ Ism-familiyani o'zgartirish</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <input type="text" id="profileNameInput" placeholder="Yangi ism-familiya" style="flex:1;min-width:200px;padding:11px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+        <button onclick="updateName()" style="padding:11px 22px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;white-space:nowrap;">Saqlash</button>
+      </div>
+      <div id="nameMsg" style="font-size:0.8rem;margin-top:8px;min-height:1rem;"></div>
+    </div>
+
+    <!-- Parol o'zgartirish (faqat email/password uchun) -->
+    <div id="passwordSection" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:1.8rem;margin-bottom:1.5rem;">
+      <h3 style="color:white;font-size:1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:8px;">🔒 Parolni o'zgartirish</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="position:relative;">
+          <input type="password" id="currentPassInput" placeholder="Joriy parol" style="width:100%;padding:11px 40px 11px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+          <button onclick="toggleProfPass('currentPassInput',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:0.9rem;">👁</button>
+        </div>
+        <div style="position:relative;">
+          <input type="password" id="newPassInput" placeholder="Yangi parol (kamida 6 ta belgi)" style="width:100%;padding:11px 40px 11px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+          <button onclick="toggleProfPass('newPassInput',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:0.9rem;">👁</button>
+        </div>
+        <div style="position:relative;">
+          <input type="password" id="newPass2Input" placeholder="Yangi parolni tasdiqlang" style="width:100%;padding:11px 40px 11px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+          <button onclick="toggleProfPass('newPass2Input',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:0.9rem;">👁</button>
+        </div>
+        <button onclick="updatePassword()" style="padding:11px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.9rem;">Parolni yangilash</button>
+      </div>
+      <div id="passMsg" style="font-size:0.8rem;margin-top:8px;min-height:1rem;"></div>
+    </div>
+
   </div>
 </div>
 
@@ -1930,7 +2166,238 @@ document.addEventListener('click', function(e){
   if(menu && menu.classList.contains('open') && !menu.contains(e.target) && burger && !burger.contains(e.target)){
     menu.classList.remove('open');
   }
+  // Profile dropdown tashqariga bosilsa yopilsin
+  var dropdown = document.getElementById('profileDropdown');
+  var profileBtn = document.getElementById('profileBtn');
+  if(dropdown && dropdown.classList.contains('open') && !dropdown.contains(e.target) && profileBtn && !profileBtn.contains(e.target)){
+    dropdown.classList.remove('open');
+    profileBtn.classList.remove('open');
+  }
 });
+</script>
+
+<!-- Firebase Auth -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, updateProfile, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD-CJRKHDzrrEq9M1mLM7NsrRG9l0kjyJs",
+  authDomain: "kohinoor-academy.firebaseapp.com",
+  projectId: "kohinoor-academy",
+  storageBucket: "kohinoor-academy.firebasestorage.app",
+  messagingSenderId: "201579385267",
+  appId: "1:201579385267:web:1ee52c028f097ebe16bbc6"
+};
+
+const ADMIN_EMAIL = "abdurasul1406z@gmail.com";
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+function setMsg(id, msg, isError) {
+  var el = document.getElementById(id);
+  if(!el) return;
+  el.textContent = msg;
+  el.style.color = isError ? '#ff6b6b' : '#4ade80';
+}
+
+onAuthStateChanged(auth, (user) => {
+  const authArea    = document.getElementById('nav-auth-area');
+  const profileArea = document.getElementById('nav-profile-area');
+  const mobAuth     = document.getElementById('mob-auth-btns');
+  const mobProfile  = document.getElementById('mob-profile-section');
+  const mobMenu     = document.getElementById('mob-profile-menu');
+  const adminItem   = document.getElementById('adminMenuItem');
+  const mobAdmin    = document.getElementById('mobAdminLink');
+
+  if (user) {
+    authArea.style.display    = 'none';
+    profileArea.style.display = 'block';
+    mobAuth.style.display     = 'none';
+    mobProfile.style.display  = 'flex';
+    mobMenu.style.display     = 'block';
+
+    const email    = user.email || '';
+    const name     = user.displayName || email.split('@')[0] || 'Foydalanuvchi';
+    const initials = name.charAt(0).toUpperCase();
+    const photoURL = user.photoURL;
+    const isAdmin  = email === ADMIN_EMAIL;
+    const isGoogle = user.providerData.some(p => p.providerId === 'google.com');
+
+    // Nav avatar
+    const navAvatar = document.getElementById('navAvatar');
+    navAvatar.innerHTML = photoURL ? `<img src="${photoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : initials;
+    document.getElementById('navName').textContent       = name;
+    document.getElementById('dropdownName').textContent  = name;
+    document.getElementById('dropdownEmail').textContent = email;
+
+    // Mobile
+    const mobAv = document.getElementById('mobAvatar');
+    mobAv.innerHTML = photoURL ? `<img src="${photoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : initials;
+    document.getElementById('mobName').textContent  = name;
+    document.getElementById('mobEmail').textContent = email;
+
+    // Admin
+    adminItem.style.display = isAdmin ? 'block' : 'none';
+    mobAdmin.style.display  = isAdmin ? 'block' : 'none';
+
+    // Profil sahifasi ma'lumotlari
+    const profAv = document.getElementById('profilePageAvatar');
+    if(profAv) profAv.innerHTML = photoURL ? `<img src="${photoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : initials;
+    var profName = document.getElementById('profilePageName');
+    var profEmail = document.getElementById('profilePageEmail');
+    var profProvider = document.getElementById('profilePageProvider');
+    var passSection = document.getElementById('passwordSection');
+    var nameInput = document.getElementById('profileNameInput');
+    if(profName)  profName.textContent  = name;
+    if(profEmail) profEmail.textContent = email;
+    if(nameInput) nameInput.value = name;
+
+    if(profProvider) {
+      profProvider.innerHTML = isGoogle
+        ? '<span style="background:rgba(66,133,244,0.15);color:#4fc3f7;padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;">🔵 Google orqali kirgan</span>'
+        : '<span style="background:rgba(126,115,194,0.15);color:#b8b0f0;padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;">✉️ Email orqali kirgan</span>';
+    }
+
+    // Google bilan kirgan bo'lsa parol bo'limi yashirinadi
+    if(passSection) passSection.style.display = isGoogle ? 'none' : 'block';
+
+    if (window.location.hash === '#admin' && isAdmin) showPage('admin');
+
+  } else {
+    authArea.style.display    = 'flex';
+    profileArea.style.display = 'none';
+    mobAuth.style.display     = 'flex';
+    mobProfile.style.display  = 'none';
+    mobMenu.style.display     = 'none';
+  }
+});
+
+// Hisobdan chiqish
+window.doSignOut = async function() {
+  await signOut(auth);
+  showToast('👋 Hisobdan chiqdingiz');
+  showPage('home');
+};
+
+// Ism yangilash
+window.updateName = async function() {
+  const user = auth.currentUser;
+  if(!user) return;
+  const newName = document.getElementById('profileNameInput').value.trim();
+  if(!newName) { setMsg('nameMsg', "Ism bo'sh bo'lishi mumkin emas", true); return; }
+  try {
+    await updateProfile(user, { displayName: newName });
+    setMsg('nameMsg', '✅ Ism muvaffaqiyatli yangilandi!', false);
+    // Nav ni yangilash
+    document.getElementById('navName').textContent      = newName;
+    document.getElementById('dropdownName').textContent = newName;
+    document.getElementById('mobName').textContent      = newName;
+    document.getElementById('profilePageName').textContent = newName;
+    showToast('✅ Ism yangilandi!');
+  } catch(e) {
+    setMsg('nameMsg', 'Xatolik: ' + e.message, true);
+  }
+};
+
+// Avatar o'zgartirish (base64 — Firebase Storage yo'q bo'lganda)
+window.handleAvatarChange = async function(event) {
+  const file = event.target.files[0];
+  if(!file) return;
+  if(file.size > 2 * 1024 * 1024) { showToast('❌ Rasm 2MB dan kichik bo\'lishi kerak'); return; }
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    const dataUrl = e.target.result;
+    try {
+      const user = auth.currentUser;
+      await updateProfile(user, { photoURL: dataUrl });
+      // Barcha avatarlarni yangilash
+      const imgTag = `<img src="${dataUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      document.getElementById('navAvatar').innerHTML = imgTag;
+      document.getElementById('mobAvatar').innerHTML = imgTag;
+      document.getElementById('profilePageAvatar').innerHTML = imgTag;
+      showToast('✅ Avatar yangilandi!');
+    } catch(err) {
+      showToast('❌ Xatolik: ' + err.message);
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
+// Parol yangilash
+window.updatePassword = async function() {
+  const user = auth.currentUser;
+  if(!user) return;
+  const current = document.getElementById('currentPassInput').value;
+  const newPass  = document.getElementById('newPassInput').value;
+  const newPass2 = document.getElementById('newPass2Input').value;
+
+  if(!current) { setMsg('passMsg', 'Joriy parolni kiriting', true); return; }
+  if(!newPass || newPass.length < 6) { setMsg('passMsg', "Yangi parol kamida 6 ta belgi bo'lishi kerak", true); return; }
+  if(newPass !== newPass2) { setMsg('passMsg', "Parollar mos kelmadi", true); return; }
+
+  try {
+    // Qayta autentifikatsiya
+    const credential = EmailAuthProvider.credential(user.email, current);
+    await reauthenticateWithCredential(user, credential);
+    await updatePassword(user, newPass);
+    setMsg('passMsg', '✅ Parol muvaffaqiyatli yangilandi!', false);
+    document.getElementById('currentPassInput').value = '';
+    document.getElementById('newPassInput').value = '';
+    document.getElementById('newPass2Input').value = '';
+    showToast('✅ Parol yangilandi!');
+  } catch(e) {
+    const msgs = {
+      'auth/wrong-password': "Joriy parol noto'g'ri",
+      'auth/too-many-requests': 'Juda ko\'p urinish, keyinroq urinib ko\'ring',
+      'auth/requires-recent-login': 'Iltimos, qayta kiring va urinib ko\'ring',
+    };
+    setMsg('passMsg', msgs[e.code] || 'Xatolik: ' + e.message, true);
+  }
+};
+
+window._auth = auth;
+</script>
+
+<script>
+// Profile dropdown toggle
+function toggleProfileDropdown() {
+  var btn = document.getElementById('profileBtn');
+  var dd  = document.getElementById('profileDropdown');
+  btn.classList.toggle('open');
+  dd.classList.toggle('open');
+}
+
+// Profil sahifasiga o'tish
+function goProfile() {
+  var dd = document.getElementById('profileDropdown');
+  var btn = document.getElementById('profileBtn');
+  if(dd) dd.classList.remove('open');
+  if(btn) btn.classList.remove('open');
+  showPage('profile');
+}
+
+// Admin panelga o'tish
+function goAdmin() {
+  toggleProfileDropdown();
+  showPage('admin');
+}
+
+// Parol toggle (profil sahifasi)
+function toggleProfPass(id, btn) {
+  var inp = document.getElementById(id);
+  if(!inp) return;
+  if(inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
 </script>
 
 </body>
