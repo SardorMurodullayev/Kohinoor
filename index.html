@@ -2322,25 +2322,71 @@ window.updateName = async function() {
 window.handleAvatarChange = async function(event) {
   const file = event.target.files[0];
   if(!file) return;
-  if(file.size > 2 * 1024 * 1024) { showToast('❌ Rasm 2MB dan kichik bo\'lishi kerak'); return; }
+
+  // Canvas orqali rasmni kichraytirish
   const reader = new FileReader();
-  reader.onload = async function(e) {
-    const dataUrl = e.target.result;
-    try {
-      const user = auth.currentUser;
-      await updateProfile(user, { photoURL: dataUrl });
-      // Barcha avatarlarni yangilash
-      const imgTag = `<img src="${dataUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-      document.getElementById('navAvatar').innerHTML = imgTag;
-      document.getElementById('mobAvatar').innerHTML = imgTag;
-      document.getElementById('profilePageAvatar').innerHTML = imgTag;
-      showToast('✅ Avatar yangilandi!');
-    } catch(err) {
-      showToast('❌ Xatolik: ' + err.message);
-    }
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = async function() {
+      // Max 200x200 px ga kichraytir
+      const MAX = 200;
+      let w = img.width, h = img.height;
+      if(w > h) { if(w > MAX){ h = Math.round(h * MAX/w); w = MAX; } }
+      else       { if(h > MAX){ w = Math.round(w * MAX/h); h = MAX; } }
+
+      const canvas = document.createElement('canvas');
+      canvas.width  = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+
+      // Doira shaklida kesish
+      ctx.beginPath();
+      ctx.arc(w/2, h/2, Math.min(w,h)/2, 0, Math.PI*2);
+      ctx.clip();
+      ctx.drawImage(img, 0, 0, w, h);
+
+      // JPEG 0.7 sifat — kichik hajm
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+
+      // Firebase URL limit ~2048 char — tekshirish
+      if(dataUrl.length > 2000) {
+        // Yanada kichraytir
+        const canvas2 = document.createElement('canvas');
+        const S = 100;
+        canvas2.width = S; canvas2.height = S;
+        const ctx2 = canvas2.getContext('2d');
+        ctx2.beginPath();
+        ctx2.arc(S/2, S/2, S/2, 0, Math.PI*2);
+        ctx2.clip();
+        ctx2.drawImage(img, 0, 0, S, S);
+        var smallUrl = canvas2.toDataURL('image/jpeg', 0.5);
+
+        if(smallUrl.length > 2000) {
+          showToast('❌ Rasm juda katta, boshqa rasm tanlang');
+          return;
+        }
+        await _saveAvatar(smallUrl);
+      } else {
+        await _saveAvatar(dataUrl);
+      }
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 };
+
+async function _saveAvatar(dataUrl) {
+  try {
+    const user = window._auth.currentUser;
+    await updateProfile(user, { photoURL: dataUrl });
+    const imgTag = `<img src="${dataUrl}" alt="av" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    var ids = ['navAvatar','mobAvatar','profilePageAvatar'];
+    ids.forEach(function(id){ var el = document.getElementById(id); if(el) el.innerHTML = imgTag; });
+    showToast('✅ Avatar yangilandi!');
+  } catch(err) {
+    showToast('❌ ' + err.message);
+  }
+}
 
 // Parol yangilash
 window.updatePassword = async function() {
