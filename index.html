@@ -2360,6 +2360,12 @@ window.updatePassword = async function() {
 };
 
 window._auth = auth;
+window._currentUser = null;
+
+// onAuthStateChanged ni override qilib _currentUser ni yangilash
+onAuthStateChanged(auth, (user) => {
+  window._currentUser = user;
+});
 </script>
 
 <script>
@@ -2382,17 +2388,26 @@ function goProfile() {
 
 // Profil sahifasini render qilish
 function renderProfilePage() {
-  var auth = window._auth;
-  if(!auth) return;
-  var user = auth.currentUser;
-  if(!user) { showPage('home'); return; }
+  // _currentUser tayyor bo'lmasa biroz kuting
+  var user = window._currentUser || (window._auth && window._auth.currentUser);
+  if(!user) {
+    // 300ms kutib qayta urinib ko'ring
+    setTimeout(function(){
+      user = window._currentUser || (window._auth && window._auth.currentUser);
+      if(user) _doRenderProfile(user);
+      else showPage('home');
+    }, 300);
+    return;
+  }
+  _doRenderProfile(user);
+}
 
+function _doRenderProfile(user) {
   var email    = user.email || '';
   var name     = user.displayName || email.split('@')[0] || 'Foydalanuvchi';
   var photoURL = user.photoURL;
   var initials = name.charAt(0).toUpperCase();
   var isGoogle = user.providerData.some(function(p){ return p.providerId === 'google.com'; });
-  var ADMIN_EMAIL = 'abdurasul1406z@gmail.com';
 
   // Avatar
   var profAv = document.getElementById('profilePageAvatar');
