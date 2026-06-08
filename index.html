@@ -757,62 +757,76 @@ footer strong{color:white;}
   </div>
 </div>
 
-<!-- PAGE: PROFILE -->
-<div class="page" id="page-profile" style="min-height:calc(100vh - 68px);padding:2rem 1rem;">
-  <div class="section" style="max-width:680px;">
-    <div class="section-header" style="text-align:left;margin-bottom:2rem;">
-      <button onclick="showPage('home')" style="background:none;border:none;color:var(--primary);cursor:pointer;font-size:0.88rem;display:flex;align-items:center;gap:6px;margin-bottom:1rem;font-family:'DM Sans',sans-serif;">
-        ← Bosh sahifaga qaytish
-      </button>
-      <div class="tag">👤 MENING PROFILIM</div>
-      <h2 style="color:white;margin-top:0.5rem;">Profil ma'lumotlari</h2>
-    </div>
-
-    <!-- Avatar qismi -->
-    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
-      <div style="position:relative;">
-        <div id="profilePageAvatar" style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:white;overflow:hidden;border:3px solid rgba(255,255,255,0.2);font-family:'Playfair Display',serif;">?</div>
-        <label for="avatarInput" style="position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--secondary);color:white;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.75rem;border:2px solid white;" title="Rasm o'zgartirish">✏️</label>
+<!-- PROFILE MODAL -->
+<div class="modal-overlay" id="profile-modal" onclick="closeProfileModal(event)">
+  <div class="modal" style="padding:0;overflow:hidden;max-width:400px;width:92%;border-radius:24px;" onclick="event.stopPropagation()">
+    
+    <!-- Header qizil gradient -->
+    <div style="background:linear-gradient(135deg,#e53935,#c62828);padding:2rem 1.5rem 1.5rem;text-align:center;position:relative;">
+      <button onclick="closeProfileModal()" style="position:absolute;top:1rem;right:1rem;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.2);border:none;color:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">✕</button>
+      
+      <!-- Avatar -->
+      <div style="position:relative;display:inline-block;margin-bottom:0.8rem;">
+        <div id="profilePageAvatar" style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#b71c1c,#7f0000);display:flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:700;color:white;overflow:hidden;border:3px solid rgba(255,255,255,0.4);margin:0 auto;font-family:'Playfair Display',serif;">?</div>
+        <label for="avatarInput" style="position:absolute;bottom:2px;right:2px;width:26px;height:26px;border-radius:50%;background:#e53935;color:white;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.7rem;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);">✏️</label>
         <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="handleAvatarChange(event)">
       </div>
-      <div>
-        <div id="profilePageName" style="font-size:1.2rem;font-weight:700;color:white;font-family:'Playfair Display',serif;">—</div>
-        <div id="profilePageEmail" style="font-size:0.85rem;color:rgba(255,255,255,0.55);margin-top:3px;">—</div>
-        <div id="profilePageProvider" style="margin-top:8px;"></div>
-      </div>
+      <div id="profilePageName" style="font-size:1.2rem;font-weight:700;color:white;font-family:'Playfair Display',serif;">—</div>
+      <div id="profilePageEmail" style="font-size:0.8rem;color:rgba(255,255,255,0.8);margin-top:3px;">—</div>
     </div>
 
-    <!-- Ism o'zgartirish -->
-    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:1.8rem;margin-bottom:1.5rem;">
-      <h3 style="color:white;font-size:1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:8px;">✏️ Ism-familiyani o'zgartirish</h3>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <input type="text" id="profileNameInput" placeholder="Yangi ism-familiya" style="flex:1;min-width:200px;padding:11px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
-        <button onclick="updateName()" style="padding:11px 22px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;white-space:nowrap;">Saqlash</button>
-      </div>
-      <div id="nameMsg" style="font-size:0.8rem;margin-top:8px;min-height:1rem;"></div>
-    </div>
+    <!-- Body -->
+    <div style="padding:1.5rem;background:white;max-height:60vh;overflow-y:auto;">
 
-    <!-- Parol o'zgartirish (faqat email/password uchun) -->
-    <div id="passwordSection" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:1.8rem;margin-bottom:1.5rem;">
-      <h3 style="color:white;font-size:1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:8px;">🔒 Parolni o'zgartirish</h3>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="position:relative;">
-          <input type="password" id="currentPassInput" placeholder="Joriy parol" style="width:100%;padding:11px 40px 11px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
-          <button onclick="toggleProfPass('currentPassInput',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:0.9rem;">👁</button>
-        </div>
-        <div style="position:relative;">
-          <input type="password" id="newPassInput" placeholder="Yangi parol (kamida 6 ta belgi)" style="width:100%;padding:11px 40px 11px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
-          <button onclick="toggleProfPass('newPassInput',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:0.9rem;">👁</button>
-        </div>
-        <div style="position:relative;">
-          <input type="password" id="newPass2Input" placeholder="Yangi parolni tasdiqlang" style="width:100%;padding:11px 40px 11px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
-          <button onclick="toggleProfPass('newPass2Input',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:0.9rem;">👁</button>
-        </div>
-        <button onclick="updatePassword()" style="padding:11px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.9rem;">Parolni yangilash</button>
+      <!-- Ism familiya -->
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:0.8rem;font-weight:600;color:#555;display:block;margin-bottom:6px;">Ism Familiya</label>
+        <input type="text" id="profileNameInput" placeholder="Ism familiya" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;color:#333;" onfocus="this.style.borderColor='#e53935'" onblur="this.style.borderColor='#e0e0e0'">
+        <div id="nameMsg" style="font-size:0.75rem;margin-top:5px;min-height:1rem;"></div>
       </div>
-      <div id="passMsg" style="font-size:0.8rem;margin-top:8px;min-height:1rem;"></div>
-    </div>
 
+      <!-- Email (o'zgartirib bo'lmaydi) -->
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:0.8rem;font-weight:600;color:#555;display:block;margin-bottom:6px;" id="emailLabel">Email</label>
+        <input type="text" id="profileEmailDisplay" disabled style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:#aaa;background:#fafafa;">
+        <div id="profilePageProvider" style="margin-top:6px;font-size:0.75rem;color:#888;">🔒 Email Firebase orqali boshqariladi</div>
+      </div>
+
+      <!-- Saqlash tugmasi -->
+      <button onclick="updateName()" style="width:100%;padding:13px;background:linear-gradient(135deg,#e53935,#c62828);color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.95rem;cursor:pointer;margin-bottom:1.2rem;transition:all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">💾 Saqlash</button>
+
+      <!-- Parol sektsiyasi -->
+      <div id="passwordSection">
+        <div style="border-top:1px solid #f0f0f0;padding-top:1.2rem;margin-bottom:1rem;">
+          <div style="font-size:0.75rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.8rem;">🔐 Parolni o'zgartirish</div>
+          <button onclick="togglePassSection()" id="togglePassBtn" style="width:100%;padding:11px;border:1.5px solid #e0e0e0;border-radius:10px;background:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:#555;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">🔑 Parolni o'zgartirish</button>
+        </div>
+
+        <!-- Parol maydonlari (yashirin) -->
+        <div id="passFields" style="display:none;flex-direction:column;gap:10px;margin-bottom:1rem;">
+          <div style="position:relative;">
+            <input type="password" id="currentPassInput" placeholder="Joriy parol" style="width:100%;padding:11px 40px 11px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;color:#333;" onfocus="this.style.borderColor='#e53935'" onblur="this.style.borderColor='#e0e0e0'">
+            <button onclick="toggleProfPass('currentPassInput',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#aaa;cursor:pointer;font-size:0.9rem;">👁</button>
+          </div>
+          <div style="position:relative;">
+            <input type="password" id="newPassInput" placeholder="Yangi parol (kamida 6 belgi)" style="width:100%;padding:11px 40px 11px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;color:#333;" onfocus="this.style.borderColor='#e53935'" onblur="this.style.borderColor='#e0e0e0'">
+            <button onclick="toggleProfPass('newPassInput',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#aaa;cursor:pointer;font-size:0.9rem;">👁</button>
+          </div>
+          <div style="position:relative;">
+            <input type="password" id="newPass2Input" placeholder="Parolni tasdiqlang" style="width:100%;padding:11px 40px 11px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;color:#333;" onfocus="this.style.borderColor='#e53935'" onblur="this.style.borderColor='#e0e0e0'">
+            <button onclick="toggleProfPass('newPass2Input',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#aaa;cursor:pointer;font-size:0.9rem;">👁</button>
+          </div>
+          <button onclick="updatePassword()" style="padding:11px;background:linear-gradient(135deg,#e53935,#c62828);color:white;border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;">Parolni yangilash</button>
+          <div id="passMsg" style="font-size:0.75rem;min-height:1rem;text-align:center;"></div>
+        </div>
+      </div>
+
+      <!-- Hisobdan chiqish -->
+      <div style="border-top:1px solid #f0f0f0;padding-top:1.2rem;">
+        <button onclick="doSignOut()" style="width:100%;padding:13px;background:white;color:#e53935;border:2px solid #e53935;border-radius:12px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.92rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;" onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background='white'">🚪 Hisobdan chiqish</button>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -1302,7 +1316,6 @@ function showPage(p){
   if(p==='teachers') renderAllTeachers();
   if(p==='results') renderResults();
   if(p==='admin') renderAdmin();
-  if(p==='profile') renderProfilePage();
 }
 
 // ===== AUTH =====
@@ -2278,6 +2291,8 @@ onAuthStateChanged(auth, (user) => {
 
 // Hisobdan chiqish
 window.doSignOut = async function() {
+  var modal = document.getElementById('profile-modal');
+  if(modal) modal.classList.remove('open');
   await signOut(auth);
   showToast('👋 Hisobdan chiqdingiz');
   showPage('home');
@@ -2377,32 +2392,43 @@ function toggleProfileDropdown() {
   dd.classList.toggle('open');
 }
 
-// Profil sahifasiga o'tish
+// Profil modalini ochish
 function goProfile() {
   var dd = document.getElementById('profileDropdown');
   var btn = document.getElementById('profileBtn');
   if(dd) dd.classList.remove('open');
   if(btn) btn.classList.remove('open');
-  showPage('profile');
+  // Modal ochish
+  var modal = document.getElementById('profile-modal');
+  if(modal) modal.classList.add('open');
+  renderProfilePage();
 }
 
-// Profil sahifasini render qilish
-function renderProfilePage() {
-  // _currentUser tayyor bo'lmasa biroz kuting
-  var user = window._currentUser || (window._auth && window._auth.currentUser);
-  if(!user) {
-    // 300ms kutib qayta urinib ko'ring
-    setTimeout(function(){
-      user = window._currentUser || (window._auth && window._auth.currentUser);
-      if(user) _doRenderProfile(user);
-      else showPage('home');
-    }, 300);
-    return;
+// Profil modalini yopish
+function closeProfileModal(e) {
+  if(e && e.target !== document.getElementById('profile-modal')) return;
+  document.getElementById('profile-modal').classList.remove('open');
+}
+
+// Parol maydonlarini ko'rsatish/yashirish
+function togglePassSection() {
+  var fields = document.getElementById('passFields');
+  var btn = document.getElementById('togglePassBtn');
+  if(!fields) return;
+  if(fields.style.display === 'none' || fields.style.display === '') {
+    fields.style.display = 'flex';
+    btn.textContent = '🔒 Yopish';
+  } else {
+    fields.style.display = 'none';
+    btn.innerHTML = '🔑 Parolni o\'zgartirish';
   }
-  _doRenderProfile(user);
 }
 
-function _doRenderProfile(user) {
+// Profil ma'lumotlarini modalga yuklash
+function renderProfilePage() {
+  var user = window._currentUser || (window._auth && window._auth.currentUser);
+  if(!user) return;
+
   var email    = user.email || '';
   var name     = user.displayName || email.split('@')[0] || 'Foydalanuvchi';
   var photoURL = user.photoURL;
@@ -2411,32 +2437,31 @@ function _doRenderProfile(user) {
 
   // Avatar
   var profAv = document.getElementById('profilePageAvatar');
-  if(profAv) {
-    profAv.innerHTML = photoURL
-      ? '<img src="'+photoURL+'" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">'
-      : initials;
-  }
+  if(profAv) profAv.innerHTML = photoURL
+    ? '<img src="'+photoURL+'" alt="av" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">'
+    : initials;
 
-  var el = function(id){ return document.getElementById(id); };
-  if(el('profilePageName'))  el('profilePageName').textContent  = name;
-  if(el('profilePageEmail')) el('profilePageEmail').textContent = email;
-  if(el('profileNameInput')) el('profileNameInput').value = name;
+  var g = function(id){ return document.getElementById(id); };
+  if(g('profilePageName'))  g('profilePageName').textContent  = name;
+  if(g('profilePageEmail')) g('profilePageEmail').textContent = email;
+  if(g('profileNameInput')) g('profileNameInput').value = name;
+  if(g('profileEmailDisplay')) g('profileEmailDisplay').value = email;
 
-  // Provider badge
-  var prov = el('profilePageProvider');
-  if(prov) {
-    prov.innerHTML = isGoogle
-      ? '<span style="background:rgba(66,133,244,0.2);color:#4fc3f7;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;">🔵 Google orqali kirgan</span>'
-      : '<span style="background:rgba(126,115,194,0.2);color:#b8b0f0;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;">✉️ Email orqali kirgan</span>';
-  }
+  // Provider
+  var prov = g('profilePageProvider');
+  if(prov) prov.innerHTML = isGoogle
+    ? '🔵 Gmail orqali boshqariladi'
+    : '🔒 Email Firebase orqali boshqariladi';
 
   // Google bo'lsa parol sektsiyasini yashir
-  var passSection = el('passwordSection');
+  var passSection = g('passwordSection');
   if(passSection) passSection.style.display = isGoogle ? 'none' : 'block';
 
-  // Xabarlarni tozala
-  if(el('nameMsg')) el('nameMsg').textContent = '';
-  if(el('passMsg')) el('passMsg').textContent = '';
+  // Tozalash
+  if(g('nameMsg')) g('nameMsg').textContent = '';
+  if(g('passMsg')) g('passMsg').textContent = '';
+  if(g('passFields')) g('passFields').style.display = 'none';
+  if(g('togglePassBtn')) g('togglePassBtn').innerHTML = '🔑 Parolni o\'zgartirish';
 }
 
 // Admin panelga o'tish
