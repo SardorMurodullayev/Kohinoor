@@ -399,13 +399,13 @@ footer strong{color:white;}
     <a href="" target="_blank">💼 Karyera</a>
     <a onclick="showPage('results');closeMobileMenu()">🏆 Natijalar</a>
     <div class="mob-auth-btns">
-      <button class="btn btn-outline" onclick="openModal('login');closeMobileMenu()">Kirish</button>
-      <button class="btn btn-primary" onclick="openModal('register');closeMobileMenu()">Ro'yxatdan o'tish</button>
+      <button class="btn btn-outline" onclick="window.location.href='auth.html'">Kirish</button>
+      <button class="btn btn-primary" onclick="window.location.href='auth.html'">Ro'yxatdan o'tish</button>
     </div>
   </div>
   <div class="nav-cta" id="nav-auth-area">
-    <button class="btn btn-outline" onclick="openModal('login')">Kirish</button>
-    <button class="btn btn-primary" onclick="openModal('register')">Ro'yxatdan o'tish</button>
+    <button class="btn btn-outline" onclick="window.location.href='auth.html'">Kirish</button>
+    <button class="btn btn-primary" onclick="window.location.href='auth.html'">Ro'yxatdan o'tish</button>
   </div>
 </nav>
 
@@ -420,7 +420,7 @@ footer strong{color:white;}
     <p>Professional o'qituvchilar, zamonaviy dasturlar va tasdiqlangan natijalar bilan karyerangizni rivojlantiring.</p>
     <div class="hero-btns">
       <button class="btn-hero-primary" onclick="showPage('courses')">Kurslarni ko'rish</button>
-      <button class="btn-hero-outline" onclick="openModal('register')">Bepul ro'yxatdan o'tish</button>
+      <button class="btn-hero-outline" onclick="window.location.href='auth.html'">Bepul ro'yxatdan o'tish</button>
     </div>
     <div class="stats-row">
       <div class="stat-item"><div class="num">2,400+</div><div class="lbl">Bitiruvchilar</div></div>
@@ -1230,8 +1230,8 @@ function updateNavForUser(){
     `;
   } else {
     area.innerHTML=`
-      <button class="btn btn-outline" onclick="openModal('login')">Kirish</button>
-      <button class="btn btn-primary" onclick="openModal('register')">Ro'yxatdan o'tish</button>
+      <button class="btn btn-outline" onclick="window.location.href='auth.html'">Kirish</button>
+      <button class="btn btn-primary" onclick="window.location.href='auth.html'">Ro'yxatdan o'tish</button>
     `;
   }
 }
@@ -1253,7 +1253,7 @@ function renderCourseCard(c){
       </div>
       <div class="course-footer">
         <span class="course-price">${c.price} so'm/oy</span>
-        <button class="btn btn-primary btn-sm" onclick="openModal('register')">Yozilish</button>
+        <button class="btn btn-primary btn-sm" onclick="window.location.href='auth.html'">Yozilish</button>
       </div>
     </div>`;
 }
@@ -1275,7 +1275,7 @@ function renderCourseCardWithEmoji(c){
       </div>
       <div class="course-footer">
         <span class="course-price">${c.price} so'm/oy</span>
-        <button class="btn btn-primary btn-sm" onclick="openModal('register')">Yozilish</button>
+        <button class="btn btn-primary btn-sm" onclick="window.location.href='auth.html'">Yozilish</button>
       </div>
     </div>`;
 }
