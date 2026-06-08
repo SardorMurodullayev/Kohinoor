@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kohinoor Academy — Kirish</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root {
+  --blue: #1126db;
+  --blue-light: #3b5bfc;
+  --blue-glow: rgba(59,91,252,0.35);
+  --white: #ffffff;
+  --text-dim: rgba(255,255,255,0.6);
+  --input-bg: rgba(255,255,255,0.08);
+  --input-border: rgba(255,255,255,0.15);
+  --input-focus: rgba(59,91,252,0.6);
+  --card-bg: rgba(10,14,60,0.7);
+  --error: #ff4d6d;
+  --success: #22c55e;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'DM Sans', sans-serif;
+  background: #060b2e;
+  overflow: hidden;
+}
+
+/* ===== BACKGROUND ===== */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 50%, #0d1a6e 0%, #060b2e 60%),
+              radial-gradient(ellipse at 80% 20%, #0a0f4a 0%, transparent 50%);
+}
+
+canvas#bgCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* ===== LAYOUT ===== */
+.auth-wrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.auth-container {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  min-height: 580px;
+  max-width: 1100px;
+  width: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+}
+
+/* ===== LEFT: FORM PANEL ===== */
+.form-panel {
+  background: var(--card-bg);
+  padding: 3rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+}
+
+.logo-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2.5rem;
+  text-decoration: none;
+}
+
+.logo-top .logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #7e73c2, #1126db);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.logo-top span {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+}
+.logo-top span b { color: #6c9fff; font-weight: 700; }
+
+/* Tabs */
+.auth-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 2rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  transition: all 0.25s;
+  border: none;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.auth-tab.active {
+  background: linear-gradient(135deg, #3b5bfc, #1126db);
+  color: white;
+  box-shadow: 0 4px 16px rgba(17,38,219,0.4);
+}
+
+/* Form panels */
+.form-section { display: none; }
+.form-section.active { display: block; }
+
+.form-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.3rem;
+}
+
+.form-sub {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 1.8rem;
+}
+
+/* Input groups */
+.input-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-group .input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: 12px;
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.input-group input::placeholder { color: rgba(255,255,255,0.35); }
+.input-group input:focus {
+  border-color: var(--input-focus);
+  background: rgba(59,91,252,0.08);
+  box-shadow: 0 0 0 3px rgba(59,91,252,0.15);
+}
+
+.toggle-pass {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 2px;
+  line-height: 1;
+}
+
+.field-err {
+  color: var(--error);
+  font-size: 0.75rem;
+  margin-top: -0.6rem;
+  margin-bottom: 0.5rem;
+  min-height: 1rem;
+  padding-left: 4px;
+}
+
+/* Buttons */
+.btn-main {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #3b5bfc, #1126db);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  margin-top: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(17,38,219,0.45);
+}
+
+.btn-main:active { transform: translateY(0); }
+
+.btn-main.loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #3b5bfc, #1126db);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Divider */
+.or-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 1.2rem 0;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+.or-divider::before, .or-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+}
+
+/* Google btn */
+.btn-google {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.btn-google:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.switch-auth {
+  text-align: center;
+  margin-top: 1.2rem;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.switch-auth a {
+  color: #6c9fff;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.switch-auth a:hover { text-decoration: underline; }
+
+/* Alert */
+.auth-alert {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+.auth-alert.error { background: rgba(255,77,109,0.15); border: 1px solid rgba(255,77,109,0.3); color: #ff8fa3; }
+.auth-alert.success { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #86efac; }
+.auth-alert.show { display: block; }
+
+/* Back link */
+.back-link {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.back-link:hover { color: white; }
+
+/* ===== RIGHT: 3D CANVAS PANEL ===== */
+.visual-panel {
+  position: relative;
+  background: linear-gradient(135deg, rgba(5,10,50,0.8), rgba(10,20,80,0.6));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+canvas#logoCanvas {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  display: block;
+}
+
+canvas#logoCanvas:active { cursor: grabbing; }
+
+.visual-caption {
+  position: absolute;
+  bottom: 2.5rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.visual-caption h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: white;
+  margin-bottom: 0.4rem;
+}
+
+.visual-caption p {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+.drag-hint {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Loading spinner */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .auth-container { grid-template-columns: 1fr; max-width: 460px; }
+  .visual-panel { display: none; }
+  .form-panel { padding: 2.5rem 2rem; }
+  html, body { overflow: auto; }
+}
+
+@media (max-width: 480px) {
+  .form-panel { padding: 2rem 1.5rem; border-radius: 0; }
+  .auth-container { border-radius: 20px; }
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #1e1e3a;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  border: 1px solid rgba(255,255,255,0.1);
+  white-space: nowrap;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<canvas id="bgCanvas"></canvas>
+
+<div class="auth-wrapper">
+  <div class="auth-container">
+
+    <!-- LEFT: FORM -->
+    <div class="form-panel">
+      <a href="index.html" class="back-link">← Saytga qaytish</a>
+
+      <a href="index.html" class="logo-top">
+        <div class="logo-icon">K</div>
+        <span>Kohinoor <b>Academy</b></span>
+      </a>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Kirish</button>
+        <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Ro'yxatdan o'tish</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div class="form-section active" id="section-login">
+        <div class="form-title">Xush kelibsiz! 👋</div>
+        <div class="form-sub">Hisobingizga kiring</div>
+
+        <div class="auth-alert" id="login-alert"></div>
+
+        <div class="input-group">
+          <span class="input-icon">✉️</span>
+          <input type="email" id="login-email" placeholder="Email manzilingiz" autocomplete="email">
+        </div>
+        <div class="field-err" id="login-email-err"></div>
+
+        <div class="input-group">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="login-pass" placeholder="Parolingiz" autocomplete="current-password">
+          <button class="toggle-pass" onclick="togglePass('login-pass', this)">👁</button>
+        </div>
+        <div class="field-err" id="login-pass-err"></div>
+
+        <button class="btn-main" id="btn-login" onclick="doLogin()">
+          Kirish
+        </button>
+
+        <div class="or-divider">yoki</div>
+
+        <button class="btn-google" onclick="doGoogle()">
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Google orqali kirish
+        </button>
+
+        <div class="switch-auth">
+          Hisobingiz yo'qmi? <a onclick="switchTab('register')">Ro'yxatdan o'ting</a>
+        </div>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div class="form-section" id="section-register">
+        <div class="form-title">Hisob Yaratish ✨</div>
+        <div class="form-sub">Ma'lumotlaringizni kiriting</div>
+
+        <div class="auth-alert" id="reg-alert"></div>
+
+        <div class="input-group">
+          <span class="input-icon">✉️</span>
+          <input type="email" id="reg-email" placeholder="Email manzilingiz" autocomplete="email">
+        </div>
+        <div class="field-err" id="reg-email-err"></div>
+
+        <div class="input-group">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="reg-pass" placeholder="Yangi parol" autocomplete="new-password">
+          <button class="toggle-pass" onclick="togglePass('reg-pass', this)">👁</button>
+        </div>
+        <div class="field-err" id="reg-pass-err"></div>
+
+        <div class="input-group">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="reg-pass2" placeholder="Parolni tasdiqlash" autocomplete="new-password">
+        </div>
+        <div class="field-err" id="reg-pass2-err"></div>
+
+        <button class="btn-main" id="btn-register" onclick="doRegister()">
+          Ro'yxatdan o'tish
+        </button>
+
+        <div class="or-divider">yoki</div>
+
+        <button class="btn-google" onclick="doGoogle()">
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Google orqali ro'yxatdan o'tish
+        </button>
+
+        <div class="switch-auth">
+          Allaqachon hisobingiz bormi? <a onclick="switchTab('login')">Kirish</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: 3D LOGO -->
+    <div class="visual-panel">
+      <div class="drag-hint">🖱️ Sichqoncha bilan aylantiring</div>
+      <canvas id="logoCanvas"></canvas>
+      <div class="visual-caption">
+        <h3>Kohinoor Academy</h3>
+        <p>Bilimingizni yangi darajaga oling</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD-CJRKHDzrrEq9M1mLM7NsrRG9l0kjyJs",
+  authDomain: "kohinoor-academy.firebaseapp.com",
+  projectId: "kohinoor-academy",
+  storageBucket: "kohinoor-academy.firebasestorage.app",
+  messagingSenderId: "201579385267",
+  appId: "1:201579385267:web:1ee52c028f097ebe16bbc6",
+  measurementId: "G-9YPC5JND19"
+};
+
+const ADMIN_EMAIL = "abdurasul1406z@gmail.com";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+
+// Auth state listener
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    if (user.email === ADMIN_EMAIL) {
+      window.location.href = "index.html#admin";
+    } else {
+      window.location.href = "index.html";
+    }
+  }
+});
+
+// LOGIN
+window.doLogin = async function() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  clearErrors('login');
+
+  let valid = true;
+  if (!email) { showFieldErr('login-email-err', 'Email kiriting'); valid = false; }
+  else if (!/\S+@\S+\.\S+/.test(email)) { showFieldErr('login-email-err', "Email noto'g'ri formatda"); valid = false; }
+  if (!pass) { showFieldErr('login-pass-err', 'Parol kiriting'); valid = false; }
+  if (!valid) return;
+
+  setLoading('btn-login', true);
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    showToast('✅ Muvaffaqiyatli kirdingiz!');
+  } catch(e) {
+    setLoading('btn-login', false);
+    showAlert('login-alert', 'error', getFirebaseError(e.code));
+  }
+};
+
+// REGISTER
+window.doRegister = async function() {
+  const email = document.getElementById('reg-email').value.trim();
+  const pass  = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  clearErrors('reg');
+
+  let valid = true;
+  if (!email) { showFieldErr('reg-email-err', 'Email kiriting'); valid = false; }
+  else if (!/\S+@\S+\.\S+/.test(email)) { showFieldErr('reg-email-err', "Email noto'g'ri formatda"); valid = false; }
+  if (!pass) { showFieldErr('reg-pass-err', 'Parol kiriting'); valid = false; }
+  else if (pass.length < 6) { showFieldErr('reg-pass-err', "Parol kamida 6 ta belgi bo'lishi kerak"); valid = false; }
+  if (!pass2) { showFieldErr('reg-pass2-err', 'Parolni tasdiqlang'); valid = false; }
+  else if (pass !== pass2) { showFieldErr('reg-pass2-err', "Parollar mos kelmadi"); valid = false; }
+  if (!valid) return;
+
+  setLoading('btn-register', true);
+  try {
+    await createUserWithEmailAndPassword(auth, email, pass);
+    showToast("✅ Hisob muvaffaqiyatli yaratildi!");
+  } catch(e) {
+    setLoading('btn-register', false);
+    showAlert('reg-alert', 'error', getFirebaseError(e.code));
+  }
+};
+
+// GOOGLE
+window.doGoogle = async function() {
+  try {
+    await signInWithPopup(auth, googleProvider);
+    showToast('✅ Google orqali kirdingiz!');
+  } catch(e) {
+    if (e.code !== 'auth/popup-closed-by-user') {
+      showToast('❌ ' + getFirebaseError(e.code));
+    }
+  }
+};
+
+// Helpers
+function getFirebaseError(code) {
+  const map = {
+    'auth/user-not-found': "Bu email bilan hisob topilmadi",
+    'auth/wrong-password': "Parol noto'g'ri",
+    'auth/email-already-in-use': "Bu email allaqachon ro'yxatdan o'tgan",
+    'auth/invalid-email': "Email noto'g'ri formatda",
+    'auth/too-many-requests': "Juda ko'p urinish. Keyinroq urinib ko'ring",
+    'auth/network-request-failed': "Internet aloqasini tekshiring",
+    'auth/invalid-credential': "Email yoki parol noto'g'ri",
+  };
+  return map[code] || "Xatolik yuz berdi. Qayta urinib ko'ring";
+}
+
+function showFieldErr(id, msg) {
+  const el = document.getElementById(id);
+  if(el) el.textContent = msg;
+}
+
+function clearErrors(prefix) {
+  ['email-err','pass-err','pass2-err'].forEach(s => {
+    const el = document.getElementById(prefix+'-'+s);
+    if(el) el.textContent = '';
+  });
+  const alert = document.getElementById(prefix+'-alert') || document.getElementById(prefix+'Alert');
+  if(alert) { alert.className = 'auth-alert'; alert.textContent = ''; }
+}
+
+function showAlert(id, type, msg) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.className = 'auth-alert ' + type + ' show';
+  el.textContent = msg;
+}
+
+function setLoading(btnId, on) {
+  const btn = document.getElementById(btnId);
+  if(!btn) return;
+  if(on) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Yuklanmoqda...';
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = btnId === 'btn-login' ? 'Kirish' : "Ro'yxatdan o'tish";
+  }
+}
+</script>
+
+<script>
+// ===== TAB SWITCH =====
+function switchTab(tab) {
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  document.getElementById('section-login').classList.toggle('active', tab === 'login');
+  document.getElementById('section-register').classList.toggle('active', tab === 'register');
+}
+
+// ===== TOGGLE PASSWORD =====
+function togglePass(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if(inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== BACKGROUND PARTICLES =====
+(function() {
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for(let i = 0; i < 60; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      a: Math.random() * 0.5 + 0.1
+    });
+  }
+
+  function drawBg() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0) p.x = W; if(p.x > W) p.x = 0;
+      if(p.y < 0) p.y = H; if(p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(100,150,255,${p.a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawBg);
+  }
+  drawBg();
+})();
+
+// ===== 3D ROTATING K LOGO =====
+(function() {
+  const canvas = document.getElementById('logoCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let W, H;
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    W = canvas.width = rect.width;
+    H = canvas.height = rect.height;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Mouse drag state
+  let rotX = 0.3, rotY = 0.5;
+  let targetRX = 0.3, targetRY = 0.5;
+  let isDragging = false;
+  let lastX = 0, lastY = 0;
+  let autoRotate = true;
+  let autoT = 0;
+
+  canvas.addEventListener('mousedown', e => {
+    isDragging = true;
+    autoRotate = false;
+    lastX = e.clientX;
+    lastY = e.clientY;
+  });
+  window.addEventListener('mousemove', e => {
+    if(!isDragging) return;
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    targetRY += dx * 0.008;
+    targetRX += dy * 0.008;
+    lastX = e.clientX;
+    lastY = e.clientY;
+  });
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    setTimeout(() => { autoRotate = true; }, 2000);
+  });
+
+  // Touch support
+  canvas.addEventListener('touchstart', e => {
+    isDragging = true;
+    autoRotate = false;
+    lastX = e.touches[0].clientX;
+    lastY = e.touches[0].clientY;
+  });
+  window.addEventListener('touchmove', e => {
+    if(!isDragging) return;
+    const dx = e.touches[0].clientX - lastX;
+    const dy = e.touches[0].clientY - lastY;
+    targetRY += dx * 0.008;
+    targetRX += dy * 0.008;
+    lastX = e.touches[0].clientX;
+    lastY = e.touches[0].clientY;
+  });
+  window.addEventListener('touchend', () => {
+    isDragging = false;
+    setTimeout(() => { autoRotate = true; }, 2000);
+  });
+
+  // Build K letter as 3D points
+  function makeKPoints() {
+    const pts = [];
+    const size = 0.9;
+
+    // Vertical bar of K
+    for(let y = -1; y <= 1; y += 0.06) {
+      for(let z = -0.12; z <= 0.12; z += 0.08) {
+        pts.push([-0.35*size, y*size, z*0.3]);
+      }
+    }
+    // Upper diagonal of K
+    for(let t = 0; t <= 1; t += 0.04) {
+      const x = (-0.35 + t*0.75) * size;
+      const y = (t * 1.0) * size;
+      for(let z = -0.12; z <= 0.12; z += 0.08) {
+        pts.push([x, y, z*0.3]);
+      }
+    }
+    // Lower diagonal of K
+    for(let t = 0; t <= 1; t += 0.04) {
+      const x = (-0.35 + t*0.75) * size;
+      const y = (-t * 1.0) * size;
+      for(let z = -0.12; z <= 0.12; z += 0.08) {
+        pts.push([x, y, z*0.3]);
+      }
+    }
+
+    // Diamond shape (gem below K)
+    for(let i = 0; i < 80; i++) {
+      const theta = (i / 80) * Math.PI * 2;
+      const r = 0.12;
+      pts.push([
+        Math.cos(theta) * r * size,
+        -1.1 * size + Math.sin(theta) * r * size * 0.5,
+        Math.sin(theta) * r * 0.3
+      ]);
+    }
+
+    return pts;
+  }
+
+  // Sphere of points around K
+  function makeSpherePoints(n, radius) {
+    const pts = [];
+    const phi = Math.PI * (3 - Math.sqrt(5));
+    for(let i = 0; i < n; i++) {
+      const y = 1 - (i / (n-1)) * 2;
+      const r = Math.sqrt(1 - y*y);
+      const theta = phi * i;
+      pts.push([Math.cos(theta)*r*radius, y*radius, Math.sin(theta)*r*radius]);
+    }
+    return pts;
+  }
+
+  const kPts = makeKPoints();
+  const spherePts = makeSpherePoints(300, 1.5);
+
+  // Rotate point
+  function rotatePoint(p, rx, ry) {
+    let [x, y, z] = p;
+    // Y rotation
+    let x1 = x*Math.cos(ry) - z*Math.sin(ry);
+    let z1 = x*Math.sin(ry) + z*Math.cos(ry);
+    // X rotation
+    let y2 = y*Math.cos(rx) - z1*Math.sin(rx);
+    let z2 = y*Math.sin(rx) + z1*Math.cos(rx);
+    return [x1, y2, z2];
+  }
+
+  function project(p, scale, cx, cy) {
+    const fov = 500;
+    const persp = fov / (fov + p[2] * scale);
+    return [cx + p[0]*scale*persp, cy + p[1]*scale*persp, p[2], persp];
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+
+    autoT += 0.008;
+    if(autoRotate) {
+      targetRY += 0.006;
+      targetRX = Math.sin(autoT * 0.4) * 0.25;
+    }
+
+    rotX += (targetRX - rotX) * 0.07;
+    rotY += (targetRY - rotY) * 0.07;
+
+    const scale = Math.min(W, H) * 0.28;
+    const cx = W / 2;
+    const cy = H / 2;
+
+    // Draw sphere dots
+    const sProj = spherePts.map(p => {
+      const rot = rotatePoint(p, rotX, rotY);
+      return project(rot, scale, cx, cy);
+    });
+
+    sProj.forEach(p => {
+      const alpha = (p[2] + 1.8) / 3.6;
+      const size = p[3] * 1.2;
+      ctx.beginPath();
+      ctx.arc(p[0], p[1], Math.max(0.3, size*0.4), 0, Math.PI*2);
+      ctx.fillStyle = `rgba(100,160,255,${alpha * 0.25})`;
+      ctx.fill();
+    });
+
+    // Draw K letter dots
+    const kProj = kPts.map((p, i) => {
+      const rot = rotatePoint(p, rotX, rotY);
+      const proj = project(rot, scale, cx, cy);
+      proj.push(i >= kPts.length - 80); // is gem
+      return proj;
+    });
+
+    // Sort by Z depth
+    kProj.sort((a, b) => a[2] - b[2]);
+
+    kProj.forEach(p => {
+      const depth = (p[2] + 1.5) / 3;
+      const persp = p[3];
+      const isGem = p[4];
+
+      if(isGem) {
+        // Ruby gem points
+        const r = persp * scale * 0.025;
+        const grad = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], r*3);
+        grad.addColorStop(0, `rgba(255,80,80,${depth})`);
+        grad.addColorStop(1, `rgba(180,20,20,0)`);
+        ctx.beginPath();
+        ctx.arc(p[0], p[1], r*3, 0, Math.PI*2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      } else {
+        // K letter points — blue/white glow
+        const r = persp * scale * 0.018;
+        const bright = 0.5 + depth * 0.5;
+
+        // Glow
+        const grad = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], r*4);
+        grad.addColorStop(0, `rgba(120,160,255,${bright * 0.8})`);
+        grad.addColorStop(0.5, `rgba(60,100,255,${bright * 0.4})`);
+        grad.addColorStop(1, `rgba(17,38,219,0)`);
+        ctx.beginPath();
+        ctx.arc(p[0], p[1], r*4, 0, Math.PI*2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Core
+        ctx.beginPath();
+        ctx.arc(p[0], p[1], r*1.2, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(200,220,255,${bright})`;
+        ctx.fill();
+      }
+    });
+
+    // Academy ring
+    const ringR = scale * 1.65;
+    const ringGrad = ctx.createLinearGradient(cx-ringR, cy, cx+ringR, cy);
+    ringGrad.addColorStop(0, 'rgba(59,91,252,0.1)');
+    ringGrad.addColorStop(0.5, 'rgba(100,150,255,0.2)');
+    ringGrad.addColorStop(1, 'rgba(59,91,252,0.1)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, ringR, 0, Math.PI*2);
+    ctx.strokeStyle = ringGrad;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    requestAnimationFrame(render);
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+/* Section Umumiy Stillari */
+.why-choose-section {
+  padding: 4rem 2rem;
+  background-color: #0f172a; /* To'q fon */
+  color: #ffffff;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header .tag {
+  display: inline-block;
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.section-header p {
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 650px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Grid Tizimi */
+.nega-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+/* Karta Stillari */
+.nega-card {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nega-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Markazdagi Katta Karta (Gridda 2 ta qatorni egallaydi) */
+.nega-card-center {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Iconlar unumdorligi */
+.nega-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.icon-amber { background: #f59e0b; }
+.icon-red { background: #ef4444; }
+.icon-green { background: #22c55e; }
+.icon-gray { background: #4b5563; }
+
+/* Matnlar */
+.nega-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #fff;
+}
+
+.nega-card p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Ustozlar Pufakchalari (Bubble Animatsiyasi) */
+.nega-teachers-img {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  margin-bottom: 1.5rem;
+}
+
+.nega-teacher-bubble {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.nega-main-bubble {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110px;
+  height: 110px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  z-index: 2;
+  border: 4px solid #0f172a;
+}
+
+.bubble-1 { top: 10%; left: 5%; width: 75px; height: 75px; background: linear-gradient(135deg,#f59e0b,#ef4444); }
+.bubble-2 { top: 8%; right: 5%; width: 70px; height: 70px; background: linear-gradient(135deg,#22c55e,#16a34a); }
+.bubble-3 { bottom: 5%; left: 10%; width: 70px; height: 70px; background: linear-gradient(135deg,#e1306c,#bc1888); }
+.bubble-4 { bottom: 8%; right: 8%; width: 65px; height: 65px; background: linear-gradient(135deg,#7e73c2,#1126db); }
+
+.nega-teacher-bubble span {
+  font-size: 1.5rem;
+}
+.nega-main-bubble span {
+  font-size: 2.5rem;
+}
+
+/* IELTS Badgelari */
+.nega-ielts-badge {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.badge-red { background: #ef4444; }
+.badge-green { background: #22c55e; }
+.badge-pink { background: #e1306c; }
+.badge-blue { background: #7e73c2; }
+
+/* --- RESPONSIVE (Mobil va planshet moslashuvchanligi) --- */
+
+@media (max-width: 1024px) {
+  .nega-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .nega-card-center {
+    grid-column: span 2;
+    grid-row: auto;
+    order: -1; /* Planshetda asosiy karta tepaga chiqadi */
+  }
+}
+
+@media (max-width: 768px) {
+  .why-choose-section {
+    padding: 3rem 1rem;
+  }
+  .nega-grid {
+    grid-template-columns: 1fr;
+  }
+  .nega-card-center {
+    grid-column: auto;
+  }
+  .nega-teachers-img {
+    height: 200px;
+  }
+  .nega-main-bubble {
+    width: 90px;
+    height: 90px;
+  }
+  .nega-main-bubble span { font-size: 2rem; }
+}
+
+
+/* Ikonkalarning umumiy bloki */
+.nega-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem; /* Ikonka kattaligi */
+  margin-bottom: 1.2rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Har bir kartaga sichqoncha borganda ikonka effekti */
+.nega-card:hover .nega-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* RANG KATEGORIYALARI (Neon va zamonaviy ko'rinish) */
+
+/* 1. O'qituvchi (Sariq/Tilla rang) */
+.icon-amber {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+}
+
+/* 2. Tadbirlar (Yorqin Qizil) */
+.icon-red {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+/* 3. Test markazi (Yashil) */
+.icon-green {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2);
+}
+
+/* 4. Co-working (Kofe/Kulrang rang) */
+.icon-gray {
+  background: rgba(168, 85, 247, 0.15); /* Binafsharang neon rang berildi, yanada boy ko'rinadi */
+  color: #a855f7;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+}

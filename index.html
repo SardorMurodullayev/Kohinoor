@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kohinoor Academy</title>
+<link rel="stylesheet" href="kuhinur.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #7e73c2;
+  --secondary: #1126db;
+  --dark: #0d0d1a;
+  --light: #f5f4ff;
+  --white: #ffffff;
+  --text: #2a2a3d;
+  --muted: #6b6b8a;
+  --card-bg: #ffffff;
+  --border: rgba(126,115,194,0.2);
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --sidebar-w: 260px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:transparent;color:var(--text);min-height:100vh;}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;}
+
+/* ===== NAV ===== */
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:68px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(17,38,219,0.06);}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo-icon{width:40px;height:40px;background:transparent;border-radius:0;border:none;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--dark);}
+.nav-logo-text span{color:var(--secondary);}
+.nav-links{display:flex;gap:1.5rem;align-items:center;}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:0.9rem;font-weight:500;transition:color 0.2s;cursor:pointer;}
+.nav-links a:hover,.nav-links a.active{color:var(--secondary);}
+.nav-cta{display:flex;gap:10px;align-items:center;}
+.btn{padding:8px 20px;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:0.88rem;cursor:pointer;border:none;transition:all 0.2s;}
+.btn-outline{background:transparent;border:1.5px solid var(--primary);color:var(--primary);}
+.btn-outline:hover{background:var(--primary);color:white;}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;box-shadow:0 4px 12px rgba(17,38,219,0.25);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(17,38,219,0.35);}
+.btn-sm{padding:6px 14px;font-size:0.82rem;}
+.btn-danger{background:#ef4444;color:white;}
+.btn-success{background:#22c55e;color:white;}
+.btn-warning{background:#f59e0b;color:white;}
+
+/* ===== PAGES ===== */
+.page{display:none;position:relative;z-index:1;background:transparent;}
+.page.active{display:block;}
+
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,rgba(13,13,26,0.97) 0%,rgba(26,16,64,0.97) 50%,rgba(13,26,92,0.97) 100%);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden;z-index:1;}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,rgba(126,115,194,0.15) 0%,transparent 50%),radial-gradient(circle at 70% 60%,rgba(17,38,219,0.15) 0%,transparent 50%);pointer-events:none;}
+.hero-badge{display:inline-block;background:rgba(126,115,194,0.2);border:1px solid rgba(126,115,194,0.4);color:#b8b0f0;padding:6px 16px;border-radius:20px;font-size:0.82rem;margin-bottom:1.5rem;}
+.hero h1{font-size:clamp(2rem,5vw,3.5rem);color:white;margin-bottom:1rem;line-height:1.2;}
+.hero h1 span{background:linear-gradient(135deg,#7e73c2,#6c9fff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{color:rgba(255,255,255,0.65);max-width:600px;margin:0 auto 2.5rem;font-size:1.05rem;line-height:1.7;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-hero-primary{padding:12px 28px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;border-radius:10px;font-size:1rem;font-weight:500;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.btn-hero-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(17,38,219,0.4);}
+.btn-hero-outline{padding:12px 28px;background:transparent;color:white;border:1.5px solid rgba(255,255,255,0.3);border-radius:10px;font-size:1rem;font-weight:500;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.btn-hero-outline:hover{border-color:white;background:rgba(255,255,255,0.05);}
+.stats-row{display:flex;justify-content:center;gap:3rem;margin-top:3.5rem;flex-wrap:wrap;}
+.stat-item{text-align:center;}
+.stat-item .num{font-size:2rem;font-weight:700;color:white;font-family:'Playfair Display',serif;}
+.stat-item .lbl{font-size:0.82rem;color:rgba(255,255,255,0.5);margin-top:2px;}
+
+/* ===== SECTION ===== */
+.section{padding:4rem 2rem;max-width:1200px;margin:0 auto;position:relative;z-index:1;background:transparent;}
+.section-header{text-align:center;margin-bottom:3rem;}
+.section-header .tag{display:inline-block;background:rgba(126,115,194,0.12);color:var(--primary);padding:5px 14px;border-radius:20px;font-size:0.8rem;font-weight:600;margin-bottom:0.8rem;border:1px solid rgba(126,115,194,0.25);}
+.section-header h2{font-size:clamp(1.6rem,3vw,2.4rem);color:var(--dark);margin-bottom:0.8rem;}
+.section-header p{color:var(--muted);max-width:550px;margin:0 auto;line-height:1.7;}
+
+/* ===== COURSES ===== */
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem;}
+.course-card{background:rgba(255,255,255,0.94);border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:all 0.3s;cursor:pointer;box-shadow:0 4px 20px rgba(17,38,219,0.08);backdrop-filter:blur(4px);}
+.course-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(17,38,219,0.12);}
+.course-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;}
+.course-body{padding:1.2rem;}
+.course-tag{display:inline-block;background:var(--light);color:var(--primary);padding:3px 10px;border-radius:6px;font-size:0.75rem;font-weight:600;margin-bottom:0.6rem;}
+.course-body h3{font-size:1.1rem;margin-bottom:0.5rem;color:var(--dark);}
+.course-body p{font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:0.8rem;}
+.course-meta{display:flex;gap:1rem;font-size:0.8rem;color:var(--muted);}
+.course-meta span{display:flex;align-items:center;gap:4px;}
+.course-footer{padding:0.8rem 1.2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.course-price{font-weight:700;color:var(--secondary);font-size:1rem;}
+
+/* ===== TEACHERS ===== */
+.teachers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:2rem;}
+.teacher-card{background:rgba(255,255,255,0.94);border-radius:16px;padding:2rem;text-align:center;border:1px solid var(--border);transition:all 0.3s;box-shadow:0 4px 20px rgba(126,115,194,0.1);backdrop-filter:blur(4px);}
+.teacher-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(126,115,194,0.15);}
+.teacher-avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;font-family:'Playfair Display',serif;}
+.teacher-card h3{font-size:1.1rem;margin-bottom:0.3rem;color:var(--dark);}
+.teacher-subject{color:var(--primary);font-size:0.85rem;font-weight:600;margin-bottom:0.5rem;}
+.teacher-bio{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
+.teacher-stats{display:flex;justify-content:center;gap:1.5rem;}
+.teacher-stat{text-align:center;}
+.teacher-stat .n{font-weight:700;color:var(--dark);font-size:1rem;}
+.teacher-stat .l{font-size:0.72rem;color:var(--muted);}
+.stars{color:#f59e0b;font-size:0.9rem;margin-bottom:0.5rem;}
+
+/* ===== RESULTS ===== */
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem;margin-bottom:2.5rem;}
+.result-card{background:rgba(255,255,255,0.94);border-radius:16px;padding:1.5rem;text-align:center;border:1px solid var(--border);box-shadow:0 4px 20px rgba(17,38,219,0.08);backdrop-filter:blur(4px);}
+.result-card .big{font-size:2.5rem;font-weight:700;font-family:'Playfair Display',serif;}
+.result-card .desc{font-size:0.85rem;color:var(--muted);margin-top:0.3rem;}
+.achievements{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;}
+.ach-card{background:rgba(255,255,255,0.94);border-radius:12px;padding:1.2rem;border:1px solid var(--border);display:flex;align-items:center;gap:1rem;box-shadow:0 2px 12px rgba(17,38,219,0.06);backdrop-filter:blur(4px);}
+.ach-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.ach-text h4{font-size:0.95rem;color:var(--dark);margin-bottom:2px;font-family:'DM Sans',serif;}
+.ach-text p{font-size:0.8rem;color:var(--muted);}
+
+/* ===== FOOTER ===== */
+footer{background:var(--dark);color:rgba(255,255,255,0.6);text-align:center;padding:2rem;font-size:0.85rem;margin-top:3rem;}
+footer strong{color:white;}
+
+/* ===== AUTH MODAL ===== */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:20px;padding:2.5rem;width:90%;max-width:440px;position:relative;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);}
+.modal h2{margin-bottom:0.4rem;font-size:1.5rem;color:var(--dark);}
+.modal .sub{color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem;}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-size:0.85rem;font-weight:500;color:var(--text);margin-bottom:0.4rem;}
+.form-group input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
+.form-group input:focus{border-color:var(--primary);}
+.google-btn{width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;background:white;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;cursor:pointer;margin-bottom:1rem;transition:all 0.2s;}
+.google-btn:hover{background:#f8f8f8;border-color:#aaa;}
+.divider{display:flex;align-items:center;gap:8px;margin-bottom:1rem;color:var(--muted);font-size:0.82rem;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.auth-switch{text-align:center;font-size:0.85rem;color:var(--muted);margin-top:1rem;}
+.auth-switch a{color:var(--primary);cursor:pointer;font-weight:500;}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;cursor:pointer;}
+
+/* ===== ADMIN PANEL ===== */
+.admin-layout{display:flex;min-height:calc(100vh - 68px);}
+.admin-sidebar{width:var(--sidebar-w);background:white;border-right:1px solid var(--border);padding:1.5rem 0;position:sticky;top:68px;height:calc(100vh - 68px);overflow-y:auto;flex-shrink:0;}
+.sidebar-section{margin-bottom:0.5rem;}
+.sidebar-label{padding:0.5rem 1.5rem;font-size:0.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:0.7rem 1.5rem;cursor:pointer;transition:all 0.15s;font-size:0.88rem;color:var(--muted);border-left:3px solid transparent;}
+.sidebar-item:hover{background:var(--light);color:var(--text);}
+.sidebar-item.active{background:rgba(126,115,194,0.1);color:var(--primary);border-left-color:var(--primary);font-weight:600;}
+.sidebar-item .icon{width:20px;text-align:center;font-size:1rem;}
+.admin-main{flex:1;padding:2rem;overflow:auto;}
+.admin-section{display:none;}
+.admin-section.active{display:block;}
+.page-title{font-size:1.5rem;color:var(--dark);margin-bottom:0.3rem;}
+.page-sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.5rem;}
+
+/* ===== STATS CARDS ===== */
+.stats-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.stat-card{background:white;border-radius:14px;padding:1.3rem;border:1px solid var(--border);}
+.stat-card .sc-label{font-size:0.78rem;color:var(--muted);margin-bottom:0.4rem;font-weight:500;}
+.stat-card .sc-val{font-size:1.8rem;font-weight:700;font-family:'Playfair Display',serif;color:var(--dark);}
+.stat-card .sc-change{font-size:0.75rem;margin-top:0.3rem;}
+.sc-up{color:var(--success);}
+.sc-down{color:var(--danger);}
+
+/* ===== TABLE ===== */
+.table-wrap{background:white;border-radius:14px;border:1px solid var(--border);overflow:hidden;}
+.table-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.table-header h3{font-size:1rem;color:var(--dark);}
+table{width:100%;border-collapse:collapse;}
+thead{background:#f8f7ff;}
+th{padding:0.8rem 1rem;text-align:left;font-size:0.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border);}
+td{padding:0.85rem 1rem;font-size:0.88rem;color:var(--text);border-bottom:1px solid rgba(126,115,194,0.08);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#faf9ff;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:600;}
+.badge-online{background:#dcfce7;color:#16a34a;}
+.badge-offline{background:#f3f4f6;color:#6b7280;}
+.badge-active{background:#dbeafe;color:#1d4ed8;}
+.badge-pending{background:#fef3c7;color:#d97706;}
+
+/* ===== CONTENT MANAGER ===== */
+.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.content-form{background:white;border-radius:14px;padding:1.5rem;border:1px solid var(--border);}
+.content-form h3{font-size:1rem;margin-bottom:1rem;color:var(--dark);}
+textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.88rem;resize:vertical;outline:none;min-height:80px;}
+textarea:focus{border-color:var(--primary);}
+select{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;background:white;cursor:pointer;}
+select:focus{border-color:var(--primary);}
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:2rem;text-align:center;cursor:pointer;transition:all 0.2s;}
+.upload-zone:hover{border-color:var(--primary);background:var(--light);}
+.upload-zone .icon{font-size:2rem;margin-bottom:0.5rem;}
+.upload-zone p{font-size:0.85rem;color:var(--muted);}
+.items-list{display:flex;flex-direction:column;gap:0.7rem;max-height:400px;overflow-y:auto;}
+.list-item{background:#f8f7ff;border-radius:10px;padding:0.8rem;display:flex;align-items:center;gap:0.8rem;border:1px solid var(--border);}
+.list-item img{width:48px;height:48px;border-radius:8px;object-fit:cover;}
+.list-item-info{flex:1;}
+.list-item-info h4{font-size:0.88rem;color:var(--dark);}
+.list-item-info p{font-size:0.75rem;color:var(--muted);}
+.list-item-actions{display:flex;gap:6px;}
+
+/* ===== VISITORS ===== */
+.visitor-chart{background:white;border-radius:14px;padding:1.5rem;border:1px solid var(--border);margin-bottom:1.5rem;}
+.chart-bar-wrap{display:flex;align-items:flex-end;gap:8px;height:120px;margin-top:1rem;}
+.bar-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.bar{border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--secondary),var(--primary));transition:all 0.3s;}
+.bar-label{font-size:0.68rem;color:var(--muted);}
+.bar-val{font-size:0.68rem;color:var(--text);font-weight:600;}
+
+/* ===== TABS ===== */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:1.5rem;}
+.tab{padding:0.7rem 1.2rem;cursor:pointer;font-size:0.88rem;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;font-weight:500;transition:all 0.2s;}
+.tab.active{color:var(--primary);border-bottom-color:var(--primary);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:2rem;right:2rem;background:#1e1e2e;color:white;padding:12px 20px;border-radius:10px;font-size:0.88rem;z-index:9999;transform:translateY(100px);opacity:0;transition:all 0.3s;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* ===== kohinoor STATS ===== */
+.stats-cards-kohinoor{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+.kohinoor-stat-card{background:rgba(30,30,50,0.85);border-radius:16px;padding:1.8rem 1.5rem;border:1px solid rgba(126,115,194,0.2);position:relative;backdrop-filter:blur(8px);box-shadow:0 4px 24px rgba(0,0,0,0.18);}
+.kohinoor-dot{position:absolute;top:1.2rem;right:1.2rem;width:14px;height:14px;border-radius:50%;display:block;}
+.kohinoor-num{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:#fff;margin-bottom:0.4rem;}
+.kohinoor-lbl{font-size:0.88rem;color:rgba(255,255,255,0.55);line-height:1.4;}
+
+/* ===== NEGA YOSHLAR ===== */
+.nega-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.nega-card{background:rgba(30,30,50,0.85);border-radius:16px;padding:2rem 1.5rem;border:1px solid rgba(126,115,194,0.2);backdrop-filter:blur(8px);box-shadow:0 4px 24px rgba(0,0,0,0.12);}
+.nega-card h3{font-size:1.1rem;color:#fff;margin:1rem 0 0.6rem;font-family:'DM Sans',sans-serif;font-weight:700;}
+.nega-card p{font-size:0.85rem;color:rgba(255,255,255,0.6);line-height:1.65;}
+.nega-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.nega-card-center{display:flex;flex-direction:column;align-items:center;text-align:center;grid-row:span 2;}
+.nega-card-center h3{color:#fff;}
+.nega-card-empty{background:transparent;border:none;box-shadow:none;}
+.nega-teachers-img{position:relative;width:100%;height:280px;margin-bottom:1rem;}
+.nega-teacher-bubble{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.nega-main-bubble{width:130px;height:130px;background:linear-gradient(135deg,#4fc3f7,#1126db);top:50%;left:50%;transform:translate(-50%,-55%);z-index:2;font-size:3rem;}
+.nega-ielts-badge{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:8px;white-space:nowrap;}
+
+@media(max-width:900px){
+  .stats-cards-kohinoor{grid-template-columns:repeat(2,1fr);}
+  .nega-grid{grid-template-columns:1fr 1fr;}
+  .nega-card-center{grid-row:span 1;}
+  .nega-card-empty{display:none;}
+}
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .content-grid{grid-template-columns:1fr;}
+  .admin-sidebar{display:none;}
+  .admin-layout{flex-direction:column;}
+  .stats-row{gap:1.5rem;}
+  .stats-cards-kohinoor{grid-template-columns:repeat(2,1fr);}
+  .nega-grid{grid-template-columns:1fr;}
+  .nega-card-empty{display:none;}
+}
+
+/* ===== NAV SOCIAL ICONS ===== */
+.nav-logo{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.nav-social-icons{display:flex;gap:6px;align-items:center;margin-left:4px;}
+.nav-social-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;text-decoration:none;}
+.nav-tg{background:rgba(0,136,204,0.12);color:#0088cc;}
+.nav-tg:hover{background:#0088cc;color:white;}
+.nav-ig{background:rgba(225,48,108,0.12);color:#e1306c;}
+.nav-ig:hover{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:white;}
+.nav-phone{background:rgba(34,197,94,0.12);color:#16a34a;}
+.nav-phone:hover{background:#16a34a;color:white;}
+
+/* ===== FOOTER ===== */
+footer{background:var(--dark);color:rgba(255,255,255,0.6);font-size:0.85rem;margin-top:3rem;}
+footer strong{color:white;}
+.footer-inner{max-width:1200px;margin:0 auto;padding:3rem 2rem 2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:3rem;flex-wrap:wrap;}
+.footer-brand{flex:1;min-width:200px;}
+.footer-slogan{margin:0.4rem 0 0.8rem;font-size:0.85rem;color:rgba(255,255,255,0.45);}
+.footer-copy{font-size:0.78rem;color:rgba(255,255,255,0.3);margin:0;}
+.footer-contact{flex:1;min-width:260px;}
+.footer-contact-title{color:white;font-family:'Playfair Display',serif;font-size:1.1rem;margin:0 0 1.2rem;font-weight:600;}
+.footer-contact-links{display:flex;flex-direction:column;gap:0.8rem;}
+.footer-contact-item{display:flex;align-items:center;gap:14px;text-decoration:none;padding:12px 16px;border-radius:12px;transition:all 0.25s;border:1px solid rgba(255,255,255,0.08);}
+.footer-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.25s;}
+.footer-contact-text{display:flex;flex-direction:column;gap:2px;}
+.footer-contact-label{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;opacity:0.55;}
+.footer-contact-val{font-size:0.9rem;font-weight:500;}
+.footer-tg{color:rgba(255,255,255,0.75);}
+.footer-tg .footer-icon{background:rgba(0,136,204,0.2);color:#4fc3f7;}
+.footer-tg:hover{background:rgba(0,136,204,0.15);border-color:rgba(0,136,204,0.4);color:white;}
+.footer-tg:hover .footer-icon{background:#0088cc;color:white;}
+.footer-ig{color:rgba(255,255,255,0.75);}
+.footer-ig .footer-icon{background:rgba(225,48,108,0.2);color:#f48fb1;}
+.footer-ig:hover{background:rgba(225,48,108,0.15);border-color:rgba(225,48,108,0.4);color:white;}
+.footer-ig:hover .footer-icon{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:white;}
+.footer-phone{color:rgba(255,255,255,0.75);}
+.footer-phone .footer-icon{background:rgba(34,197,94,0.2);color:#86efac;}
+.footer-phone:hover{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.4);color:white;}
+.footer-phone:hover .footer-icon{background:#16a34a;color:white;}
+@media(max-width:768px){.footer-inner{flex-direction:column;gap:2rem;}.nav-social-icons{margin-left:0;}}
+
+/* ===== HAMBURGER ===== */
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:none;cursor:pointer;padding:5px;border-radius:8px;}
+.hamburger span{display:block;height:2px;background:var(--text);border-radius:2px;transition:all 0.3s;}
+.hamburger:hover{background:var(--light);}
+.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;bottom:0;background:white;z-index:99;flex-direction:column;padding:1.5rem;gap:0;overflow-y:auto;border-top:1px solid var(--border);}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{padding:1rem 0.5rem;font-size:1rem;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border);font-weight:500;cursor:pointer;transition:color 0.2s;}
+.mobile-menu a:hover{color:var(--secondary);}
+.mob-auth-btns{display:flex;gap:10px;margin-top:1.5rem;flex-direction:column;}
+.mob-auth-btns .btn{padding:12px;font-size:0.95rem;text-align:center;}
+
+/* ===== GOOGLE STEPS ===== */
+.google-step-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding:10px 14px;background:#f8f7ff;border-radius:10px;}
+.google-step-header span{font-size:0.9rem;color:var(--muted);font-weight:500;}
+.google-step-indicator{display:flex;gap:8px;margin-bottom:1.2rem;}
+.gs-dot{width:28px;height:6px;border-radius:3px;background:var(--border);transition:all 0.3s;}
+.gs-dot.active{background:var(--secondary);}
+.gs-dot.done{background:var(--success);}
+.g-email-chip{display:inline-flex;align-items:center;gap:8px;background:#f3f4f6;border-radius:20px;padding:6px 14px;font-size:0.88rem;color:var(--text);margin-bottom:1rem;font-weight:500;}
+.field-err{color:#ef4444;font-size:0.8rem;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1rem;}
+
+/* ===== ADMIN RESPONSIVE ===== */
+.admin-mobile-bar{display:none;background:white;border-bottom:1px solid var(--border);padding:0.7rem 1rem;align-items:center;gap:10px;position:sticky;top:68px;z-index:50;}
+.admin-mobile-bar button{background:none;border:none;font-size:1.3rem;cursor:pointer;padding:4px 8px;border-radius:6px;}
+.admin-mobile-bar h3{font-size:1rem;color:var(--dark);margin:0;}
+.admin-drawer{position:fixed;top:0;left:-280px;width:260px;height:100%;background:white;z-index:200;transition:left 0.3s;box-shadow:0 0 0 0 rgba(0,0,0,0);}
+.admin-drawer.open{left:0;box-shadow:4px 0 24px rgba(0,0,0,0.15);}
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:199;}
+.drawer-overlay.open{display:block;}
+
+@media(max-width:900px){
+  .nega-grid{grid-template-columns:1fr 1fr;}
+  .nega-card-center{grid-row:span 1;}
+  .nega-card-empty{display:none;}
+  .stats-cards-kohinoor{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:768px){
+  .nav-links{display:none !important;}
+  .nav-cta{display:none !important;}
+  .hamburger{display:flex;}
+  .content-grid{grid-template-columns:1fr !important;}
+  .admin-sidebar{display:none !important;}
+  .admin-mobile-bar{display:flex;}
+  .admin-layout{flex-direction:column;}
+  .stats-row{gap:1.5rem;}
+  .stats-cards-kohinoor{grid-template-columns:repeat(2,1fr);}
+  .nega-grid{grid-template-columns:1fr;}
+  .nega-card-empty{display:none;}
+  .section{padding:2.5rem 1rem;}
+  .hero{padding:3rem 1rem;}
+  .modal{padding:1.5rem;width:95%;max-width:420px;}
+  .stats-cards{grid-template-columns:1fr 1fr;}
+  table{font-size:0.78rem;}
+  th,td{padding:0.6rem 0.6rem;}
+}
+@media(max-width:480px){
+  .stats-cards-kohinoor{grid-template-columns:1fr 1fr;}
+  .kohinoor-num{font-size:1.8rem;}
+  nav{padding:0 1rem;}
+}
+</style>
+</head>
+<body>
+<div style="position:fixed;inset:0;background:linear-gradient(135deg,#1a1adb 0%,#0a0a8a 100%);z-index:-1;"></div>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-logo">
+  <span class="nav-logo-text">Kohinoor <span>Academy</span></span>
+  <div class="nav-social-icons">
+    <!-- Telegram Ikonkasi -->
+    <a href="https://t.me/Kohinur_Academy" target="_blank" class="nav-social-btn nav-tg" title="Telegram">
+      <i class="fa-brands fa-telegram"></i>
+    </a>
+    
+    <!-- Instagram Ikonkasi -->
+    <a href="https://www.instagram.com/kohinooracademy.uz?igsh=bno2YW9vaTYyeWY0&utm_source=qr" target="_blank" class="nav-social-btn nav-ig" title="Instagram">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+    
+    <!-- Telefon Ikonkasi -->
+    <a href="tel:+998973161184" class="nav-social-btn nav-phone" title="+998-97-316-11-84">
+      <i class="fa-solid fa-phone"></i>
+    </a>
+  </div>
+</div>
+  <div class="nav-links" id="nav-links-desktop">
+    <a onclick="showPage('home')" class="active" id="nav-home">Bosh sahifa</a>
+    <a href="" target="_blank">Kurslar</a>
+    <a href="" target="_blank">Filiallar</a>
+    <a href="" target="_blank">Karyera</a>
+    <a onclick="showPage('results')" id="nav-results">Natijalar</a>
+  </div>
+  <!-- HAMBURGER BUTTON -->
+  <button class="hamburger" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <!-- MOBILE MENU OVERLAY -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a onclick="showPage('home');closeMobileMenu()">🏠 Bosh sahifa</a>
+    <a href="" target="_blank">📚 Kurslar</a>
+    <a href="" target="_blank">📍 Filiallar</a>
+    <a href="" target="_blank">💼 Karyera</a>
+    <a onclick="showPage('results');closeMobileMenu()">🏆 Natijalar</a>
+    <div class="mob-auth-btns">
+      <button class="btn btn-outline" onclick="openModal('login');closeMobileMenu()">Kirish</button>
+      <button class="btn btn-primary" onclick="openModal('register');closeMobileMenu()">Ro'yxatdan o'tish</button>
+    </div>
+  </div>
+  <div class="nav-cta" id="nav-auth-area">
+    <button class="btn btn-outline" onclick="openModal('login')">Kirish</button>
+    <button class="btn btn-primary" onclick="openModal('register')">Ro'yxatdan o'tish</button>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- PAGE: HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-badge">🎓 O'zbekistoning yetakchi o'quv markazi</div>
+    <h1>Bilimingizni <span>Kohinoor</span> bilan<br>yangi darajaga oling</h1>
+    <p>Professional o'qituvchilar, zamonaviy dasturlar va tasdiqlangan natijalar bilan karyerangizni rivojlantiring.</p>
+    <div class="hero-btns">
+      <button class="btn-hero-primary" onclick="showPage('courses')">Kurslarni ko'rish</button>
+      <button class="btn-hero-outline" onclick="openModal('register')">Bepul ro'yxatdan o'tish</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-item"><div class="num">2,400+</div><div class="lbl">Bitiruvchilar</div></div>
+      <div class="stat-item"><div class="num">98%</div><div class="lbl">Qoniqish darajasi</div></div>
+      <div class="stat-item"><div class="num">45+</div><div class="lbl">Kurslar</div></div>
+      <div class="stat-item"><div class="num">12</div><div class="lbl">Tajribali ustozlar</div></div>
+    </div>
+  </div>
+
+  <!-- STATS CARDS -->
+  <div class="section" style="padding-top:3rem;padding-bottom:1rem;">
+    <div class="stats-cards-kohinoor">
+      <div class="kohinoor-stat-card">
+        <span class="kohinoor-dot" style="background:#4fc3f7;"></span>
+        <div class="kohinoor-num">11+</div>
+        <div class="kohinoor-lbl">yillik tajriba</div>
+      </div>
+      <div class="kohinoor-stat-card">
+        <span class="kohinoor-dot" style="background:#ef5350;"></span>
+        <div class="kohinoor-num">100,000+</div>
+        <div class="kohinoor-lbl">ingliz tilini o'rgangan yoshlar</div>
+      </div>
+      <div class="kohinoor-stat-card">
+        <span class="kohinoor-dot" style="background:#ffa726;"></span>
+        <div class="kohinoor-num">16</div>
+        <div class="kohinoor-lbl">O'zbekiston bo'ylab filiallar soni</div>
+      </div>
+      <div class="kohinoor-stat-card">
+        <span class="kohinoor-dot" style="background:#66bb6a;"></span>
+        <div class="kohinoor-num">500+</div>
+        <div class="kohinoor-lbl">kohinoordagi xodimlar soni</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEGA YOSHLAR BIZNI TANLASHMOQDA? -->
+<section class="why-choose-section">
+  <div class="section-header">
+    <div class="tag">Afzalliklarimiz</div>
+    <h2>Nega yoshlar bizni tanlashmoqda?</h2>
+    <p>GO-GETTERS o'quv markazi zamonaviy ta'lim metodikasi va yuqori natijadorlik tizimi bilan yoshlarning ishonchli tanloviga aylandi.</p>
+  </div>
+
+  <div class="nega-grid">
+  <div class="nega-card">
+    <div class="nega-icon icon-amber">
+      <i class="fa-solid fa-graduation-cap"></i>
+    </div>
+    <h3>Bepul ikkinchi o'qituvchi</h3>
+    <p>Mavzuni yaxshi o'zlashtirolmagan bo'lsangiz, yordamchi o'qituvchilar har doim yoningizda va istagan mavzuyingizni qayta tushuntirib berishadi.</p>
+  </div>
+
+    <!-- 2. Tajribali o'qituvchilar (Markazdagi asosiy karta) -->
+    <div class="nega-card nega-card-center">
+      <div class="nega-teachers-img">
+        <div class="nega-teacher-bubble bubble-1">
+          <img src="Nomsiz dizayn.png" alt="O'qituvchi 1" style="width:100%;height:100%;border-radius:50%;">
+          <div class="nega-ielts-badge badge-red">IELTS 8.0</div>
+        </div>
+        <div class="nega-teacher-bubble nega-main-bubble">
+          <img src="Anvar Ustoz.jpg" alt="Asosiy O'qituvchi" style="width:100%;height:100%;border-radius:50%;">
+          <div class="nega-ielts-badge badge-red" style="font-size:0.75rem;bottom:-12px;">Asosiy Ustoz</div>
+        </div>
+        <div class="nega-teacher-bubble bubble-2">
+          <img src="Dilshod Ustoz IELTS 7.5.png" alt="Dilshod Ustoz" style="width:100%;height:100%;border-radius:50%;">
+          <div class="nega-ielts-badge badge-green">IELTS 7.5</div>
+        </div>
+        <div class="nega-teacher-bubble bubble-3">
+          <img src="Asadbek Ustoz C1.png" alt="Asadbek Ustoz"  style="width:100%;height:100%;border-radius:50%;">
+          <div class="nega-ielts-badge badge-pink">C1 Certificate</div>
+        </div>
+        <div class="nega-teacher-bubble bubble-4">
+          <img src="Zuhriddin Ustoz Matematika A.jpg" alt="Zuhriddin Ustoz" style="width:100%;height:100%;border-radius:50%;">
+          <div class="nega-ielts-badge badge-blue">Matematika A+</div>
+        </div>
+      </div>
+      <h3>Tajribali o'qituvchilar</h3>
+      <p>Har bir o'qituvchi maxsus o'qitish kurslarini tamomlagan bo'lib, ularning IELTS natijalari 9.0 gacha. Bunday ustozlarni hech nimaga alishmaymiz.</p>
+    </div>
+
+    <div class="nega-card">
+    <div class="nega-icon icon-red">
+      <i class="fa-solid fa-trophy"></i>
+    </div>
+    <h3>Bepul Tadbirlar</h3>
+    <p>Mafia, kino, taniqli insonlar bilan suhbat va unutilmas sayohatlar, bularning barchasi bizning o'quvchilarimiz uchun mutlaqo bepul.</p>
+  </div>
+
+  <div class="nega-card">
+    <div class="nega-icon icon-green">
+      <i class="fa-solid fa-square-check"></i>
+    </div>
+    <h3>Test Markazi</h3>
+    <p>Alohida test markazimiz mavjud u yerda siz, ham MOCK imtihonlarini ham haqiqiy imtihonlarni topshirishingiz mumkin. Bilimingizni real vaqtda sinang.</p>
+  </div>
+
+  <div class="nega-card">
+    <div class="nega-icon icon-gray">
+      <i class="fa-solid fa-mug-hot"></i>
+    </div>
+    <h3>Co-working zonalar</h3>
+    <p>Har bir filialimizda o'quvchilarimiz uchun maxsus co-working zonalar mavjud bo'lib, bu yerda siz darslardan ozod vaqtingiz mustaqil o'rganishingiz yoki qo'shimcha ustozlar bilan qolib ketgan darslarni qayta o'tishingiz mumkin.</p>
+  </div>
+</div>
+
+<!-- PAGE: COURSES -->
+<div class="page" id="page-courses">
+  <div class="section">
+    <div class="section-header">
+      <div class="tag">📚 BARCHA KURSLAR</div>
+      <h2>Bizning kurslar</h2>
+      <p>Professional sertifikat beradigan 45+ kurs bizda mavjud</p>
+    </div>
+    <div class="courses-grid" id="all-courses-grid"></div>
+  </div>
+</div>
+
+<!-- PAGE: TEACHERS -->
+<div class="page" id="page-teachers">
+  <div class="section">
+    <div class="section-header">
+      <div class="tag">👨‍🏫 JAMOAMIZ</div>
+      <h2>O'qituvchilarimiz</h2>
+      <p>Har bir ustoz o'z sohasida 5+ yillik tajribaga ega</p>
+    </div>
+    <div class="teachers-grid" id="all-teachers-grid"></div>
+  </div>
+</div>
+
+<!-- PAGE: RESULTS -->
+<div class="page" id="page-results">
+  <div class="section">
+    <div class="section-header">
+      <div class="tag">🏆 NATIJALAR</div>
+      <h2>Kohinoor Academy natijalari</h2>
+      <p>Bizning o'quvchilarimizning real yutuqlari va muvaffaqiyatlari</p>
+    </div>
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="big" style="color:var(--secondary)">2,400+</div>
+        <div class="desc">Bitiruvchilar soni</div>
+      </div>
+      <div class="result-card">
+        <div class="big" style="color:var(--primary)">98%</div>
+        <div class="desc">Ish topganlar</div>
+      </div>
+      <div class="result-card">
+        <div class="big" style="color:#22c55e">4.9★</div>
+        <div class="desc">O'rtacha reyting</div>
+      </div>
+      <div class="result-card">
+        <div class="big" style="color:#f59e0b">150+</div>
+        <div class="desc">Hamkor kompaniyalar</div>
+      </div>
+    </div>
+    <div class="achievements" id="achievements-list"></div>
+  </div>
+</div>
+
+<!-- PAGE: ADMIN -->
+<div class="page" id="page-admin">
+  <!-- MOBILE ADMIN BAR -->
+  <div class="admin-mobile-bar">
+    <button onclick="openAdminDrawer()">☰</button>
+    <h3>Admin Panel</h3>
+  </div>
+  <!-- DRAWER OVERLAY -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="closeAdminDrawer()"></div>
+  <!-- MOBILE DRAWER -->
+  <div class="admin-drawer" id="admin-drawer">
+    <div style="padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+      <strong style="font-family:'Playfair Display',serif;">Admin Panel</strong>
+      <button onclick="closeAdminDrawer()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;">✕</button>
+    </div>
+    <div class="admin-sidebar" style="width:100%;height:calc(100% - 54px);position:relative;top:0;display:block !important;">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Asosiy</div>
+        <div class="sidebar-item" onclick="showAdmin('dashboard');closeAdminDrawer()"><span class="icon">📊</span> Dashboard</div>
+        <div class="sidebar-item" onclick="showAdmin('visitors');closeAdminDrawer()"><span class="icon">👁️</span> Tashrifchilar</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Kontent</div>
+        <div class="sidebar-item" onclick="showAdmin('courses-admin');closeAdminDrawer()"><span class="icon">📚</span> Kurslar</div>
+        <div class="sidebar-item" onclick="showAdmin('teachers-admin');closeAdminDrawer()"><span class="icon">👨‍🏫</span> O'qituvchilar</div>
+        <div class="sidebar-item" onclick="showAdmin('results-admin');closeAdminDrawer()"><span class="icon">🏆</span> Natijalar</div>
+        <div class="sidebar-item" onclick="showAdmin('gallery');closeAdminDrawer()"><span class="icon">🖼️</span> Rasm kutubxonasi</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Sozlamalar</div>
+        <div class="sidebar-item" onclick="showAdmin('users');closeAdminDrawer()"><span class="icon">👥</span> Foydalanuvchilar</div>
+        <div class="sidebar-item" onclick="showAdmin('settings');closeAdminDrawer()"><span class="icon">⚙️</span> Sozlamalar</div>
+      </div>
+      <div style="padding:1rem 1.5rem;margin-top:auto;">
+        <button class="btn btn-outline btn-sm" onclick="showPage('home');closeAdminDrawer()" style="width:100%">← Saytga qaytish</button>
+      </div>
+    </div>
+  </div>
+  <div class="admin-layout">
+    <div class="admin-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Asosiy</div>
+        <div class="sidebar-item active" onclick="showAdmin('dashboard')" id="sb-dashboard"><span class="icon">📊</span> Dashboard</div>
+        <div class="sidebar-item" onclick="showAdmin('visitors')" id="sb-visitors"><span class="icon">👁️</span> Tashrifchilar</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Kontent</div>
+        <div class="sidebar-item" onclick="showAdmin('courses-admin')" id="sb-courses-admin"><span class="icon">📚</span> Kurslar</div>
+        <div class="sidebar-item" onclick="showAdmin('teachers-admin')" id="sb-teachers-admin"><span class="icon">👨‍🏫</span> O'qituvchilar</div>
+        <div class="sidebar-item" onclick="showAdmin('results-admin')" id="sb-results-admin"><span class="icon">🏆</span> Natijalar</div>
+        <div class="sidebar-item" onclick="showAdmin('gallery')" id="sb-gallery"><span class="icon">🖼️</span> Rasm kutubxonasi</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Sozlamalar</div>
+        <div class="sidebar-item" onclick="showAdmin('users')" id="sb-users"><span class="icon">👥</span> Foydalanuvchilar</div>
+        <div class="sidebar-item" onclick="showAdmin('settings')" id="sb-settings"><span class="icon">⚙️</span> Sozlamalar</div>
+      </div>
+      <div style="padding:1rem 1.5rem;margin-top:auto;">
+        <button class="btn btn-outline btn-sm" onclick="showPage('home')" style="width:100%">← Saytga qaytish</button>
+      </div>
+    </div>
+
+    <div class="admin-main">
+      <!-- DASHBOARD -->
+      <div class="admin-section active" id="admin-dashboard">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-sub">Umumiy ko'rsatkichlar va tizim holati</p>
+        <div class="stats-cards">
+          <div class="stat-card"><div class="sc-label">Jami foydalanuvchilar</div><div class="sc-val" id="sc-users">0</div><div class="sc-change sc-up">↑ +12 bu hafta</div></div>
+          <div class="stat-card"><div class="sc-label">Bugungi tashriflar</div><div class="sc-val" id="sc-visits">0</div><div class="sc-change sc-up">↑ +24% o'sish</div></div>
+          <div class="stat-card"><div class="sc-label">Faol kurslar</div><div class="sc-val" id="sc-courses">0</div><div class="sc-change sc-up">↑ +2 yangi</div></div>
+          <div class="stat-card"><div class="sc-label">O'rtacha vaqt (daq)</div><div class="sc-val" id="sc-time">0</div><div class="sc-change sc-up">↑ +3 daq</div></div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header"><h3>So'nggi tashrifchilar</h3></div>
+          <table>
+            <thead><tr><th>Foydalanuvchi</th><th>Oxirgi kirish</th><th>Vaqt (daq)</th><th>Sahifalar</th><th>Holat</th></tr></thead>
+            <tbody id="recent-visitors"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- VISITORS -->
+      <div class="admin-section" id="admin-visitors">
+        <h1 class="page-title">Tashrifchilar statistikasi</h1>
+        <p class="page-sub">Saytga tashrif buyurganlar haqida batafsil ma'lumot</p>
+        <div class="visitor-chart">
+          <h3 style="font-size:0.95rem;color:var(--dark)">Kunlik tashriflar (oxirgi 7 kun)</h3>
+          <div class="chart-bar-wrap" id="visit-chart"></div>
+        </div>
+        <div class="stats-cards" style="margin-bottom:1.5rem;">
+          <div class="stat-card"><div class="sc-label">Jami tashriflar</div><div class="sc-val">1,847</div></div>
+          <div class="stat-card"><div class="sc-label">Noyob tashrifchilar</div><div class="sc-val">943</div></div>
+          <div class="stat-card"><div class="sc-label">O'rtacha vaqt</div><div class="sc-val">8.4 daq</div></div>
+          <div class="stat-card"><div class="sc-label">Qayta kelganlar</div><div class="sc-val">62%</div></div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header"><h3>Barcha tashrifchilar</h3><input type="text" placeholder="Qidirish..." style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:0.85rem;outline:none;" oninput="filterVisitors(this.value)"></div>
+          <table>
+            <thead><tr><th>#</th><th>Ismi</th><th>Email</th><th>Ro'yxatdan o'tgan</th><th>Oxirgi kirish</th><th>Jami vaqt</th><th>Tashriflar</th><th>Holat</th></tr></thead>
+            <tbody id="all-visitors-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- COURSES ADMIN -->
+      <div class="admin-section" id="admin-courses-admin">
+        <h1 class="page-title">Kurslar boshqaruvi</h1>
+        <p class="page-sub">Kurslarni qo'shish, tahrirlash va o'chirish</p>
+        <div class="content-grid">
+          <div class="content-form">
+            <h3 id="course-form-title">Yangi kurs qo'shish</h3>
+            <input type="hidden" id="edit-course-id" value="">
+            <div class="form-group"><label>Kurs nomi</label><input type="text" id="c-name" placeholder="Masalan: Python dasturlash"></div>
+            <div class="form-group"><label>Kategoriya</label>
+              <select id="c-cat">
+                <option>Dasturlash</option><option>Dizayn</option><option>Marketing</option><option>Ingliz tili</option><option>Matematika</option><option>Biznes</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Narxi (so'm)</label><input type="number" id="c-price" placeholder="500000"></div>
+            <div class="form-group"><label>Davomiyligi</label><input type="text" id="c-duration" placeholder="3 oy"></div>
+            <div class="form-group"><label>Dars soni</label><input type="number" id="c-lessons" placeholder="48"></div>
+            <div class="form-group"><label>Tavsif</label><textarea id="c-desc" placeholder="Kurs haqida qisqacha..."></textarea></div>
+            <div class="form-group"><label>Kurs rasmi</label>
+              <div class="upload-zone" onclick="document.getElementById('c-img-file').click()">
+                <div class="icon">🖼️</div>
+                <p>Rasm yuklash uchun bosing</p>
+                <input type="file" id="c-img-file" accept="image/*" style="display:none" onchange="previewImg(this,'c-img-preview')">
+              </div>
+              <div id="c-img-preview" style="margin-top:8px;"></div>
+            </div>
+            <button class="btn btn-primary" onclick="saveCourse()" style="width:100%">Saqlash</button>
+          </div>
+          <div>
+            <div class="content-form">
+              <h3>Mavjud kurslar</h3>
+              <div class="items-list" id="courses-admin-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEACHERS ADMIN -->
+      <div class="admin-section" id="admin-teachers-admin">
+        <h1 class="page-title">O'qituvchilar boshqaruvi</h1>
+        <p class="page-sub">Ustoz va ustozalar ma'lumotlarini boshqarish</p>
+        <div class="content-grid">
+          <div class="content-form">
+            <h3 id="teacher-form-title">Yangi o'qituvchi qo'shish</h3>
+            <input type="hidden" id="edit-teacher-id" value="">
+            <div class="form-group"><label>To'liq ismi</label><input type="text" id="t-name" placeholder="Alisher Valiyev"></div>
+            <div class="form-group"><label>Fan / yo'nalish</label><input type="text" id="t-subject" placeholder="Python & Backend"></div>
+            <div class="form-group"><label>Tajriba</label><input type="text" id="t-exp" placeholder="8 yil"></div>
+            <div class="form-group"><label>O'quvchilar soni</label><input type="number" id="t-students" placeholder="320"></div>
+            <div class="form-group"><label>Reyting (1-5)</label><input type="number" id="t-rating" min="1" max="5" step="0.1" placeholder="4.9"></div>
+            <div class="form-group"><label>Qisqacha bio</label><textarea id="t-bio" placeholder="O'qituvchi haqida qisqa ma'lumot..."></textarea></div>
+            <div class="form-group"><label>Profil rasmi</label>
+              <div class="upload-zone" onclick="document.getElementById('t-img-file').click()">
+                <div class="icon">📸</div>
+                <p>Rasm yuklash uchun bosing</p>
+                <input type="file" id="t-img-file" accept="image/*" style="display:none" onchange="previewImg(this,'t-img-preview')">
+              </div>
+              <div id="t-img-preview"></div>
+            </div>
+            <button class="btn btn-primary" onclick="saveTeacher()" style="width:100%">Saqlash</button>
+          </div>
+          <div>
+            <div class="content-form">
+              <h3>Mavjud o'qituvchilar</h3>
+              <div class="items-list" id="teachers-admin-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTS ADMIN -->
+      <div class="admin-section" id="admin-results-admin">
+        <h1 class="page-title">Natijalar boshqaruvi</h1>
+        <p class="page-sub">Kohinoor Academy yutuqlarini qo'shish va tahrirlash</p>
+        <div class="content-grid">
+          <div class="content-form">
+            <h3>Yangi natija qo'shish</h3>
+            <div class="form-group"><label>Sarlavha</label><input type="text" id="r-title" placeholder="IELTS 8.0 ball olindi"></div>
+            <div class="form-group"><label>Tavsif</label><textarea id="r-desc" placeholder="Batafsil ma'lumot..."></textarea></div>
+            <div class="form-group"><label>Emoji belgisi</label><input type="text" id="r-icon" placeholder="🏆"></div>
+            <div class="form-group"><label>Rang</label>
+              <select id="r-color">
+                <option value="var(--secondary)">Ko'k</option>
+                <option value="var(--primary)">Binafsha</option>
+                <option value="#22c55e">Yashil</option>
+                <option value="#f59e0b">Sariq</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Rasm yuklash</label>
+              <div class="upload-zone" onclick="document.getElementById('r-img-file').click()">
+                <div class="icon">🖼️</div>
+                <p>Rasm yuklash</p>
+                <input type="file" id="r-img-file" accept="image/*" style="display:none" onchange="previewImg(this,'r-img-preview')">
+              </div>
+              <div id="r-img-preview"></div>
+            </div>
+            <button class="btn btn-primary" onclick="saveResult()" style="width:100%">Saqlash</button>
+          </div>
+          <div>
+            <div class="content-form">
+              <h3>Mavjud natijalar</h3>
+              <div class="items-list" id="results-admin-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GALLERY -->
+      <div class="admin-section" id="admin-gallery">
+        <h1 class="page-title">Rasm kutubxonasi</h1>
+        <p class="page-sub">Saytdagi barcha rasmlarni boshqarish</p>
+        <div class="content-form" style="margin-bottom:1.5rem;">
+          <h3>Yangi rasm yuklash</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div class="form-group"><label>Nomi</label><input type="text" id="g-name" placeholder="Rasm nomi"></div>
+            <div class="form-group"><label>Kategoriya</label>
+              <select id="g-cat"><option>Kurslar</option><option>O'qituvchilar</option><option>Natijalar</option><option>Banner</option><option>Boshqa</option></select>
+            </div>
+          </div>
+          <div class="upload-zone" onclick="document.getElementById('g-file').click()" style="margin-bottom:1rem;">
+            <div class="icon">📁</div>
+            <p>Rasm tanlash uchun bosing (JPG, PNG, WEBP)</p>
+            <input type="file" id="g-file" accept="image/*" style="display:none" onchange="handleGalleryUpload(this)">
+          </div>
+          <div id="g-preview" style="margin-bottom:1rem;"></div>
+          <button class="btn btn-primary" onclick="saveGalleryImg()">Saqlash</button>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header"><h3>Barcha rasmlar</h3></div>
+          <div style="padding:1rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;" id="gallery-grid"></div>
+        </div>
+      </div>
+
+      <!-- USERS ADMIN -->
+      <div class="admin-section" id="admin-users">
+        <h1 class="page-title">Foydalanuvchilar</h1>
+        <p class="page-sub">Ro'yxatdan o'tgan barcha foydalanuvchilar</p>
+        <div class="stats-cards">
+          <div class="stat-card"><div class="sc-label">Jami</div><div class="sc-val" id="u-total">0</div></div>
+          <div class="stat-card"><div class="sc-label">Faol (30 kun)</div><div class="sc-val" id="u-active">0</div></div>
+          <div class="stat-card"><div class="sc-label">Bu oy yangi</div><div class="sc-val" id="u-new">0</div></div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header"><h3>Foydalanuvchilar ro'yxati</h3></div>
+          <table>
+            <thead><tr><th>#</th><th>Ism</th><th>Email</th><th>Ro'yxat sanasi</th><th>Rol</th><th>Holat</th><th>Amal</th></tr></thead>
+            <tbody id="users-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="admin-section" id="admin-settings">
+        <h1 class="page-title">Sayt sozlamalari</h1>
+        <p class="page-sub">Umumiy sozlamalar va konfiguratsiya</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+          <div class="content-form">
+            <h3>Sayt ma'lumotlari</h3>
+            <div class="form-group"><label>Sayt nomi</label><input type="text" value="Kohinoor Academy"></div>
+            <div class="form-group"><label>Tavsif</label><textarea>Professional ta'lim markazi</textarea></div>
+            <div class="form-group"><label>Telefon</label><input type="text" value="+998 90 123 45 67"></div>
+            <div class="form-group"><label>Email</label><input type="email" value="info@kohinoor.uz"></div>
+            <div class="form-group"><label>Manzil</label><input type="text" value="Toshkent, O'zbekiston"></div>
+            <button class="btn btn-primary">Saqlash</button>
+          </div>
+          <div class="content-form">
+            <h3>Admin parolini o'zgartirish</h3>
+            <div class="form-group"><label>Joriy parol</label><input type="password" placeholder="••••••••"></div>
+            <div class="form-group"><label>Yangi parol</label><input type="password" placeholder="••••••••"></div>
+            <div class="form-group"><label>Tasdiqlash</label><input type="password" placeholder="••••••••"></div>
+            <button class="btn btn-primary">Parolni o'zgartirish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- AUTH MODAL -->
+     <div class="modal-overlay" id="auth-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    
+    <div id="modal-login">
+      <h2>Kirish</h2>
+      <p class="sub">Hisobingizga kiring</p>
+      
+      <button class="google-btn" onclick="loginWithGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Google bilan tezkor kirish
+      </button>
+      
+      <div class="divider">yoki</div>
+      
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="email@example.com">
+      </div>
+      <div class="form-group" style="position:relative;">
+        <label>Parol</label>
+        <input type="password" id="login-pass" placeholder="••••••••">
+        <button type="button" onclick="togglePwd('login-pass',this)" style="position:absolute;right:10px;top:34px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;">👁</button>
+      </div>
+      
+      <button class="btn btn-primary" onclick="loginWithEmail()" style="width:100%;padding:11px;margin-top:0.5rem;">Kirish</button>
+      <p class="auth-switch">Hisobingiz yo'qmi? <a onclick="switchModal('register')">Ro'yxatdan o'teng</a></p>
+    </div>
+
+    <div id="modal-register" style="display:none">
+      <h2>Ro'yxatdan o'tish</h2>
+      <p class="sub">Yangi hisob yarating</p>
+      
+      <button class="google-btn" onclick="loginWithGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Google bilan ro'yxatdan o'tish
+      </button>
+      
+      <div class="divider">yoki</div>
+      
+      <div class="form-group">
+        <label>To'liq ism</label>
+        <input type="text" id="reg-name" placeholder="Ismi Familiyasi">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="email@example.com">
+      </div>
+      <div class="form-group" style="position:relative;">
+        <label>Parol</label>
+        <input type="password" id="reg-pass" placeholder="Kamida 6 ta belgi">
+        <button type="button" onclick="togglePwd('reg-pass',this)" style="position:absolute;right:10px;top:34px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;">👁</button>
+      </div>
+      
+      <button class="btn btn-primary" onclick="registerWithEmail()" style="width:100%;padding:11px;margin-top:0.5rem;">Ro'yxatdan o'tish</button>
+      <p class="auth-switch">Hisobingiz bormi? <a onclick="switchModal('login')">Kiring</a></p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong>Kohinoor Academy</strong>
+      <p class="footer-slogan">Bilim — Kelajak — Muvaffaqiyat</p>
+      <p class="footer-copy">&copy; 2024 Kohinoor Academy. Barcha huquqlar himoyalangan.</p>
+    </div>
+    <div class="footer-contact">
+      <h3 class="footer-contact-title">Bizga bog'lanish</h3>
+      <div class="footer-contact-links">
+        <a href="https://t.me/Kohinur_Academy" target="_blank" class="footer-contact-item footer-tg">
+          <span class="footer-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </span>
+          <span class="footer-contact-text">
+            <span class="footer-contact-label">Telegram</span>
+            <span class="footer-contact-val">@Kohinur_Academy</span>
+          </span>
+        </a>
+        <a href="https://www.instagram.com/kohinooracademy.uz?igsh=bno2YW9vaTYyeWY0&utm_source=qr" target="_blank" class="footer-contact-item footer-ig">
+          <span class="footer-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162S8.597 18.163 12 18.163s6.162-2.759 6.162-6.162S15.403 5.838 12 5.838zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </span>
+          <span class="footer-contact-text">
+            <span class="footer-contact-label">Instagram</span>
+            <span class="footer-contact-val">@kohinooracademy.uz</span>
+          </span>
+        </a>
+        <a href="tel:+998973161184" class="footer-contact-item footer-phone">
+          <span class="footer-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </span>
+          <span class="footer-contact-text">
+            <span class="footer-contact-label">Telefon</span>
+            <span class="footer-contact-val">+998-97-316-11-84</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== DATA STORE =====
+let DB = {
+  users: JSON.parse(localStorage.getItem('ka_users')||'[]'),
+  courses: JSON.parse(localStorage.getItem('ka_courses')||'null'),
+  teachers: JSON.parse(localStorage.getItem('ka_teachers')||'null'),
+  results: JSON.parse(localStorage.getItem('ka_results')||'null'),
+  gallery: JSON.parse(localStorage.getItem('ka_gallery')||'[]'),
+  currentUser: JSON.parse(localStorage.getItem('ka_current')||'null'),
+  sessions: JSON.parse(localStorage.getItem('ka_sessions')||'[]'),
+};
+
+// Default data
+const defaultCourses = [
+  {id:1,name:"Python dasturlash",cat:"Dasturlash",price:"650,000",duration:"4 oy",lessons:64,desc:"Asosdan professional darajagacha Python o'rganing",emoji:"🐍",color:"#1126db",img:""},
+  {id:2,name:"Web dizayn (UI/UX)",cat:"Dizayn",price:"550,000",duration:"3 oy",lessons:48,desc:"Zamonaviy veb-saytlar va mobil ilovalar dizayni",emoji:"🎨",color:"#7e73c2",img:""},
+  {id:3,name:"IELTS tayyorlov",cat:"Ingliz tili",price:"400,000",duration:"3 oy",lessons:60,desc:"IELTS 7.0+ ball olishga kafolatlangan tayyorlov",emoji:"📝",color:"#22c55e",img:""},
+  {id:4,name:"Digital Marketing",cat:"Marketing",price:"500,000",duration:"2 oy",lessons:40,desc:"SMM, SEO, targetli reklama — hammasi bir kursda",emoji:"📱",color:"#f59e0b",img:""},
+  {id:5,name:"Matematika (chuqur)",cat:"Matematika",price:"350,000",duration:"3 oy",lessons:72,desc:"Olimpiada va imtihonlarga tayyorlov kursi",emoji:"📐",color:"#ef4444",img:""},
+  {id:6,name:"JavaScript & React",cat:"Dasturlash",price:"700,000",duration:"5 oy",lessons:80,desc:"Frontend dasturlash bo'yicha to'liq kurs",emoji:"⚛️",color:"#1126db",img:""},
+];
+
+const defaultTeachers = [
+  {id:1,name:"Alisher Valiyev",subject:"Python & Backend",exp:"8 yil",students:420,rating:4.9,bio:"Google'da ishlagan tajribali dasturchi, 8 yillik o'qitish tajribasi",emoji:"AV",color:"#1126db",img:""},
+  {id:2,name:"Dilnoza Yusupova",subject:"UI/UX Dizayn",exp:"6 yil",students:310,rating:4.8,bio:"Figma eksperti, yetakchi dizayn agentliklarida ishlagan",emoji:"DY",color:"#7e73c2",img:""},
+  {id:3,name:"Jasur Toshmatov",subject:"IELTS & Ingliz tili",exp:"10 yil",students:580,rating:4.9,bio:"IELTS 9.0 ball egasi, 500+ muvaffaqiyatli o'quvchi",emoji:"JT",color:"#22c55e",img:""},
+  {id:4,name:"Nilufar Rahimova",subject:"Digital Marketing",exp:"5 yil",students:240,rating:4.7,bio:"Meta va Google sertifikatlangan marketing mutaxassisi",emoji:"NR",color:"#f59e0b",img:""},
+];
+
+const defaultResults = [
+  {id:1,title:"IELTS 8.5 ball — O'zbekiston rekordi",desc:"2024-yilda bizning o'quvchimiz IELTS imtihonida 8.5 ball to'plab rekord qo'ydi",icon:"🏆",color:"#f59e0b",img:""},
+  {id:2,title:"Google-ga ishga qabul qilindi",desc:"Python kursimiz bitiruvchisi Google kompaniyasiga ishga kirdi",icon:"🚀",color:"#1126db",img:""},
+  {id:3,title:"Top 3 — Dasturlash olimpiadasi",desc:"Bizning o'quvchimiz O'zbekiston dasturlash olimpiadasida 3-o'rinni egalladi",icon:"🥉",color:"#7e73c2",img:""},
+  {id:4,title:"200+ ta o'quvchi xorijda o'qiyapti",desc:"IELTS kursimiz tufayli 200 dan ortiq o'quvchi xorijiy universitetlarda ta'lim olmoqda",icon:"🌍",color:"#22c55e",img:""},
+];
+
+if(!DB.courses) DB.courses = defaultCourses;
+if(!DB.teachers) DB.teachers = defaultTeachers;
+if(!DB.results) DB.results = defaultResults;
+
+function save(){
+  localStorage.setItem('ka_users',JSON.stringify(DB.users));
+  localStorage.setItem('ka_courses',JSON.stringify(DB.courses));
+  localStorage.setItem('ka_teachers',JSON.stringify(DB.teachers));
+  localStorage.setItem('ka_results',JSON.stringify(DB.results));
+  localStorage.setItem('ka_gallery',JSON.stringify(DB.gallery));
+  localStorage.setItem('ka_current',JSON.stringify(DB.currentUser));
+  localStorage.setItem('ka_sessions',JSON.stringify(DB.sessions));
+}
+
+// ===== SESSION TRACKING =====
+let sessionStart = Date.now();
+let pageCount = 1;
+
+function trackSession(){
+  if(!DB.currentUser) return;
+  const mins = Math.round((Date.now()-sessionStart)/60000);
+  const idx = DB.sessions.findIndex(s=>s.userId===DB.currentUser.email);
+  const now = new Date().toLocaleString('uz');
+  if(idx>=0){
+    DB.sessions[idx].lastVisit = now;
+    DB.sessions[idx].totalMins = (DB.sessions[idx].totalMins||0) + mins;
+    DB.sessions[idx].visits = (DB.sessions[idx].visits||1) + 1;
+    DB.sessions[idx].pages = (DB.sessions[idx].pages||1) + pageCount;
+  } else {
+    DB.sessions.push({userId:DB.currentUser.email,name:DB.currentUser.name,lastVisit:now,totalMins:mins,visits:1,pages:pageCount,status:'online'});
+  }
+  save();
+}
+
+window.addEventListener('beforeunload', trackSession);
+setInterval(()=>{pageCount++;},30000);
+
+// Add sample sessions if none
+if(DB.sessions.length===0){
+  DB.sessions = [
+    {userId:'demo@email.com',name:'Bobur Toshev',lastVisit:'2024-12-15 14:32',totalMins:45,visits:8,pages:24,status:'online'},
+    {userId:'user2@email.com',name:'Malika Xolova',lastVisit:'2024-12-15 13:10',totalMins:23,visits:5,pages:15,status:'offline'},
+    {userId:'user3@email.com',name:'Sardor Raximov',lastVisit:'2024-12-14 18:45',totalMins:67,visits:12,pages:38,status:'offline'},
+    {userId:'user4@email.com',name:'Zulfiya Nazarova',lastVisit:'2024-12-15 11:20',totalMins:31,visits:6,pages:19,status:'online'},
+    {userId:'user5@email.com',name:'Otabek Mirzayev',lastVisit:'2024-12-13 16:00',totalMins:89,visits:20,pages:60,status:'offline'},
+  ];
+  save();
+}
+
+// ===== PAGE NAVIGATION =====
+function showPage(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const nl = document.getElementById('nav-'+p);
+  if(nl) nl.classList.add('active');
+  window.scrollTo(0,0);
+  if(p==='home') renderHome();
+  if(p==='courses') renderAllCourses();
+  if(p==='teachers') renderAllTeachers();
+  if(p==='results') renderResults();
+  if(p==='admin') renderAdmin();
+}
+
+// ===== AUTH =====
+function openModal(t){
+  document.getElementById('auth-modal').classList.add('open');
+  switchModal(t);
+}
+function closeModal(){document.getElementById('auth-modal').classList.remove('open');}
+var _gflowType='login';
+
+function switchModal(t){
+  ['modal-login','modal-register','modal-google-email','modal-google-pass','modal-google-profile'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.style.display='none';
+  });
+  var target=document.getElementById('modal-'+t);
+  if(target) target.style.display='block';
+}
+
+function startGoogleFlow(type){
+  _gflowType=type;
+  switchModal('google-email');
+  document.getElementById('g-step-email').value='';
+  document.getElementById('g-email-err').textContent='';
+}
+
+function googleStep1Next(){
+  var email=document.getElementById('g-step-email').value.trim();
+  if(!email||!/^[^@]+@[^@]+\.[^@]+$/.test(email)){
+    document.getElementById('g-email-err').textContent='Togri email manzilini kiriting';
+    return;
+  }
+  document.getElementById('g-email-chip').textContent=email;
+  document.getElementById('g-step-pass').value='';
+  document.getElementById('g-pass-err').textContent='';
+  switchModal('google-pass');
+}
+
+function googleStep2Next(){
+  var pass=document.getElementById('g-step-pass').value;
+  if(!pass||pass.length<4){
+    document.getElementById('g-pass-err').textContent='Parol kamida 4 ta belgidan iborat bolishi kerak';
+    return;
+  }
+  if(_gflowType==='register'){
+    document.getElementById('g-step-name').value='';
+    document.getElementById('g-step-phone').value='';
+    document.getElementById('g-name-err').textContent='';
+    switchModal('google-profile');
+  } else {
+    // Login flow - complete
+    var email=document.getElementById('g-step-email').value.trim();
+    var u=DB.users.find(function(x){return x.email===email;});
+    if(!u){
+      // Create account on login too
+      u={id:Date.now(),name:email.split('@')[0],email:email,pass:pass,role:'student',regDate:new Date().toLocaleDateString('uz'),status:'active',provider:'google'};
+      DB.users.push(u);
+    }
+    DB.currentUser=u;save();closeModal();updateNavForUser();
+    toast('Google orqali kirildi!');
+    trackVisit(u);
+  }
+}
+
+function googleStep3Finish(){
+  var name=document.getElementById('g-step-name').value.trim();
+  if(!name){
+    document.getElementById('g-name-err').textContent='Ismingizni kiriting';
+    return;
+  }
+  var email=document.getElementById('g-step-email').value.trim();
+  var pass=document.getElementById('g-step-pass').value;
+  var phone=document.getElementById('g-step-phone').value.trim();
+  if(DB.users.find(function(x){return x.email===email;})){
+    document.getElementById('g-name-err').textContent='Bu email allaqachon royxatdan otgan';
+    return;
+  }
+  var u={id:Date.now(),name:name,email:email,pass:pass,phone:phone,role:'student',regDate:new Date().toLocaleDateString('uz'),status:'active',provider:'google'};
+  DB.users.push(u);
+  DB.currentUser=u;save();closeModal();updateNavForUser();
+  toast('Muvaffaqiyatli royxatdan otdingiz!');
+  trackVisit(u);
+}
+
+function googleStepBack(){switchModal(_gflowType);}
+function googleStepBack2(){switchModal('google-email');}
+function googleStepBack3(){switchModal('google-pass');}
+
+function togglePwd(id,btn){
+  var inp=document.getElementById(id);
+  if(!inp)return;
+  inp.type=inp.type==='password'?'text':'password';
+  btn.textContent=inp.type==='password'?'👁':'🙈';
+}
+
+function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  if(email==='admin@kohinoor.uz'&&pass==='admin123'){
+    DB.currentUser={name:'Admin',email:'admin@kohinoor.uz',role:'admin'};
+    save();closeModal();updateNavForUser();
+    toast('Admin sifatida kirdingiz!');
+    setTimeout(()=>showPage('admin'),500);
+    return;
+  }
+  const u=DB.users.find(u=>u.email===email&&u.pass===pass);
+  if(u){
+    DB.currentUser=u;save();closeModal();updateNavForUser();
+    toast('Xush kelibsiz, '+u.name+'!');
+    trackVisit(u);
+  } else {
+    toast('Email yoki parol noto\'g\'ri');
+  }
+}
+
+function doRegister(){
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const pass=document.getElementById('reg-pass').value;
+  const pass2=document.getElementById('reg-pass2').value;
+  if(!name||!email||!pass||!pass2){toast('Barcha maydonlarni to\'ldiring');return;}
+  if(pass.length<6){toast('Parol kamida 6 ta belgidan iborat bo\'lishi kerak');return;}
+  if(pass!==pass2){toast('Parollar mos kelmadi');return;}
+  if(!/^[^@]+@[^@]+\.[^@]+$/.test(email)){toast('To\'g\'ri email manzilini kiriting');return;}
+  if(DB.users.find(u=>u.email===email)){toast('Bu email allaqachon ro\'yxatdan o\'tgan');return;}
+  const u={id:Date.now(),name,email,pass,role:'student',regDate:new Date().toLocaleDateString('uz'),status:'active'};
+  DB.users.push(u);
+  DB.currentUser=u;save();closeModal();updateNavForUser();
+  toast('Muvaffaqiyatli ro\'yxatdan o\'tdingiz!');
+  trackVisit(u);
+}
+
+// googleAuth replaced by step-by-step flow above
+
+function trackVisit(u){
+  const idx=DB.sessions.findIndex(s=>s.userId===u.email);
+  const now=new Date().toLocaleString('uz');
+  if(idx>=0){
+    DB.sessions[idx].lastVisit=now;
+    DB.sessions[idx].visits=(DB.sessions[idx].visits||0)+1;
+    DB.sessions[idx].status='online';
+  } else {
+    DB.sessions.push({userId:u.email,name:u.name,lastVisit:now,totalMins:0,visits:1,pages:1,status:'online'});
+  }
+  save();
+}
+
+function logout(){
+  trackSession();
+  DB.currentUser=null;save();
+  updateNavForUser();
+  showPage('home');
+  toast('Chiqildingiz');
+}
+
+function updateNavForUser(){
+  const area=document.getElementById('nav-auth-area');
+  if(DB.currentUser){
+    const initials=DB.currentUser.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const isAdmin=DB.currentUser.role==='admin';
+    area.innerHTML=`
+      ${isAdmin?`<button class="btn btn-outline btn-sm" onclick="showPage('admin')">Admin panel</button>`:''}
+      <div class="user-avatar" title="${DB.currentUser.name}" onclick="logout()">${initials}</div>
+    `;
+  } else {
+    area.innerHTML=`
+      <button class="btn btn-outline" onclick="openModal('login')">Kirish</button>
+      <button class="btn btn-primary" onclick="openModal('register')">Ro'yxatdan o'tish</button>
+    `;
+  }
+}
+
+// ===== RENDER =====
+function renderCourseCard(c){
+  const bg=c.img?`background:url('${c.img}') center/cover`:`background:${c.color}22`;
+  return `
+    <div class="course-card">
+      <div class="course-img" style="${bg}">${c.img?'':'<span style="font-size:3rem">${c.emoji}</span>'}</div>
+      <div class="course-body">
+        <span class="course-tag">${c.cat}</span>
+        <h3>${c.name}</h3>
+        <p>${c.desc}</p>
+        <div class="course-meta">
+          <span>📅 ${c.duration}</span>
+          <span>📖 ${c.lessons} dars</span>
+        </div>
+      </div>
+      <div class="course-footer">
+        <span class="course-price">${c.price} so'm/oy</span>
+        <button class="btn btn-primary btn-sm" onclick="openModal('register')">Yozilish</button>
+      </div>
+    </div>`;
+}
+
+function renderCourseCardWithEmoji(c){
+  const bg=c.img?`background:url('${c.img}') center/cover`:`background:${c.color}22`;
+  const emoji=c.emoji||'📚';
+  return `
+    <div class="course-card">
+      <div class="course-img" style="${bg}">${c.img?'':`<span style="font-size:3rem">${emoji}</span>`}</div>
+      <div class="course-body">
+        <span class="course-tag">${c.cat}</span>
+        <h3>${c.name}</h3>
+        <p>${c.desc}</p>
+        <div class="course-meta">
+          <span>📅 ${c.duration}</span>
+          <span>📖 ${c.lessons} dars</span>
+        </div>
+      </div>
+      <div class="course-footer">
+        <span class="course-price">${c.price} so'm/oy</span>
+        <button class="btn btn-primary btn-sm" onclick="openModal('register')">Yozilish</button>
+      </div>
+    </div>`;
+}
+
+function renderTeacherCard(t){
+  const avatarStyle=t.img?`background:url('${t.img}') center/cover;background-size:cover`:`background:${t.color}22;color:${t.color}`;
+  const stars='★'.repeat(Math.round(t.rating))+'☆'.repeat(5-Math.round(t.rating));
+  return `
+    <div class="teacher-card">
+      <div class="teacher-avatar" style="${avatarStyle}">${t.img?'':t.emoji}</div>
+      <h3>${t.name}</h3>
+      <div class="teacher-subject">${t.subject}</div>
+      <div class="stars">${stars} ${t.rating}</div>
+      <p class="teacher-bio">${t.bio}</p>
+      <div class="teacher-stats">
+        <div class="teacher-stat"><div class="n">${t.students}+</div><div class="l">O'quvchi</div></div>
+        <div class="teacher-stat"><div class="n">${t.exp}</div><div class="l">Tajriba</div></div>
+      </div>
+    </div>`;
+}
+
+function renderHome(){
+  const gc=document.getElementById('home-courses');
+  if(gc) gc.innerHTML=DB.courses.slice(0,3).map(renderCourseCardWithEmoji).join('');
+  const gt=document.getElementById('home-teachers');
+  if(gt) gt.innerHTML=DB.teachers.slice(0,4).map(renderTeacherCard).join('');
+}
+
+function renderAllCourses(){
+  const g=document.getElementById('all-courses-grid');
+  if(g) g.innerHTML=DB.courses.map(renderCourseCardWithEmoji).join('');
+}
+
+function renderAllTeachers(){
+  const g=document.getElementById('all-teachers-grid');
+  if(g) g.innerHTML=DB.teachers.map(renderTeacherCard).join('');
+}
+
+function renderResults(){
+  const g=document.getElementById('achievements-list');
+  if(!g) return;
+  g.innerHTML=DB.results.map(r=>`
+    <div class="ach-card">
+      <div class="ach-icon" style="background:${r.color}22;color:${r.color}">${r.icon}</div>
+      <div class="ach-text">
+        <h4>${r.title}</h4>
+        <p>${r.desc}</p>
+      </div>
+    </div>`).join('');
+}
+
+// ===== ADMIN =====
+function showAdmin(sec){
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s=>s.classList.remove('active'));
+  document.getElementById('admin-'+sec).classList.add('active');
+  const sb=document.getElementById('sb-'+sec);
+  if(sb) sb.classList.add('active');
+  if(sec==='dashboard') renderDashboard();
+  if(sec==='visitors') renderVisitors();
+  if(sec==='courses-admin') renderCoursesAdmin();
+  if(sec==='teachers-admin') renderTeachersAdmin();
+  if(sec==='results-admin') renderResultsAdmin();
+  if(sec==='gallery') renderGallery();
+  if(sec==='users') renderUsers();
+}
+
+function renderAdmin(){
+  renderDashboard();
+  const sc=document.getElementById('sc-users');
+  if(sc) sc.textContent=DB.users.length+4;
+  const sc2=document.getElementById('sc-visits');
+  if(sc2) sc2.textContent=DB.sessions.reduce((s,x)=>s+(x.visits||0),0);
+  const sc3=document.getElementById('sc-courses');
+  if(sc3) sc3.textContent=DB.courses.length;
+  const sc4=document.getElementById('sc-time');
+  if(sc4){
+    const avg=DB.sessions.length?Math.round(DB.sessions.reduce((s,x)=>s+(x.totalMins||0),0)/DB.sessions.length):0;
+    sc4.textContent=avg;
+  }
+}
+
+function renderDashboard(){
+  renderAdmin();
+  const tb=document.getElementById('recent-visitors');
+  if(!tb) return;
+  const sc=document.getElementById('sc-users');
+  if(sc) sc.textContent=DB.users.length+4;
+  const sc2=document.getElementById('sc-visits');
+  if(sc2) sc2.textContent=DB.sessions.reduce((s,x)=>s+(x.visits||0),0);
+  const sc3=document.getElementById('sc-courses');
+  if(sc3) sc3.textContent=DB.courses.length;
+  const sc4=document.getElementById('sc-time');
+  if(sc4){
+    const avg=DB.sessions.length?Math.round(DB.sessions.reduce((s,x)=>s+(x.totalMins||0),0)/DB.sessions.length):0;
+    sc4.textContent=avg;
+  }
+  tb.innerHTML=DB.sessions.slice(0,5).map(s=>`
+    <tr>
+      <td>${s.name}</td>
+      <td>${s.lastVisit}</td>
+      <td>${s.totalMins||0} daq</td>
+      <td>${s.pages||1}</td>
+      <td><span class="badge badge-${s.status==='online'?'online':'offline'}">${s.status==='online'?'Onlayn':'Oflayn'}</span></td>
+    </tr>`).join('');
+}
+
+function renderVisitors(){
+  const days=['Du','Se','Ch','Pa','Ju','Sh','Ya'];
+  const vals=[45,72,58,89,103,67,84];
+  const max=Math.max(...vals);
+  const chart=document.getElementById('visit-chart');
+  if(chart) chart.innerHTML=days.map((d,i)=>`
+    <div class="bar-item">
+      <div class="bar-val">${vals[i]}</div>
+      <div class="bar" style="height:${Math.round(vals[i]/max*100)}px;width:100%"></div>
+      <div class="bar-label">${d}</div>
+    </div>`).join('');
+
+  const tb=document.getElementById('all-visitors-table');
+  if(tb) tb.innerHTML=DB.sessions.map((s,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td>${s.name}</td>
+      <td>${s.userId}</td>
+      <td>${DB.users.find(u=>u.email===s.userId)?.regDate||'—'}</td>
+      <td>${s.lastVisit}</td>
+      <td>${s.totalMins||0} daq</td>
+      <td>${s.visits||1}</td>
+      <td><span class="badge badge-${s.status==='online'?'online':'offline'}">${s.status==='online'?'Onlayn':'Oflayn'}</span></td>
+    </tr>`).join('');
+}
+
+function filterVisitors(q){
+  const tb=document.getElementById('all-visitors-table');
+  if(!tb) return;
+  const filtered=DB.sessions.filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||s.userId.toLowerCase().includes(q.toLowerCase()));
+  tb.innerHTML=filtered.map((s,i)=>`
+    <tr>
+      <td>${i+1}</td><td>${s.name}</td><td>${s.userId}</td>
+      <td>${DB.users.find(u=>u.email===s.userId)?.regDate||'—'}</td>
+      <td>${s.lastVisit}</td><td>${s.totalMins||0} daq</td>
+      <td>${s.visits||1}</td>
+      <td><span class="badge badge-${s.status==='online'?'online':'offline'}">${s.status==='online'?'Onlayn':'Oflayn'}</span></td>
+    </tr>`).join('');
+}
+
+function renderCoursesAdmin(){
+  const list=document.getElementById('courses-admin-list');
+  if(!list) return;
+  list.innerHTML=DB.courses.map(c=>`
+    <div class="list-item">
+      ${c.img?`<img src="${c.img}">`:`<div style="width:48px;height:48px;border-radius:8px;background:${c.color}22;display:flex;align-items:center;justify-content:center;font-size:1.5rem">${c.emoji||'📚'}</div>`}
+      <div class="list-item-info"><h4>${c.name}</h4><p>${c.cat} · ${c.price} so'm</p></div>
+      <div class="list-item-actions">
+        <button class="btn btn-warning btn-sm" onclick="editCourse(${c.id})">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCourse(${c.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function saveCourse(){
+  const id=document.getElementById('edit-course-id').value;
+  const c={
+    id:id?parseInt(id):Date.now(),
+    name:document.getElementById('c-name').value||'Yangi kurs',
+    cat:document.getElementById('c-cat').value,
+    price:document.getElementById('c-price').value||'0',
+    duration:document.getElementById('c-duration').value||'1 oy',
+    lessons:parseInt(document.getElementById('c-lessons').value)||0,
+    desc:document.getElementById('c-desc').value||'',
+    emoji:'📚',color:'#1126db',
+    img:document.getElementById('c-img-file').files[0]?URL.createObjectURL(document.getElementById('c-img-file').files[0]):''
+  };
+  if(id){const i=DB.courses.findIndex(x=>x.id===c.id);if(i>=0)DB.courses[i]=c;}
+  else DB.courses.push(c);
+  save();renderCoursesAdmin();renderAllCourses();renderHome();
+  document.getElementById('edit-course-id').value='';
+  document.getElementById('course-form-title').textContent='Yangi kurs qo\'shish';
+  ['c-name','c-price','c-duration','c-lessons','c-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('c-img-preview').innerHTML='';
+  toast('Kurs saqlandi!');
+}
+
+function editCourse(id){
+  const c=DB.courses.find(x=>x.id===id);
+  if(!c) return;
+  document.getElementById('edit-course-id').value=id;
+  document.getElementById('course-form-title').textContent='Kursni tahrirlash';
+  document.getElementById('c-name').value=c.name;
+  document.getElementById('c-cat').value=c.cat;
+  document.getElementById('c-price').value=c.price.replace(/,/g,'');
+  document.getElementById('c-duration').value=c.duration;
+  document.getElementById('c-lessons').value=c.lessons;
+  document.getElementById('c-desc').value=c.desc;
+  if(c.img) document.getElementById('c-img-preview').innerHTML=`<img src="${c.img}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;margin-top:6px">`;
+}
+
+function deleteCourse(id){
+  if(!confirm('Kursni o\'chirish?')) return;
+  DB.courses=DB.courses.filter(c=>c.id!==id);
+  save();renderCoursesAdmin();renderAllCourses();renderHome();
+  toast('Kurs o\'chirildi');
+}
+
+function renderTeachersAdmin(){
+  const list=document.getElementById('teachers-admin-list');
+  if(!list) return;
+  list.innerHTML=DB.teachers.map(t=>`
+    <div class="list-item">
+      ${t.img?`<img src="${t.img}" style="border-radius:50%">`:`<div style="width:48px;height:48px;border-radius:50%;background:${t.color}22;display:flex;align-items:center;justify-content:center;font-weight:700;color:${t.color}">${t.emoji}</div>`}
+      <div class="list-item-info"><h4>${t.name}</h4><p>${t.subject} · ${t.rating}★</p></div>
+      <div class="list-item-actions">
+        <button class="btn btn-warning btn-sm" onclick="editTeacher(${t.id})">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteTeacher(${t.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function saveTeacher(){
+  const id=document.getElementById('edit-teacher-id').value;
+  const t={
+    id:id?parseInt(id):Date.now(),
+    name:document.getElementById('t-name').value||'Yangi ustoz',
+    subject:document.getElementById('t-subject').value||'',
+    exp:document.getElementById('t-exp').value||'',
+    students:parseInt(document.getElementById('t-students').value)||0,
+    rating:parseFloat(document.getElementById('t-rating').value)||4.5,
+    bio:document.getElementById('t-bio').value||'',
+    emoji:(document.getElementById('t-name').value||'XX').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(),
+    color:'#1126db',
+    img:document.getElementById('t-img-file').files[0]?URL.createObjectURL(document.getElementById('t-img-file').files[0]):''
+  };
+  if(id){const i=DB.teachers.findIndex(x=>x.id===t.id);if(i>=0)DB.teachers[i]=t;}
+  else DB.teachers.push(t);
+  save();renderTeachersAdmin();renderAllTeachers();renderHome();
+  document.getElementById('edit-teacher-id').value='';
+  document.getElementById('teacher-form-title').textContent='Yangi o\'qituvchi qo\'shish';
+  ['t-name','t-subject','t-exp','t-students','t-rating','t-bio'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('t-img-preview').innerHTML='';
+  toast('O\'qituvchi saqlandi!');
+}
+
+function editTeacher(id){
+  const t=DB.teachers.find(x=>x.id===id);
+  if(!t) return;
+  document.getElementById('edit-teacher-id').value=id;
+  document.getElementById('teacher-form-title').textContent='O\'qituvchini tahrirlash';
+  document.getElementById('t-name').value=t.name;
+  document.getElementById('t-subject').value=t.subject;
+  document.getElementById('t-exp').value=t.exp;
+  document.getElementById('t-students').value=t.students;
+  document.getElementById('t-rating').value=t.rating;
+  document.getElementById('t-bio').value=t.bio;
+  if(t.img) document.getElementById('t-img-preview').innerHTML=`<img src="${t.img}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin-top:6px">`;
+}
+
+function deleteTeacher(id){
+  if(!confirm('O\'qituvchini o\'chirish?')) return;
+  DB.teachers=DB.teachers.filter(t=>t.id!==id);
+  save();renderTeachersAdmin();renderAllTeachers();renderHome();
+  toast('O\'qituvchi o\'chirildi');
+}
+
+function renderResultsAdmin(){
+  const list=document.getElementById('results-admin-list');
+  if(!list) return;
+  list.innerHTML=DB.results.map(r=>`
+    <div class="list-item">
+      <div style="width:48px;height:48px;border-radius:8px;background:${r.color}22;display:flex;align-items:center;justify-content:center;font-size:1.5rem">${r.icon}</div>
+      <div class="list-item-info"><h4>${r.title}</h4><p>${r.desc.slice(0,50)}...</p></div>
+      <div class="list-item-actions">
+        <button class="btn btn-danger btn-sm" onclick="deleteResult(${r.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function saveResult(){
+  const r={
+    id:Date.now(),
+    title:document.getElementById('r-title').value||'Yangi natija',
+    desc:document.getElementById('r-desc').value||'',
+    icon:document.getElementById('r-icon').value||'🏆',
+    color:document.getElementById('r-color').value,
+    img:document.getElementById('r-img-file').files[0]?URL.createObjectURL(document.getElementById('r-img-file').files[0]):''
+  };
+  DB.results.push(r);save();renderResultsAdmin();renderResults();
+  ['r-title','r-desc','r-icon'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('r-img-preview').innerHTML='';
+  toast('Natija saqlandi!');
+}
+
+function deleteResult(id){
+  if(!confirm('Natijani o\'chirish?')) return;
+  DB.results=DB.results.filter(r=>r.id!==id);
+  save();renderResultsAdmin();renderResults();
+  toast('Natija o\'chirildi');
+}
+
+let galleryUploadedImg='';
+function handleGalleryUpload(input){
+  if(input.files[0]){
+    galleryUploadedImg=URL.createObjectURL(input.files[0]);
+    document.getElementById('g-preview').innerHTML=`<img src="${galleryUploadedImg}" style="width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-top:8px">`;
+  }
+}
+
+function saveGalleryImg(){
+  if(!galleryUploadedImg){toast('Avval rasm tanlang');return;}
+  const g={id:Date.now(),name:document.getElementById('g-name').value||'Rasm',cat:document.getElementById('g-cat').value,src:galleryUploadedImg};
+  DB.gallery.push(g);save();renderGallery();
+  galleryUploadedImg='';
+  document.getElementById('g-preview').innerHTML='';
+  document.getElementById('g-name').value='';
+  toast('Rasm saqlandi!');
+}
+
+function renderGallery(){
+  const g=document.getElementById('gallery-grid');
+  if(!g) return;
+  if(DB.gallery.length===0){g.innerHTML='<p style="color:var(--muted);font-size:0.88rem;padding:1rem">Hali rasm yuklanmagan</p>';return;}
+  g.innerHTML=DB.gallery.map(img=>`
+    <div style="position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--border);">
+      <img src="${img.src}" style="width:100%;height:110px;object-fit:cover;display:block">
+      <div style="padding:6px 8px;font-size:0.75rem;color:var(--muted)">${img.name}</div>
+      <button onclick="deleteGalleryImg(${img.id})" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.6);color:white;border:none;border-radius:6px;padding:2px 6px;cursor:pointer;font-size:0.7rem">✕</button>
+    </div>`).join('');
+}
+
+function deleteGalleryImg(id){
+  DB.gallery=DB.gallery.filter(g=>g.id!==id);
+  save();renderGallery();toast('Rasm o\'chirildi');
+}
+
+function renderUsers(){
+  const total=document.getElementById('u-total');
+  const active=document.getElementById('u-active');
+  const newu=document.getElementById('u-new');
+  const allUsers=[...DB.users,{id:0,name:'Admin',email:'admin@kohinoor.uz',role:'admin',regDate:'2024-01-01',status:'active'}];
+  if(total) total.textContent=allUsers.length;
+  if(active) active.textContent=Math.floor(allUsers.length*0.7);
+  if(newu) newu.textContent=DB.users.filter(u=>u.regDate===new Date().toLocaleDateString('uz')).length||Math.floor(allUsers.length*0.2);
+  const tb=document.getElementById('users-table');
+  if(!tb) return;
+  tb.innerHTML=allUsers.map((u,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td>${u.name}</td>
+      <td>${u.email}</td>
+      <td>${u.regDate||'—'}</td>
+      <td><span class="badge badge-${u.role==='admin'?'active':'pending'}">${u.role==='admin'?'Admin':'O\'quvchi'}</span></td>
+      <td><span class="badge badge-online">Faol</span></td>
+      <td>${u.role!=='admin'?`<button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">O'chirish</button>`:'—'}</td>
+    </tr>`).join('');
+}
+
+function deleteUser(id){
+  if(!confirm('Foydalanuvchini o\'chirish?')) return;
+  DB.users=DB.users.filter(u=>u.id!==id);
+  save();renderUsers();toast('Foydalanuvchi o\'chirildi');
+}
+
+function previewImg(input, previewId){
+  if(input.files[0]){
+    const url=URL.createObjectURL(input.files[0]);
+    document.getElementById(previewId).innerHTML=`<img src="${url}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;margin-top:8px">`;
+  }
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ===== INIT =====
+updateNavForUser();
+renderHome();
+</script>
+
+
+
+
+<!-- KOHINOOR 3D LOGO BACKGROUND -->
+<canvas id="bg3d" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+<script>
+(function(){
+  var canvas = document.getElementById('bg3d');
+  var ctx = canvas.getContext('2d');
+  var W = window.innerWidth, H = window.innerHeight;
+  canvas.width = W; canvas.height = H;
+
+  window.addEventListener('resize', function(){
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W; canvas.height = H;
+  });
+
+  var img = new Image();
+  img.src = "data:image/jpeg;base64,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";
+
+  var targetRY = 0, currentRY = 0;
+  var targetRX = 0, currentRX = 0;
+
+  window.addEventListener('scroll', function(){
+    var maxScroll = document.body.scrollHeight - window.innerHeight;
+    var prog = maxScroll > 0 ? window.pageYOffset / maxScroll : 0;
+    targetRY = prog * Math.PI * 4;
+    targetRX = prog * Math.PI * 0.6;
+  }, {passive:true});
+
+  var floatT = 0;
+
+  // Pre-process: draw logo removing blue bg (replace blue pixels with transparent)
+  var processedCanvas = null;
+
+  function processLogo() {
+    var pc = document.createElement('canvas');
+    pc.width = img.naturalWidth;
+    pc.height = img.naturalHeight;
+    var pctx = pc.getContext('2d');
+    pctx.drawImage(img, 0, 0);
+    var imageData = pctx.getImageData(0, 0, pc.width, pc.height);
+    var data = imageData.data;
+
+    // Remove blue background pixels
+    // Logo blue is approximately R:17-50, G:30-80, B:180-255
+    for (var i = 0; i < data.length; i += 4) {
+      var r = data[i], g = data[i+1], b = data[i+2];
+      // Detect blue background: high blue, low-mid red, low-mid green
+      // Also detect the lighter blue shadow streaks
+      var isBlueBg = (b > 150 && r < 100 && g < 100 && b > r * 1.8 && b > g * 1.5);
+      var isShadowBlue = (b > 100 && r < 80 && g < 80 && b > r + 40);
+      if (isBlueBg || isShadowBlue) {
+        // Make transparent
+        data[i+3] = 0;
+      } else {
+        // Keep white K and orange diamond - slightly boost visibility
+        data[i+3] = Math.min(255, data[i+3]);
+      }
+    }
+    pctx.putImageData(imageData, 0, 0);
+    processedCanvas = pc;
+  }
+
+  // Draw one logo instance with 3D perspective transform
+  function drawLogo(x, y, size, rotY, rotX, alpha) {
+    if (!processedCanvas) return;
+    var scaleX = Math.cos(rotY);
+    var absScaleX = Math.abs(scaleX);
+    var tiltY = Math.sin(rotX) * size * 0.15;
+
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(x, y + tiltY);
+
+    // Apply 3D-like perspective: squish horizontally based on rotY
+    ctx.transform(absScaleX, Math.sin(rotY) * 0.08, 0, 1, 0, 0);
+
+    // Flip horizontally when rotated past 90deg (back face)
+    if (Math.cos(rotY) < 0) {
+      ctx.scale(-1, 1);
+    }
+
+    var drawSize = size;
+    ctx.drawImage(processedCanvas, -drawSize/2, -drawSize/2, drawSize, drawSize);
+    ctx.restore();
+  }
+
+  function render() {
+    requestAnimationFrame(render);
+    if (!img.complete || img.naturalWidth === 0) return;
+
+    if (!processedCanvas && img.complete) {
+      processLogo();
+    }
+    if (!processedCanvas) return;
+
+    floatT += 0.010;
+    currentRY += (targetRY - currentRY) * 0.055;
+    currentRX += (targetRX - currentRX) * 0.055;
+
+    ctx.clearRect(0, 0, W, H);
+
+    var positions = [
+      {x: W*0.50, y: H*0.50, size: Math.min(W,H)*0.52, alpha: 0.22, phase: 0},
+      {x: W*0.10, y: H*0.15, size: Math.min(W,H)*0.17, alpha: 0.10, phase: 1.3},
+      {x: W*0.90, y: H*0.85, size: Math.min(W,H)*0.15, alpha: 0.09, phase: 2.0},
+      {x: W*0.85, y: H*0.12, size: Math.min(W,H)*0.11, alpha: 0.08, phase: 0.8},
+      {x: W*0.08, y: H*0.80, size: Math.min(W,H)*0.13, alpha: 0.08, phase: 1.7},
+    ];
+
+    positions.forEach(function(pos) {
+      var floatY = Math.sin(floatT + pos.phase) * pos.size * 0.022;
+      var rotY = currentRY + pos.phase * 0.25;
+      var rotX = currentRX + pos.phase * 0.08;
+      drawLogo(pos.x, pos.y + floatY, pos.size, rotY, rotX, pos.alpha);
+    });
+  }
+
+  render();
+})();
+
+// ===== MOBILE MENU =====
+function toggleMobileMenu(){
+  var m=document.getElementById('mobile-menu');
+  m.classList.toggle('open');
+}
+function closeMobileMenu(){
+  var m=document.getElementById('mobile-menu');
+  m.classList.remove('open');
+}
+// Close mobile menu on outside click
+document.addEventListener('click',function(e){
+  var menu=document.getElementById('mobile-menu');
+  var btn=document.getElementById('hamburger-btn');
+  if(menu && btn && !menu.contains(e.target) && !btn.contains(e.target)){
+    menu.classList.remove('open');
+  }
+});
+
+// ===== ADMIN DRAWER =====
+function openAdminDrawer(){
+  document.getElementById('admin-drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+}
+function closeAdminDrawer(){
+  document.getElementById('admin-drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+}
+</script>
+
+<div class="canvas-bg">
+  <canvas id="matrixCanvas"></canvas>
+</div>
+
+<script>
+(function(){
+  var canvas = document.getElementById('matrixCanvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  
+  var W = window.innerWidth;
+  var H = window.innerHeight;
+  canvas.width = W;
+  canvas.height = H;
+
+  window.addEventListener('resize', function(){
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
+  });
+
+  // Logo simulyatsiyasi uchun nuqtalar ko'rinishi
+  var points = [];
+  var scale = Math.min(W, H) * 0.28;
+  var steps = 45;
+  for (var i = 0; i < steps; i++) {
+    var lat = (i / (steps - 1)) * Math.PI - Math.PI / 2;
+    for (var j = 0; j < steps; j++) {
+      var lon = (j / (steps - 1)) * 2 * Math.PI - Math.PI;
+      var x = Math.cos(lat) * Math.sin(lon);
+      var y = Math.sin(lat);
+      var z = Math.cos(lat) * Math.cos(lon);
+      points.push({x: x * scale, y: y * scale, z: z * scale});
+    }
+  }
+
+  var rotX = 0, rotY = 0;
+  var targetRX = 0.3, targetRY = 0.5;
+  var floatT = 0;
+
+  document.addEventListener('mousemove', function(e){
+    targetRY = (e.clientX / W - 0.5) * 2.5;
+    targetRX = (e.clientY / H - 0.5) * 2.5;
+  });
+
+  function drawLogo(cx, cy, size, rY, rX, alpha) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    
+    var cosY = Math.cos(rY), sinY = Math.sin(rY);
+    var cosX = Math.cos(rX), sinX = Math.sin(rX);
+
+    ctx.fillStyle = 'rgba(126, 115, 194, ' + alpha + ')';
+    
+    // Har 5 ta nuqtadan bittasini chizamiz (yengil ishlashi uchun)
+    for(var i = 0; i < points.length; i += 5) {
+      var p = points[i];
+      
+      // Y o'qi bo'yicha aylantirish
+      var x1 = p.x * cosY - p.z * sinY;
+      var z1 = p.x * sinY + p.z * cosY;
+      
+      // X o'qi bo'yicha aylantirish
+      var y2 = p.y * cosX - z1 * sinX;
+      var z2 = p.y * sinX + z1 * cosX;
+
+      var perspective = 500 / (500 + z2);
+      var screenX = x1 * perspective;
+      var screenY = y2 * perspective;
+
+      ctx.fillRect(screenX, screenY, 1.5, 1.5);
+    }
+    ctx.restore();
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+    
+    rotX += (targetRX - rotX) * 0.05;
+    rotY += (targetRY - rotY) * 0.05;
+    floatT += 0.015;
+
+    var currentRY = rotY + floatT * 0.15;
+    var currentRX = rotX + Math.sin(floatT * 0.5) * 0.12;
+
+    var positions = [
+      {x: W*0.50, y: H*0.50, size: Math.min(W,H)*0.35, alpha: 0.12, phase: 0.0},
+      {x: W*0.15, y: H*0.20, size: Math.min(W,H)*0.14, alpha: 0.07, phase: 1.3},
+      {x: W*0.90, y: H*0.85, size: Math.min(W,H)*0.15, alpha: 0.09, phase: 2.0},
+      {x: W*0.85, y: H*0.12, size: Math.min(W,H)*0.11, alpha: 0.08, phase: 0.8},
+      {x: W*0.08, y: H*0.80, size: Math.min(W,H)*0.13, alpha: 0.08, phase: 1.7},
+    ];
+
+    positions.forEach(function(pos) {
+      var floatY = Math.sin(floatT + pos.phase) * pos.size * 0.022;
+      var rotY = currentRY + pos.phase * 0.25;
+      var rotX = currentRX + pos.phase * 0.08;
+      drawLogo(pos.x, pos.y + floatY, pos.size, rotY, rotX, pos.alpha);
+    });
+
+    requestAnimationFrame(render);
+  }
+
+  render();
+})();
+
+// ===== MOBILE MENU =====
+function toggleMobileMenu(){
+  var m = document.getElementById('mobile-menu');
+  if(m) m.classList.toggle('open');
+}
+function closeMobileMenu(){
+  var m = document.getElementById('mobile-menu');
+  if(m) m.classList.remove('open');
+}
+
+document.addEventListener('click', function(e){
+  var menu = document.getElementById('mobile-menu');
+  var burger = document.querySelector('.burger');
+  if(menu && menu.classList.contains('open') && !menu.contains(e.target) && burger && !burger.contains(e.target)){
+    menu.classList.remove('open');
+  }
+});
+</script>
+
+</body>
+</html>
