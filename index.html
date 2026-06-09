@@ -2280,7 +2280,13 @@ onAuthStateChanged(auth, (user) => {
     // Google bilan kirgan bo'lsa parol bo'limi yashirinadi
     if(passSection) passSection.style.display = isGoogle ? 'none' : 'block';
 
-    if (window.location.hash === '#admin' && isAdmin) showPage('admin');
+    if (window.location.hash === '#admin' && isAdmin) {
+      showPage('admin');
+    } else {
+      // Agar hech qaysi page active bo'lmasa home ga o't
+      var anyActive = document.querySelector('.page.active');
+      if(!anyActive) showPage('home');
+    }
 
   } else {
     authArea.style.display    = 'flex';
