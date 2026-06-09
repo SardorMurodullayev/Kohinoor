@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bosh sahifa — Kohinoor Academy</title>
+<title>Natijalar — Kohinoor Academy</title>
 <link rel="stylesheet" href="kuhinur.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -517,11 +517,11 @@ footer strong{color:white;}
   </div>
 </div>
 <div class="nav-links" id="nav-links-desktop">
-  <a href="index.html" class="active">Bosh sahifa</a>
+  <a href="index.html">Bosh sahifa</a>
   <a href="kurslar.html">Kurslar</a>
   <a href="filiallar.html">Filiallar</a>
   <a href="karyera.html">Karyera</a>
-  <a href="natijalar.html">Natijalar</a>
+  <a href="natijalar.html" class="active">Natijalar</a>
 </div>
   <!-- HAMBURGER BUTTON -->
   <button class="hamburger" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menu">
@@ -529,11 +529,11 @@ footer strong{color:white;}
   </button>
   <!-- MOBILE MENU OVERLAY -->
   <div class="mobile-menu" id="mobile-menu">
-    <a href="index.html" class="active">🏠 Bosh sahifa</a>
+    <a href="index.html">🏠 Bosh sahifa</a>
     <a href="kurslar.html">📚 Kurslar</a>
     <a href="filiallar.html">📍 Filiallar</a>
     <a href="karyera.html">💼 Karyera</a>
-    <a href="natijalar.html">🏆 Natijalar</a>
+    <a href="natijalar.html" class="active">🏆 Natijalar</a>
     <div id="mob-auth-btns" class="mob-auth-btns">
       <button class="btn btn-outline" onclick="window.location.href='auth.html'">Kirish</button>
       <button class="btn btn-primary" onclick="window.location.href='auth.html'">Ro'yxatdan o'tish</button>
@@ -589,122 +589,35 @@ footer strong{color:white;}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+<!-- PAGE: RESULTS -->
 
-<!-- PAGE: HOME -->
 
-  <div class="hero">
-    <div class="hero-badge">🎓 O'zbekistoning yetakchi o'quv markazi</div>
-    <h1>Bilimingizni <span>Kohinoor</span> bilan<br>yangi darajaga oling</h1>
-    <p>Professional o'qituvchilar, zamonaviy dasturlar va tasdiqlangan natijalar bilan karyerangizni rivojlantiring.</p>
-    <div class="hero-btns">
-      <button class="btn-hero-primary" onclick="showPage('courses')">Kurslarni ko'rish</button>
-      <button class="btn-hero-outline" onclick="window.location.href='auth.html'">Bepul ro'yxatdan o'tish</button>
+  <div class="section">
+    <div class="section-header">
+      <div class="tag">🏆 NATIJALAR</div>
+      <h2>Kohinoor Academy natijalari</h2>
+      <p>Bizning o'quvchilarimizning real yutuqlari va muvaffaqiyatlari</p>
     </div>
-    <div class="stats-row">
-      <div class="stat-item"><div class="num">2,400+</div><div class="lbl">Bitiruvchilar</div></div>
-      <div class="stat-item"><div class="num">98%</div><div class="lbl">Qoniqish darajasi</div></div>
-      <div class="stat-item"><div class="num">45+</div><div class="lbl">Kurslar</div></div>
-      <div class="stat-item"><div class="num">12</div><div class="lbl">Tajribali ustozlar</div></div>
-    </div>
-  </div>
-
-  <!-- STATS CARDS -->
-  <div class="section" style="padding-top:3rem;padding-bottom:1rem;">
-    <div class="stats-cards-kohinoor">
-      <div class="kohinoor-stat-card">
-        <span class="kohinoor-dot" style="background:#4fc3f7;"></span>
-        <div class="kohinoor-num">11+</div>
-        <div class="kohinoor-lbl">yillik tajriba</div>
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="big" style="color:var(--secondary)">2,400+</div>
+        <div class="desc">Bitiruvchilar soni</div>
       </div>
-      <div class="kohinoor-stat-card">
-        <span class="kohinoor-dot" style="background:#ef5350;"></span>
-        <div class="kohinoor-num">100,000+</div>
-        <div class="kohinoor-lbl">ingliz tilini o'rgangan yoshlar</div>
+      <div class="result-card">
+        <div class="big" style="color:var(--primary)">98%</div>
+        <div class="desc">Ish topganlar</div>
       </div>
-      <div class="kohinoor-stat-card">
-        <span class="kohinoor-dot" style="background:#ffa726;"></span>
-        <div class="kohinoor-num">16</div>
-        <div class="kohinoor-lbl">O'zbekiston bo'ylab filiallar soni</div>
+      <div class="result-card">
+        <div class="big" style="color:#22c55e">4.9★</div>
+        <div class="desc">O'rtacha reyting</div>
       </div>
-      <div class="kohinoor-stat-card">
-        <span class="kohinoor-dot" style="background:#66bb6a;"></span>
-        <div class="kohinoor-num">500+</div>
-        <div class="kohinoor-lbl">kohinoordagi xodimlar soni</div>
+      <div class="result-card">
+        <div class="big" style="color:#f59e0b">150+</div>
+        <div class="desc">Hamkor kompaniyalar</div>
       </div>
     </div>
+    <div class="achievements" id="achievements-list"></div>
   </div>
-
-  <!-- NEGA YOSHLAR BIZNI TANLASHMOQDA? -->
-<section class="why-choose-section">
-  <div class="section-header">
-    <div class="tag">Afzalliklarimiz</div>
-    <h2>Nega yoshlar bizni tanlashmoqda?</h2>
-    <p>GO-GETTERS o'quv markazi zamonaviy ta'lim metodikasi va yuqori natijadorlik tizimi bilan yoshlarning ishonchli tanloviga aylandi.</p>
-  </div>
-
-  <div class="nega-grid">
-  <div class="nega-card">
-    <div class="nega-icon icon-amber">
-      <i class="fa-solid fa-graduation-cap"></i>
-    </div>
-    <h3>Bepul ikkinchi o'qituvchi</h3>
-    <p>Mavzuni yaxshi o'zlashtirolmagan bo'lsangiz, yordamchi o'qituvchilar har doim yoningizda va istagan mavzuyingizni qayta tushuntirib berishadi.</p>
-  </div>
-
-    <!-- 2. Tajribali o'qituvchilar (Markazdagi asosiy karta) -->
-    <div class="nega-card nega-card-center">
-      <div class="nega-teachers-img">
-        <div class="nega-teacher-bubble bubble-1">
-          <img src="Nomsiz dizayn.png" alt="O'qituvchi 1" style="width:100%;height:100%;border-radius:50%;">
-          <div class="nega-ielts-badge badge-red">IELTS 8.0</div>
-        </div>
-        <div class="nega-teacher-bubble nega-main-bubble">
-          <img src="Anvar Ustoz.jpg" alt="Asosiy O'qituvchi" style="width:100%;height:100%;border-radius:50%;">
-          <div class="nega-ielts-badge badge-red" style="font-size:0.75rem;bottom:-12px;">Asosiy Ustoz</div>
-        </div>
-        <div class="nega-teacher-bubble bubble-2">
-          <img src="Dilshod Ustoz IELTS 7.5.png" alt="Dilshod Ustoz" style="width:100%;height:100%;border-radius:50%;">
-          <div class="nega-ielts-badge badge-green">IELTS 7.5</div>
-        </div>
-        <div class="nega-teacher-bubble bubble-3">
-          <img src="Asadbek Ustoz C1.png" alt="Asadbek Ustoz"  style="width:100%;height:100%;border-radius:50%;">
-          <div class="nega-ielts-badge badge-pink">C1 Certificate</div>
-        </div>
-        <div class="nega-teacher-bubble bubble-4">
-          <img src="Zuhriddin Ustoz Matematika A.jpg" alt="Zuhriddin Ustoz" style="width:100%;height:100%;border-radius:50%;">
-          <div class="nega-ielts-badge badge-blue">Matematika A+</div>
-        </div>
-      </div>
-      <h3>Tajribali o'qituvchilar</h3>
-      <p>Har bir o'qituvchi maxsus o'qitish kurslarini tamomlagan bo'lib, ularning IELTS natijalari 9.0 gacha. Bunday ustozlarni hech nimaga alishmaymiz.</p>
-    </div>
-
-    <div class="nega-card">
-    <div class="nega-icon icon-red">
-      <i class="fa-solid fa-trophy"></i>
-    </div>
-    <h3>Bepul Tadbirlar</h3>
-    <p>Mafia, kino, taniqli insonlar bilan suhbat va unutilmas sayohatlar, bularning barchasi bizning o'quvchilarimiz uchun mutlaqo bepul.</p>
-  </div>
-
-  <div class="nega-card">
-    <div class="nega-icon icon-green">
-      <i class="fa-solid fa-square-check"></i>
-    </div>
-    <h3>Test Markazi</h3>
-    <p>Alohida test markazimiz mavjud u yerda siz, ham MOCK imtihonlarini ham haqiqiy imtihonlarni topshirishingiz mumkin. Bilimingizni real vaqtda sinang.</p>
-  </div>
-
-  <div class="nega-card">
-    <div class="nega-icon icon-gray">
-      <i class="fa-solid fa-mug-hot"></i>
-    </div>
-    <h3>Co-working zonalar</h3>
-    <p>Har bir filialimizda o'quvchilarimiz uchun maxsus co-working zonalar mavjud bo'lib, bu yerda siz darslardan ozod vaqtingiz mustaqil o'rganishingiz yoki qo'shimcha ustozlar bilan qolib ketgan darslarni qayta o'tishingiz mumkin.</p>
-  </div>
-</section>
 
 <!-- PROFILE MODAL -->
 <div class="modal-overlay" id="profile-modal" onclick="closeProfileModal(event)">

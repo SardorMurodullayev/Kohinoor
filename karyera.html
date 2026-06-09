@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bosh sahifa — Kohinoor Academy</title>
+<title>Karyera — Kohinoor Academy</title>
 <link rel="stylesheet" href="kuhinur.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -489,6 +489,96 @@ footer strong{color:white;}
 .mob-profile-info { flex: 1; overflow: hidden; }
 .mob-profile-name { font-weight: 600; color: var(--dark); font-size: 0.92rem; }
 .mob-profile-email { font-size: 0.75rem; color: var(--muted); overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+
+/* ===== VIDEO LIGHTBOX MODAL ===== */
+#video-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+#video-modal-overlay.open {
+  display: flex;
+}
+#video-modal-inner {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+}
+#video-modal-inner video {
+  width: 100%;
+  height: auto;
+  max-height: 85vh;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+#video-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.2s;
+  backdrop-filter: blur(4px);
+}
+#video-modal-close:hover {
+  background: rgba(255,255,255,0.3);
+}
+@media(max-width:600px){
+  #video-modal-inner {
+    border-radius: 10px;
+    max-height: 95vh;
+  }
+  #video-modal-inner video {
+    max-height: 80vh;
+  }
+}
+
+/* === GORIZONTAL KARUSEL OVERRIDE === */
+.kohinoor-drag-carousel {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  overflow-x: auto;
+  cursor: grab;
+  user-select: none;
+  padding: 2rem 0;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.kohinoor-drag-carousel::-webkit-scrollbar { display: none; }
+.kohinoor-drag-carousel:active { cursor: grabbing; }
+
+.kohinoor-grid-wrapper {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 20px;
+  padding: 0 5vw;
+  width: max-content;
+  align-items: center;
+}
 </style>
 </head>
 <body>
@@ -517,10 +607,10 @@ footer strong{color:white;}
   </div>
 </div>
 <div class="nav-links" id="nav-links-desktop">
-  <a href="index.html" class="active">Bosh sahifa</a>
+  <a href="index.html">Bosh sahifa</a>
   <a href="kurslar.html">Kurslar</a>
   <a href="filiallar.html">Filiallar</a>
-  <a href="karyera.html">Karyera</a>
+  <a href="karyera.html" class="active">Karyera</a>
   <a href="natijalar.html">Natijalar</a>
 </div>
   <!-- HAMBURGER BUTTON -->
@@ -529,10 +619,10 @@ footer strong{color:white;}
   </button>
   <!-- MOBILE MENU OVERLAY -->
   <div class="mobile-menu" id="mobile-menu">
-    <a href="index.html" class="active">🏠 Bosh sahifa</a>
+    <a href="index.html">🏠 Bosh sahifa</a>
     <a href="kurslar.html">📚 Kurslar</a>
     <a href="filiallar.html">📍 Filiallar</a>
-    <a href="karyera.html">💼 Karyera</a>
+    <a href="karyera.html" class="active">💼 Karyera</a>
     <a href="natijalar.html">🏆 Natijalar</a>
     <div id="mob-auth-btns" class="mob-auth-btns">
       <button class="btn btn-outline" onclick="window.location.href='auth.html'">Kirish</button>
@@ -589,122 +679,212 @@ footer strong{color:white;}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+<!-- PAGE: KARYERA -->
 
-<!-- PAGE: HOME -->
+<!-- HERO SECTION -->
+<div class="hero" style="background:linear-gradient(135deg,rgba(13,13,26,0.97) 0%,rgba(26,16,64,0.97) 50%,rgba(13,26,92,0.97) 100%);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,rgba(126,115,194,0.18) 0%,transparent 50%),radial-gradient(circle at 70% 60%,rgba(17,38,219,0.15) 0%,transparent 50%);pointer-events:none;"></div>
+  <div class="hero-badge">💼 KARYERA BO'LIMI</div>
+  <h1 style="font-size:clamp(2rem,5vw,3.5rem);color:white;margin-bottom:1rem;line-height:1.2;font-family:'Playfair Display',serif;">Kohinoor Academy bilan <span style="background:linear-gradient(135deg,#7e73c2,#6c9fff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">karyerangizni boshlang</span></h1>
+  <p style="color:rgba(255,255,255,0.65);max-width:600px;margin:0 auto 2.5rem;font-size:1.05rem;line-height:1.7;">Kohinoor Academyning butun boshli karyerasi haqida ma'lumot oling. Bizning jamoaga qo'shiling va o'z kelajagingizni bizgacha qurishni boshlang.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <button class="btn-hero-primary" onclick="document.getElementById('ariza-section').scrollIntoView({behavior:'smooth'})">📋 Ariza qoldirish</button>
+    <button class="btn-hero-outline" onclick="document.getElementById('stats-section').scrollIntoView({behavior:'smooth'})">📊 Statistika</button>
+  </div>
+</div>
 
-  <div class="hero">
-    <div class="hero-badge">🎓 O'zbekistoning yetakchi o'quv markazi</div>
-    <h1>Bilimingizni <span>Kohinoor</span> bilan<br>yangi darajaga oling</h1>
-    <p>Professional o'qituvchilar, zamonaviy dasturlar va tasdiqlangan natijalar bilan karyerangizni rivojlantiring.</p>
-    <div class="hero-btns">
-      <button class="btn-hero-primary" onclick="showPage('courses')">Kurslarni ko'rish</button>
-      <button class="btn-hero-outline" onclick="window.location.href='auth.html'">Bepul ro'yxatdan o'tish</button>
+<!-- STATS SECTION -->
+<div id="stats-section">
+  <div class="stats-cards-kohinoor">
+    <!-- 1-card: Ko'k -->
+    <div class="kohinoor-stat-card" style="--hover-color: rgba(59, 130, 246, 0.25);">
+      <span class="kohinoor-dot" style="background:#3b82f6;"></span>
+      <div class="kohinoor-num">8+</div>
+      <div class="kohinoor-lbl">yillik tajriba</div>
     </div>
-    <div class="stats-row">
-      <div class="stat-item"><div class="num">2,400+</div><div class="lbl">Bitiruvchilar</div></div>
-      <div class="stat-item"><div class="num">98%</div><div class="lbl">Qoniqish darajasi</div></div>
-      <div class="stat-item"><div class="num">45+</div><div class="lbl">Kurslar</div></div>
-      <div class="stat-item"><div class="num">12</div><div class="lbl">Tajribali ustozlar</div></div>
+    
+    <!-- 2-card: Qizil -->
+    <div class="kohinoor-stat-card" style="--hover-color: rgba(239, 68, 68, 0.25);">
+      <span class="kohinoor-dot" style="background:#ef4444;"></span>
+      <div class="kohinoor-num">1000+</div>
+      <div class="kohinoor-lbl">ingliz tilini o'rgangan yoshlar soni</div>
+    </div>
+    
+    <!-- 3-card: Yashil -->
+    <div class="kohinoor-stat-card" style="--hover-color: rgba(34, 197, 94, 0.25);">
+      <span class="kohinoor-dot" style="background:#22c55e;"></span>
+      <div class="kohinoor-num">2</div>
+      <div class="kohinoor-lbl">Qashqadaryodagi filiallar soni</div>
+    </div>
+    
+    <!-- 4-card: Sariq/Olovrang -->
+    <div class="kohinoor-stat-card" style="--hover-color: rgba(245, 158, 11, 0.25);">
+      <span class="kohinoor-dot" style="background:#f59e0b;"></span>
+      <div class="kohinoor-num">50+</div>
+      <div class="kohinoor-lbl">Kohinoordagi xodimlar soni</div>
     </div>
   </div>
 
-  <!-- STATS CARDS -->
-  <div class="section" style="padding-top:3rem;padding-bottom:1rem;">
-    <div class="stats-cards-kohinoor">
-      <div class="kohinoor-stat-card">
-        <span class="kohinoor-dot" style="background:#4fc3f7;"></span>
-        <div class="kohinoor-num">11+</div>
-        <div class="kohinoor-lbl">yillik tajriba</div>
-      </div>
-      <div class="kohinoor-stat-card">
-        <span class="kohinoor-dot" style="background:#ef5350;"></span>
-        <div class="kohinoor-num">100,000+</div>
-        <div class="kohinoor-lbl">ingliz tilini o'rgangan yoshlar</div>
-      </div>
-      <div class="kohinoor-stat-card">
-        <span class="kohinoor-dot" style="background:#ffa726;"></span>
-        <div class="kohinoor-num">16</div>
-        <div class="kohinoor-lbl">O'zbekiston bo'ylab filiallar soni</div>
-      </div>
-      <div class="kohinoor-stat-card">
-        <span class="kohinoor-dot" style="background:#66bb6a;"></span>
-        <div class="kohinoor-num">500+</div>
-        <div class="kohinoor-lbl">kohinoordagi xodimlar soni</div>
-      </div>
+  <div class="stats-cards-kohinoor" style="margin-top:1.5rem; grid-template-columns: repeat(2, 1fr);">
+    <!-- 5-card: Siyohrang -->
+    <div class="kohinoor-stat-card" style="--hover-color: rgba(168, 85, 247, 0.25);">
+      <span class="kohinoor-dot" style="background:#a855f7;"></span>
+      <div class="kohinoor-num">3000+</div>
+      <div class="kohinoor-lbl">Kohinoor Academy O'quvchilar soni</div>
+    </div>
+    
+    <!-- 6-card: Och ko'k -->
+    <div class="kohinoor-stat-card" style="--hover-color: rgba(108, 159, 255, 0.25);">
+      <span class="kohinoor-dot" style="background:#6c9fff;"></span>
+      <div class="kohinoor-num">2000</div>
+      <div class="kohinoor-lbl">Kohinoor Academyda Talaba bo'lgan o'quvchilar soni </div>
     </div>
   </div>
+</div>
 
-  <!-- NEGA YOSHLAR BIZNI TANLASHMOQDA? -->
-<section class="why-choose-section">
+<!-- GALLERY / MEDIA SECTION -->
+
+<!-- /***** INTERAKTIV GALEREYA SEKSIYASI *****/ -->
+<section class="why-choose-section" style="overflow: hidden; padding: 4rem 0;">
   <div class="section-header">
-    <div class="tag">Afzalliklarimiz</div>
-    <h2>Nega yoshlar bizni tanlashmoqda?</h2>
-    <p>GO-GETTERS o'quv markazi zamonaviy ta'lim metodikasi va yuqori natijadorlik tizimi bilan yoshlarning ishonchli tanloviga aylandi.</p>
+    <div class="tag">📸 GALEREYA</div>
+    <h2>Bizning jamoamiz va tadbirlar</h2>
+    <p>Kohinoor Academy hayoti — haqiqiy quvnoq lahzalar, darslar va tadbirlar videosida!</p>
   </div>
 
-  <div class="nega-grid">
-  <div class="nega-card">
-    <div class="nega-icon icon-amber">
-      <i class="fa-solid fa-graduation-cap"></i>
-    </div>
-    <h3>Bepul ikkinchi o'qituvchi</h3>
-    <p>Mavzuni yaxshi o'zlashtirolmagan bo'lsangiz, yordamchi o'qituvchilar har doim yoningizda va istagan mavzuyingizni qayta tushuntirib berishadi.</p>
-  </div>
+  <!-- Gorizontal drag karusel -->
+  <div class="kohinoor-drag-carousel">
+    <div class="kohinoor-grid-wrapper">
 
-    <!-- 2. Tajribali o'qituvchilar (Markazdagi asosiy karta) -->
-    <div class="nega-card nega-card-center">
-      <div class="nega-teachers-img">
-        <div class="nega-teacher-bubble bubble-1">
-          <img src="Nomsiz dizayn.png" alt="O'qituvchi 1" style="width:100%;height:100%;border-radius:50%;">
-          <div class="nega-ielts-badge badge-red">IELTS 8.0</div>
-        </div>
-        <div class="nega-teacher-bubble nega-main-bubble">
-          <img src="Anvar Ustoz.jpg" alt="Asosiy O'qituvchi" style="width:100%;height:100%;border-radius:50%;">
-          <div class="nega-ielts-badge badge-red" style="font-size:0.75rem;bottom:-12px;">Asosiy Ustoz</div>
-        </div>
-        <div class="nega-teacher-bubble bubble-2">
-          <img src="Dilshod Ustoz IELTS 7.5.png" alt="Dilshod Ustoz" style="width:100%;height:100%;border-radius:50%;">
-          <div class="nega-ielts-badge badge-green">IELTS 7.5</div>
-        </div>
-        <div class="nega-teacher-bubble bubble-3">
-          <img src="Asadbek Ustoz C1.png" alt="Asadbek Ustoz"  style="width:100%;height:100%;border-radius:50%;">
-          <div class="nega-ielts-badge badge-pink">C1 Certificate</div>
-        </div>
-        <div class="nega-teacher-bubble bubble-4">
-          <img src="Zuhriddin Ustoz Matematika A.jpg" alt="Zuhriddin Ustoz" style="width:100%;height:100%;border-radius:50%;">
-          <div class="nega-ielts-badge badge-blue">Matematika A+</div>
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <video src="kubigtadbiri.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+      </div>
+
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <video src="nishonolimpiadasi.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+      </div>
+
+      <div class="media-box" style="width: 520px; height: 460px; flex-shrink: 0;">
+        <video src="katta.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+        <div class="center-box-info">
+          <h4>Kohinoor Academy</h4>
+          <p>Impossible is Possible+</p>
         </div>
       </div>
-      <h3>Tajribali o'qituvchilar</h3>
-      <p>Har bir o'qituvchi maxsus o'qitish kurslarini tamomlagan bo'lib, ularning IELTS natijalari 9.0 gacha. Bunday ustozlarni hech nimaga alishmaymiz.</p>
-    </div>
 
-    <div class="nega-card">
-    <div class="nega-icon icon-red">
-      <i class="fa-solid fa-trophy"></i>
-    </div>
-    <h3>Bepul Tadbirlar</h3>
-    <p>Mafia, kino, taniqli insonlar bilan suhbat va unutilmas sayohatlar, bularning barchasi bizning o'quvchilarimiz uchun mutlaqo bepul.</p>
-  </div>
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <video src="futbol.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+      </div>
 
-  <div class="nega-card">
-    <div class="nega-icon icon-green">
-      <i class="fa-solid fa-square-check"></i>
-    </div>
-    <h3>Test Markazi</h3>
-    <p>Alohida test markazimiz mavjud u yerda siz, ham MOCK imtihonlarini ham haqiqiy imtihonlarni topshirishingiz mumkin. Bilimingizni real vaqtda sinang.</p>
-  </div>
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <video src="iftorlik.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+      </div>
 
-  <div class="nega-card">
-    <div class="nega-icon icon-gray">
-      <i class="fa-solid fa-mug-hot"></i>
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <video src="cdmocknatijalari.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+      </div>
+
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <img src="cdmockielts.png" alt="CD Mock Natijalari">
+      </div>
+
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <video src="speaking.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+      </div>
+
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <video src="futbol2.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+      </div>
+
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <video src="maktab2.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+      </div>
+
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <img src="chashka.png" alt="CD Mock Natijalari">
+      </div>
+
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <video src="surayyo.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+      </div>
+
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <img src="sayohatrasm.png" alt="Mirakiga Sayohat">
+      </div>
+
+      <!-- YANGI RASM VA VIDEO -->
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <img src="surayyogayrotova.png" alt="Kohinoor Academy">
+        <div class="center-box-info">
+          <h4>Kohinoor Academy</h4>
+          <p>Surayyo Gayrotova bilan</p>
+        </div>
+      </div>
+
+      <div class="media-box" style="width: 340px; height: 460px; flex-shrink: 0;">
+        <video src="Zomin.mp4" loop muted playsinline></video>
+        <div class="play-icon-btn"></div>
+        <div class="center-box-info">
+          <h4>Kohinoor Academy</h4>
+          <p>Sayohat Zomin</p>
+        </div>
+      </div>
+
     </div>
-    <h3>Co-working zonalar</h3>
-    <p>Har bir filialimizda o'quvchilarimiz uchun maxsus co-working zonalar mavjud bo'lib, bu yerda siz darslardan ozod vaqtingiz mustaqil o'rganishingiz yoki qo'shimcha ustozlar bilan qolib ketgan darslarni qayta o'tishingiz mumkin.</p>
   </div>
 </section>
+
+<!-- ARIZA QOLDIRISH SECTION -->
+<div id="ariza-section" style="padding:4rem 2rem;max-width:600px;margin:0 auto 3rem;">
+  <div class="section-header" style="margin-bottom:2rem;">
+    <div class="tag">📋 BOG'LANISH</div>
+    <h2 style="color:#fff;">Kohinoor bilan bog'lanmoqchimisiz?</h2>
+    <p style="color:rgba(255,255,255,0.55);">Ism, familiya va telefon raqamingizni qoldiring — biz siz bilan bog'lanamiz!</p>
+  </div>
+  <div style="background:rgba(30,30,60,0.8);border:1px solid rgba(126,115,194,0.25);border-radius:20px;padding:2rem;">
+    <div style="margin-bottom:1.2rem;">
+      <label style="display:block;font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:8px;">👤 Ism</label>
+      <input type="text" id="ariza-ism" placeholder="Ismingizni kiriting" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'">
+    </div>
+    <div style="margin-bottom:1.2rem;">
+      <label style="display:block;font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:8px;">👤 Familiya</label>
+      <input type="text" id="ariza-familiya" placeholder="Familiyangizni kiriting" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'">
+    </div>
+    <div style="margin-bottom:1.8rem;">
+      <label style="display:block;font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:8px;">📞 Telefon raqam</label>
+      <input type="tel" id="ariza-tel" placeholder="+998 XX XXX-XX-XX" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='rgba(126,115,194,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'">
+    </div>
+    <button onclick="submitAriza()" style="width:100%;padding:14px;background:linear-gradient(135deg,#7e73c2,#1126db);color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 16px rgba(17,38,219,0.35);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">📤 Yuborish</button>
+    <div id="ariza-msg" style="text-align:center;margin-top:1rem;font-size:0.9rem;min-height:1.2rem;"></div>
+  </div>
+</div>
+
+<script>
+function submitAriza(){
+  var ism = document.getElementById('ariza-ism').value.trim();
+  var familiya = document.getElementById('ariza-familiya').value.trim();
+  var tel = document.getElementById('ariza-tel').value.trim();
+  var msg = document.getElementById('ariza-msg');
+  if(!ism){ msg.style.color='#ef4444'; msg.textContent="Ism kiriting!"; return; }
+  if(!familiya){ msg.style.color='#ef4444'; msg.textContent="Familiya kiriting!"; return; }
+  if(!tel){ msg.style.color='#ef4444'; msg.textContent="Telefon raqam kiriting!"; return; }
+  msg.style.color='#22c55e';
+  msg.textContent="✅ Arizangiz qabul qilindi! Tez orada bog'lanamiz.";
+  document.getElementById('ariza-ism').value='';
+  document.getElementById('ariza-familiya').value='';
+  document.getElementById('ariza-tel').value='';
+}
+</script>
 
 <!-- PROFILE MODAL -->
 <div class="modal-overlay" id="profile-modal" onclick="closeProfileModal(event)">
@@ -2161,6 +2341,106 @@ function showToast(msg) {
 }
 </script>
 
+<!-- VIDEO LIGHTBOX MODAL -->
+<div id="video-modal-overlay" onclick="closeVideoModal(event)">
+  <div id="video-modal-inner">
+    <button id="video-modal-close" onclick="closeVideoModal(null, true)">✕</button>
+    <video id="modal-video" controls playsinline></video>
+  </div>
+</div>
+
+<script>
+  const slider = document.querySelector('.kohinoor-drag-carousel');
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+  let dragThreshold = false; // Haqiqiy dragni aniqlash uchun
+
+  // 1. Karusel ichidagi barcha rasm va videolarning standart brauzer drag funksiyasini o'chiramiz
+  slider.querySelectorAll('img, video').forEach(media => {
+    media.addEventListener('dragstart', (e) => e.preventDefault());
+  });
+
+  // 2. Drag harakati boshlanishi
+  slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    dragThreshold = false; // Har safar bosilganda yangilanadi
+    slider.style.scrollBehavior = 'auto'; // Surayotganda silliqlikni o'chiramiz (qotmasligi uchun)
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+
+  // 3. Sichqoncha karuseldan chiqib ketganda
+  slider.addEventListener('mouseleave', () => {
+    isDown = false;
+  });
+
+  // 4. Sichqoncha qo'yib yuborilganda
+  slider.addEventListener('mouseup', () => {
+    isDown = false;
+    slider.style.scrollBehavior = 'smooth';
+  });
+
+  // 5. Harakatlanish logikasi
+  slider.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 1.5; // Surilish tezligi koeffitsiyenti
+
+    // Agar sichqoncha 7 pikseldan ko'proq surilsa, demak bu klik emas, drag!
+    if (Math.abs(walk) > 7) {
+      dragThreshold = true;
+    }
+    
+    slider.scrollLeft = scrollLeft - walk;
+  });
+
+  // Mobil qurilmalar uchun sensor moslashuvchanligi
+  slider.addEventListener('touchstart', () => {
+    slider.style.scrollBehavior = 'auto';
+  });
+
+  /* 6. VIDEOLARNI BOSGANDA MODAL OCHISH */
+  document.querySelectorAll('.media-box').forEach(box => {
+    const video = box.querySelector('video');
+    if (video) {
+      box.style.cursor = 'pointer';
+      box.addEventListener('click', (e) => {
+        if (dragThreshold) return;
+        openVideoModal(video.src || video.currentSrc || video.getAttribute('src'));
+      });
+    }
+  });
+
+  function openVideoModal(src) {
+    const overlay = document.getElementById('video-modal-overlay');
+    const modalVideo = document.getElementById('modal-video');
+    // Karuseldagi barcha videolarni to'xtat
+    document.querySelectorAll('.media-box video').forEach(v => v.pause());
+    modalVideo.src = src;
+    modalVideo.muted = false;
+    overlay.classList.add('open');
+    modalVideo.play().catch(() => {});
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeVideoModal(e, force) {
+    if (!force && e && e.target !== document.getElementById('video-modal-overlay')) return;
+    const overlay = document.getElementById('video-modal-overlay');
+    const modalVideo = document.getElementById('modal-video');
+    modalVideo.pause();
+    modalVideo.src = '';
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ESC tugmasi bilan yopish
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeVideoModal(null, true);
+  });
+</script>
 
 </body>
 </html>
