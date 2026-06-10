@@ -215,6 +215,9 @@ select.form-input{cursor:pointer;}
     <button class="nav-item" id="nav-users" onclick="showSection('users')">
       <span class="ni">👥</span> Foydalanuvchilar
     </button>
+    <button class="nav-item" id="nav-admins" onclick="showSection('admins')">
+      <span class="ni">🛡️</span> Adminlar
+    </button>
   </nav>
   <div class="sidebar-bottom">
     <div class="sidebar-user">
@@ -388,6 +391,30 @@ select.form-input{cursor:pointer;}
       </div>
     </div>
 
+    <!-- ===== ADMINLAR ===== -->
+    <div class="section" id="section-admins">
+      <div style="background:white;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);margin-bottom:1.5rem;max-width:520px;">
+        <h3 style="font-size:0.95rem;font-weight:700;margin-bottom:1.2rem;color:var(--text);">🛡️ Yangi admin qo'shish</h3>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <input type="email" id="newAdminEmail" placeholder="admin@email.com" class="form-input" style="flex:1;min-width:220px;">
+          <button onclick="addAdmin()" style="padding:10px 20px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:white;border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;white-space:nowrap;">➕ Qo'shish</button>
+        </div>
+        <div id="addAdminMsg" style="font-size:0.78rem;margin-top:8px;min-height:1rem;"></div>
+        <div style="margin-top:1rem;padding:10px 14px;background:#fffbeb;border-radius:10px;border:1px solid #fde68a;font-size:0.78rem;color:#92400e;">
+          ⚠️ Admin qo'shilgandan so'ng u ham admin panelga kira oladi!
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">🛡️ Adminlar ro'yxati</div>
+          <span id="admins-count" style="font-size:0.78rem;color:var(--muted);background:var(--bg);padding:4px 10px;border-radius:20px;"></span>
+        </div>
+        <div id="admins-table-body">
+          <div class="loading"><div class="spinner"></div> Yuklanmoqda...</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -397,9 +424,9 @@ select.form-input{cursor:pointer;}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp, where, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const ADMIN_EMAIL = 'abdurasul1406z@gmail.com';
+const SUPER_ADMIN = 'abdurasul1406z@gmail.com';
 
 const app = initializeApp({
   apiKey: "AIzaSyD-CJRKHDzrrEq9M1mLM7NsrRG9l0kjyJs",
@@ -413,28 +440,38 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Auth check
-onAuthStateChanged(auth, (user) => {
-  if (!user || user.email !== ADMIN_EMAIL) {
-    window.location.href = 'index.html';
-    return;
+let currentUserEmail = '';
+let isSuperAdmin = false;
+
+// Auth check — super admin yoki admins kolleksiyasida
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = 'index.html'; return; }
+
+  currentUserEmail = user.email;
+  isSuperAdmin = user.email === SUPER_ADMIN;
+
+  if (!isSuperAdmin) {
+    try {
+      const adminDoc = await getDoc(doc(db, 'admins', user.email));
+      if (!adminDoc.exists()) { window.location.href = 'index.html'; return; }
+    } catch(e) { window.location.href = 'index.html'; return; }
   }
 
-  // Sidebar user info
+  // Sidebar
   const localAv = localStorage.getItem('avatar_' + user.uid);
   const photo = localAv || user.photoURL;
   const name = user.displayName || user.email.split('@')[0];
-
   const av = document.getElementById('sidebarAvatar');
   if(photo) av.innerHTML = `<img src="${photo}" alt="av">`;
   else av.textContent = name.charAt(0).toUpperCase();
   document.getElementById('sidebarName').textContent = name;
-  document.getElementById('sidebarEmail').textContent = user.email;
+  document.getElementById('sidebarEmail').textContent = user.email +
+    (isSuperAdmin ? ' 👑' : '');
 
-  // Load data
   loadDashboard();
   loadResults();
   loadUsers();
+  loadAdmins();
 });
 
 // Sign out
@@ -739,6 +776,104 @@ function showToast(msg, type='') {
   setTimeout(() => t.className = 'toast', 3000);
 }
 
+// ===== ADMINLAR =====
+let allAdmins = [];
+
+async function loadAdmins() {
+  try {
+    const snap = await getDocs(collection(db, 'admins'));
+    allAdmins = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderAdminsTable();
+    document.getElementById('admins-count').textContent = (allAdmins.length + 1) + ' ta admin';
+  } catch(e) {
+    document.getElementById('admins-table-body').innerHTML =
+      `<div class="empty"><div class="empty-icon">❌</div><div>${e.message}</div></div>`;
+  }
+}
+
+function renderAdminsTable() {
+  const tbody = document.getElementById('admins-table-body');
+  const superRow = `
+    <tr style="background:#fffbeb;">
+      <td><div class="user-cell">
+        <div class="user-av" style="background:linear-gradient(135deg,#f59e0b,#d97706);">👑</div>
+        <div>
+          <div style="font-weight:600;">Super Admin</div>
+          <div style="font-size:0.72rem;color:var(--muted);">${SUPER_ADMIN}</div>
+        </div>
+      </div></td>
+      <td><span class="badge" style="background:#fef3c7;color:#92400e;">⭐ Super Admin</span></td>
+      <td style="font-size:0.78rem;color:var(--muted);">Doimiy</td>
+      <td><span style="font-size:0.75rem;color:var(--muted);">O'chirib bo'lmaydi</span></td>
+    </tr>`;
+
+  const rows = allAdmins.map(a => `
+    <tr>
+      <td><div class="user-cell">
+        <div class="user-av">${(a.email||'?').charAt(0).toUpperCase()}</div>
+        <div>
+          <div style="font-weight:600;">${a.name || a.email.split('@')[0]}</div>
+          <div style="font-size:0.72rem;color:var(--muted);">${a.email}</div>
+        </div>
+      </div></td>
+      <td><span class="badge badge-kirdi">🛡️ Admin</span></td>
+      <td style="font-size:0.78rem;color:var(--muted);">${a.addedAt ? new Date(a.addedAt.seconds*1000).toLocaleDateString('uz-UZ') : '—'}</td>
+      <td>${isSuperAdmin
+        ? `<button class="action-btn" onclick="removeAdmin('${a.email}')" style="color:var(--red);">🗑️ O'chirish</button>`
+        : '<span style="font-size:0.75rem;color:var(--muted);">—</span>'}
+      </td>
+    </tr>`).join('');
+
+  tbody.innerHTML = `<table>
+    <thead><tr><th>Admin</th><th>Daraja</th><th>Qo'shilgan</th><th>Amal</th></tr></thead>
+    <tbody>${superRow}${rows || '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:1.5rem;">Hali qo\'shimcha admin yo\'q</td></tr>'}</tbody>
+  </table>`;
+}
+
+window.addAdmin = async () => {
+  const email = document.getElementById('newAdminEmail').value.trim().toLowerCase();
+  const msgEl = document.getElementById('addAdminMsg');
+  msgEl.textContent = '';
+
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    msgEl.style.color = 'var(--red)'; msgEl.textContent = '❌ To\'g\'ri email kiriting'; return;
+  }
+  if (email === SUPER_ADMIN) {
+    msgEl.style.color = 'var(--orange)'; msgEl.textContent = '⚠️ Bu allaqachon super admin!'; return;
+  }
+  if (allAdmins.find(a => a.email === email)) {
+    msgEl.style.color = 'var(--orange)'; msgEl.textContent = '⚠️ Bu email allaqachon admin!'; return;
+  }
+  if (!isSuperAdmin) {
+    msgEl.style.color = 'var(--red)'; msgEl.textContent = '❌ Faqat super admin yangi admin qo\'sha oladi'; return;
+  }
+
+  try {
+    await setDoc(doc(db, 'admins', email), {
+      email, name: email.split('@')[0],
+      addedBy: currentUserEmail,
+      addedAt: serverTimestamp()
+    });
+    msgEl.style.color = 'var(--green)';
+    msgEl.textContent = '✅ ' + email + ' admin qilindi!';
+    document.getElementById('newAdminEmail').value = '';
+    showToast('✅ Yangi admin qo\'shildi!', 'success');
+    await loadAdmins();
+  } catch(e) {
+    msgEl.style.color = 'var(--red)'; msgEl.textContent = '❌ ' + e.message;
+  }
+};
+
+window.removeAdmin = async (email) => {
+  if (!isSuperAdmin) { showToast('❌ Faqat super admin o\'chira oladi', 'error'); return; }
+  if (!confirm(email + ' ni adminlikdan olib tashlaysizmi?')) return;
+  try {
+    await deleteDoc(doc(db, 'admins', email));
+    showToast('🗑️ Admin o\'chirildi', 'success');
+    await loadAdmins();
+  } catch(e) { showToast('❌ ' + e.message, 'error'); }
+};
+
 window._db = db;
 window._loadResults = loadResults;
 </script>
@@ -753,7 +888,7 @@ function showSection(sec) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('section-'+sec).classList.add('active');
   document.getElementById('nav-'+sec).classList.add('active');
-  const titles = {dashboard:'Boshqaruv paneli', results:'Natijalar', users:'Foydalanuvchilar'};
+  const titles = {dashboard:'Boshqaruv paneli', results:'Natijalar', users:'Foydalanuvchilar', admins:'Adminlar boshqaruvi'};
   document.getElementById('topbarTitle').textContent = titles[sec] || sec;
   closeSidebar();
 }
