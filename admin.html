@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kohinoor — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --blue:#1126db;
+  --blue-dark:#0a1a9e;
+  --sidebar-w:220px;
+  --white:#fff;
+  --bg:#f4f6fb;
+  --text:#1a1a2e;
+  --muted:#8892a4;
+  --border:#e8ecf4;
+  --red:#e53935;
+  --green:#22c55e;
+  --orange:#f59e0b;
+  --card:#fff;
+  --radius:14px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{
+  width:var(--sidebar-w);
+  background:linear-gradient(180deg,#1126db 0%,#0a1080 100%);
+  min-height:100vh;
+  position:fixed;left:0;top:0;
+  display:flex;flex-direction:column;
+  z-index:100;
+  transition:transform 0.3s;
+}
+.sidebar-logo{
+  padding:1.8rem 1.5rem 1.2rem;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.sidebar-logo .logo-k{
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:white;
+  margin-bottom:8px;
+}
+.sidebar-logo h2{font-size:1rem;font-weight:700;color:white;font-family:'Playfair Display',serif;}
+.sidebar-logo span{font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;}
+.sidebar-nav{padding:1rem 0;flex:1;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 1.5rem;
+  color:rgba(255,255,255,0.6);
+  cursor:pointer;font-size:0.88rem;font-weight:500;
+  transition:all 0.2s;border-left:3px solid transparent;
+  border:none;background:none;width:100%;font-family:'DM Sans',sans-serif;
+}
+.nav-item:hover{background:rgba(255,255,255,0.08);color:white;}
+.nav-item.active{background:rgba(255,255,255,0.12);color:white;border-left:3px solid white;}
+.nav-item .ni{font-size:1.1rem;width:20px;text-align:center;}
+.sidebar-bottom{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.1);}
+.sidebar-user{display:flex;align-items:center;gap:10px;}
+.sidebar-avatar{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:0.85rem;overflow:hidden;flex-shrink:0;}
+.sidebar-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.sidebar-uname{font-size:0.8rem;font-weight:600;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sidebar-uemail{font-size:0.68rem;color:rgba(255,255,255,0.45);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.btn-logout{margin-top:10px;width:100%;padding:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:rgba(255,255,255,0.7);cursor:pointer;font-size:0.8rem;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.btn-logout:hover{background:rgba(255,77,77,0.2);color:#ff8fa3;border-color:rgba(255,77,77,0.3);}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;}
+.topbar{
+  background:white;border-bottom:1px solid var(--border);
+  padding:0 2rem;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.topbar-title{font-size:1rem;font-weight:700;color:var(--text);}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.topbar-badge{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:20px;padding:5px 12px;
+  font-size:0.78rem;color:var(--muted);
+}
+.topbar-back{
+  background:none;border:1px solid var(--border);border-radius:8px;
+  padding:6px 12px;font-size:0.78rem;color:var(--muted);cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all 0.2s;
+}
+.topbar-back:hover{background:var(--blue);color:white;border-color:var(--blue);}
+
+.content{padding:2rem;}
+
+/* SECTIONS */
+.section{display:none;}
+.section.active{display:block;}
+
+/* STATS CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.stat-card{
+  background:var(--card);border-radius:var(--radius);
+  padding:1.2rem 1.5rem;
+  border:1px solid var(--border);
+  display:flex;align-items:center;gap:1rem;
+}
+.stat-icon{
+  width:46px;height:46px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;
+}
+.stat-label{font-size:0.75rem;color:var(--muted);margin-bottom:3px;}
+.stat-value{font-size:1.6rem;font-weight:700;color:var(--text);line-height:1;}
+.stat-change{font-size:0.72rem;color:var(--green);margin-top:3px;}
+
+/* CHART CARD */
+.chart-card{background:white;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);margin-bottom:1.5rem;}
+.chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.chart-title{font-size:0.9rem;font-weight:600;color:var(--text);}
+
+/* TABLE */
+.table-card{background:white;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:1.5rem;}
+.table-header{padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.table-title{font-size:0.9rem;font-weight:600;}
+.table-search{padding:7px 12px;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;font-family:'DM Sans',sans-serif;outline:none;width:200px;}
+.table-search:focus{border-color:var(--blue);}
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 16px;text-align:left;font-size:0.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;background:#fafbfc;border-bottom:1px solid var(--border);}
+td{padding:12px 16px;font-size:0.85rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafbfc;}
+.user-cell{display:flex;align-items:center;gap:10px;}
+.user-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#7e73c2);color:white;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;overflow:hidden;flex-shrink:0;}
+.user-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.badge{padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:600;}
+.badge-online{background:#dcfce7;color:#16a34a;}
+.badge-offline{background:#f1f5f9;color:var(--muted);}
+.badge-kirdi{background:#dbeafe;color:#1d4ed8;}
+.badge-chiqdi{background:#fef9c3;color:#a16207;}
+.action-btn{background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;color:var(--muted);font-size:1rem;transition:all 0.15s;}
+.action-btn:hover{background:var(--bg);color:var(--red);}
+
+/* NATIJALAR */
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;}
+.form-card{background:white;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);}
+.form-card h3{font-size:0.95rem;font-weight:700;margin-bottom:1.2rem;color:var(--text);}
+.form-group{margin-bottom:1rem;}
+.form-label{font-size:0.78rem;font-weight:600;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.04em;}
+.form-input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;color:var(--text);transition:border 0.2s;}
+.form-input:focus{border-color:var(--blue);}
+select.form-input{cursor:pointer;}
+.form-select-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.img-upload{border:2px dashed var(--border);border-radius:10px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s;}
+.img-upload:hover{border-color:var(--blue);background:#f0f4ff;}
+.img-upload input{display:none;}
+.img-preview{width:100%;max-height:120px;object-fit:contain;border-radius:8px;margin-top:8px;}
+.btn-save{width:100%;padding:12px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:white;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}
+.btn-save:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(17,38,219,0.3);}
+.btn-save:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+
+/* Result table image */
+.result-img{width:60px;height:40px;object-fit:cover;border-radius:6px;background:var(--bg);}
+.result-img-placeholder{width:60px;height:40px;background:var(--bg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:3rem;color:var(--muted);gap:10px;}
+.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* EMPTY */
+.empty{text-align:center;padding:3rem;color:var(--muted);}
+.empty-icon{font-size:2.5rem;margin-bottom:0.5rem;}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:#1e1e3a;color:white;padding:12px 20px;border-radius:12px;font-size:0.85rem;z-index:9999;opacity:0;transform:translateY(20px);transition:all 0.3s;pointer-events:none;max-width:300px;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:#166534;}
+.toast.error{background:#991b1b;}
+
+/* MOBILE */
+.burger{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;padding:4px;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:99;}
+.overlay.show{display:block;}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .results-grid{grid-template-columns:1fr;}
+  .burger{display:block;}
+}
+@media(max-width:600px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .content{padding:1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-k">K</div>
+    <h2>Kohinoor</h2>
+    <span>Admin Panel</span>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="nav-item active" id="nav-dashboard" onclick="showSection('dashboard')">
+      <span class="ni">📊</span> Boshqaruv
+    </button>
+    <button class="nav-item" id="nav-results" onclick="showSection('results')">
+      <span class="ni">🏆</span> Natijalar
+    </button>
+    <button class="nav-item" id="nav-users" onclick="showSection('users')">
+      <span class="ni">👥</span> Foydalanuvchilar
+    </button>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebarAvatar">A</div>
+      <div>
+        <div class="sidebar-uname" id="sidebarName">Admin</div>
+        <div class="sidebar-uemail" id="sidebarEmail">—</div>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="doSignOut()">🚪 Chiqish</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="burger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="topbarTitle">Boshqaruv paneli</div>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-badge" id="topbarDate">—</span>
+      <button class="topbar-back" onclick="window.location.href='index.html'">← Saytga qaytish</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="section active" id="section-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#eff6ff;color:var(--blue);">👥</div>
+          <div>
+            <div class="stat-label">Jami foydalanuvchilar</div>
+            <div class="stat-value" id="stat-users">—</div>
+            <div class="stat-change" id="stat-users-sub">Firebase dan</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#f0fdf4;color:var(--green);">🟢</div>
+          <div>
+            <div class="stat-label">Natijalar soni</div>
+            <div class="stat-value" id="stat-results">—</div>
+            <div class="stat-change">Firestore dan</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#fefce8;color:var(--orange);">🏆</div>
+          <div>
+            <div class="stat-label">Bu hafta qo'shildi</div>
+            <div class="stat-value" id="stat-week">—</div>
+            <div class="stat-change">So'nggi 7 kun</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#fdf4ff;color:#a855f7;">📅</div>
+          <div>
+            <div class="stat-label">Bugun</div>
+            <div class="stat-value" id="stat-today">—</div>
+            <div class="stat-change">Bugungi natijalar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">📈 Haftalik natijalar statistikasi</div>
+        </div>
+        <canvas id="weekChart" height="80"></canvas>
+      </div>
+
+      <!-- Recent results -->
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">🕐 So'nggi natijalar</div>
+        </div>
+        <div id="recent-results-body">
+          <div class="loading"><div class="spinner"></div> Yuklanmoqda...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== NATIJALAR ===== -->
+    <div class="section" id="section-results">
+      <div class="results-grid">
+
+        <!-- Qo'shish formasi -->
+        <div class="form-card">
+          <h3>➕ Yangi natija qo'shish</h3>
+
+          <!-- Rasm yuklash -->
+          <div class="form-group">
+            <label class="form-label">Sertifikat / Natija rasmi</label>
+            <div class="img-upload" onclick="document.getElementById('resultImgInput').click()">
+              <input type="file" id="resultImgInput" accept="image/*" onchange="previewResultImg(event)">
+              <div id="resultImgPreview">
+                <div style="font-size:2rem;margin-bottom:6px;">🖼️</div>
+                <div style="font-size:0.8rem;color:var(--muted);">Rasm yuklash uchun bosing</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- O'quvchi ismi -->
+          <div class="form-group">
+            <label class="form-label">O'quvchi ismi</label>
+            <input type="text" class="form-input" id="resultName" placeholder="Ism Familiya">
+          </div>
+
+          <!-- Natija turi -->
+          <div class="form-group">
+            <div class="form-select-row">
+              <div>
+                <label class="form-label">Natija turi</label>
+                <select class="form-input" id="resultType">
+                  <option value="IELTS">IELTS</option>
+                  <option value="Imtihon">Imtihon</option>
+                  <option value="Olimpiada">Olimpiada</option>
+                  <option value="Ish joyi">Ish joyi</option>
+                  <option value="Boshqa">Boshqa</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Ball / Natija</label>
+                <input type="text" class="form-input" id="resultScore" placeholder="8.5 yoki 1-o'rin">
+              </div>
+            </div>
+          </div>
+
+          <div id="saveResultMsg" style="font-size:0.8rem;min-height:1.2rem;margin-bottom:8px;"></div>
+          <button class="btn-save" id="btnSaveResult" onclick="saveResult()">💾 Saqlash</button>
+        </div>
+
+        <!-- Info -->
+        <div class="form-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,#eff6ff,#f0fdf4);">
+          <div style="font-size:3rem;margin-bottom:1rem;">📋</div>
+          <h3 style="color:var(--blue);margin-bottom:0.5rem;">Natijalar haqida</h3>
+          <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;">Bu bo'limda o'quvchilarning muvaffaqiyatli natijalari — sertifikatlar, IELTS ballari, olimpiada sovrinlari va ish joylari saqlanadi.</p>
+          <div style="margin-top:1.2rem;padding:10px 16px;background:rgba(17,38,219,0.08);border-radius:10px;font-size:0.8rem;color:var(--blue);">ℹ️ Rasmlar avtomatik kichraytiriladi</div>
+        </div>
+      </div>
+
+      <!-- Natijalar jadvali -->
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">📋 Barcha natijalar</div>
+          <input type="text" class="table-search" placeholder="🔍 Qidirish..." oninput="filterResults(this.value)">
+        </div>
+        <div id="results-table-body">
+          <div class="loading"><div class="spinner"></div> Yuklanmoqda...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOYDALANUVCHILAR ===== -->
+    <div class="section" id="section-users">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">👥 Firebase foydalanuvchilari</div>
+          <input type="text" class="table-search" placeholder="🔍 Qidirish..." oninput="filterUsers(this.value)">
+        </div>
+        <div id="users-table-body">
+          <div class="loading"><div class="spinner"></div> Yuklanmoqda...</div>
+        </div>
+      </div>
+      <div style="background:white;border-radius:var(--radius);padding:1.2rem 1.5rem;border:1px solid var(--border);font-size:0.82rem;color:var(--muted);">
+        ℹ️ Foydalanuvchilar ro'yxati Firebase Authentication dan olinadi. To'liq boshqaruv uchun Firebase Console dan foydalaning.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp, where, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const ADMIN_EMAIL = 'abdurasul1406z@gmail.com';
+
+const app = initializeApp({
+  apiKey: "AIzaSyD-CJRKHDzrrEq9M1mLM7NsrRG9l0kjyJs",
+  authDomain: "kohinoor-academy.firebaseapp.com",
+  projectId: "kohinoor-academy",
+  storageBucket: "kohinoor-academy.firebasestorage.app",
+  messagingSenderId: "201579385267",
+  appId: "1:201579385267:web:1ee52c028f097ebe16bbc6"
+});
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Auth check
+onAuthStateChanged(auth, (user) => {
+  if (!user || user.email !== ADMIN_EMAIL) {
+    window.location.href = 'index.html';
+    return;
+  }
+
+  // Sidebar user info
+  const localAv = localStorage.getItem('avatar_' + user.uid);
+  const photo = localAv || user.photoURL;
+  const name = user.displayName || user.email.split('@')[0];
+
+  const av = document.getElementById('sidebarAvatar');
+  if(photo) av.innerHTML = `<img src="${photo}" alt="av">`;
+  else av.textContent = name.charAt(0).toUpperCase();
+  document.getElementById('sidebarName').textContent = name;
+  document.getElementById('sidebarEmail').textContent = user.email;
+
+  // Load data
+  loadDashboard();
+  loadResults();
+  loadUsers();
+});
+
+// Sign out
+window.doSignOut = async () => {
+  await signOut(auth);
+  window.location.href = 'index.html';
+};
+
+// ===== DASHBOARD =====
+async function loadDashboard() {
+  try {
+    const snap = await getDocs(collection(db, 'results'));
+    const results = snap.docs.map(d => ({id: d.id, ...d.data()}));
+
+    document.getElementById('stat-results').textContent = results.length;
+
+    // Bu hafta
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+    const weekResults = results.filter(r => r.createdAt && r.createdAt.toDate && r.createdAt.toDate() > weekAgo);
+    document.getElementById('stat-week').textContent = weekResults.length;
+
+    // Bugun
+    const today = new Date(); today.setHours(0,0,0,0);
+    const todayResults = results.filter(r => r.createdAt && r.createdAt.toDate && r.createdAt.toDate() > today);
+    document.getElementById('stat-today').textContent = todayResults.length;
+
+    // So'nggi 5 ta natija
+    const sorted = results.sort((a,b) => {
+      const ta = a.createdAt ? a.createdAt.seconds : 0;
+      const tb = b.createdAt ? b.createdAt.seconds : 0;
+      return tb - ta;
+    });
+
+    const tbody = document.getElementById('recent-results-body');
+    if(sorted.length === 0) {
+      tbody.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div>Hali natijalar yo\'q</div></div>';
+    } else {
+      tbody.innerHTML = `<table>
+        <thead><tr><th>O'quvchi</th><th>Turi</th><th>Ball</th><th>Rasm</th><th>Sana</th></tr></thead>
+        <tbody>${sorted.slice(0,5).map(r => `
+          <tr>
+            <td><div class="user-cell"><div class="user-av">${r.name ? r.name.charAt(0).toUpperCase() : '?'}</div><span>${r.name || '—'}</span></div></td>
+            <td><span class="badge badge-kirdi">${r.type || '—'}</span></td>
+            <td><strong>${r.score || '—'}</strong></td>
+            <td>${r.imgUrl ? `<img src="${r.imgUrl}" class="result-img">` : '<div class="result-img-placeholder">🖼️</div>'}</td>
+            <td style="color:var(--muted);font-size:0.78rem;">${r.createdAt ? new Date(r.createdAt.seconds*1000).toLocaleDateString('uz') : '—'}</td>
+          </tr>`).join('')}
+        </tbody></table>`;
+    }
+
+    // Chart — haftalik
+    drawWeekChart(results);
+
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+// Haftalik chart
+function drawWeekChart(results) {
+  const days = ['Du','Se','Ch','Pa','Ju','Sh','Ya'];
+  const counts = new Array(7).fill(0);
+  const now = new Date();
+
+  results.forEach(r => {
+    if(!r.createdAt || !r.createdAt.toDate) return;
+    const d = r.createdAt.toDate();
+    const diff = Math.floor((now - d) / (1000*60*60*24));
+    if(diff >= 0 && diff < 7) counts[6 - diff]++;
+  });
+
+  const ctx = document.getElementById('weekChart');
+  if(!ctx) return;
+  if(window._chart) window._chart.destroy();
+  window._chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: days,
+      datasets: [{
+        label: "Natijalar",
+        data: counts,
+        borderColor: '#1126db',
+        backgroundColor: 'rgba(17,38,219,0.08)',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: '#1126db',
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#f0f0f0' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ===== NATIJALAR =====
+let allResults = [];
+
+async function loadResults() {
+  try {
+    const snap = await getDocs(query(collection(db, 'results'), orderBy('createdAt', 'desc')));
+    allResults = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderResultsTable(allResults);
+    document.getElementById('stat-results').textContent = allResults.length;
+  } catch(e) {
+    document.getElementById('results-table-body').innerHTML = `<div class="empty"><div class="empty-icon">❌</div><div>${e.message}</div></div>`;
+  }
+}
+
+function renderResultsTable(results) {
+  const tbody = document.getElementById('results-table-body');
+  if(results.length === 0) {
+    tbody.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div>Hali natijalar yo\'q. Yangi natija qo\'shing!</div></div>';
+    return;
+  }
+  tbody.innerHTML = `<table>
+    <thead><tr><th>#</th><th>O'quvchi</th><th>Turi</th><th>Ball</th><th>Rasm</th><th>Sana</th><th>Amal</th></tr></thead>
+    <tbody>${results.map((r,i) => `
+      <tr>
+        <td style="color:var(--muted);">${i+1}</td>
+        <td><div class="user-cell">
+          <div class="user-av">${r.name ? r.name.charAt(0).toUpperCase() : '?'}</div>
+          <span style="font-weight:600;">${r.name || '—'}</span>
+        </div></td>
+        <td><span class="badge badge-kirdi">${r.type || '—'}</span></td>
+        <td><strong style="color:var(--blue);">${r.score || '—'}</strong></td>
+        <td>${r.imgUrl ? `<img src="${r.imgUrl}" class="result-img" style="cursor:pointer;" onclick="window.open('${r.imgUrl}')">` : '<div class="result-img-placeholder">🖼️</div>'}</td>
+        <td style="color:var(--muted);font-size:0.78rem;">${r.createdAt ? new Date(r.createdAt.seconds*1000).toLocaleDateString('uz-UZ') : '—'}</td>
+        <td><button class="action-btn" onclick="deleteResult('${r.id}')" title="O'chirish">🗑️</button></td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+window.filterResults = (q) => {
+  const filtered = allResults.filter(r =>
+    (r.name||'').toLowerCase().includes(q.toLowerCase()) ||
+    (r.type||'').toLowerCase().includes(q.toLowerCase()) ||
+    (r.score||'').toLowerCase().includes(q.toLowerCase())
+  );
+  renderResultsTable(filtered);
+};
+
+// Rasm preview
+window.previewResultImg = (event) => {
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById('resultImgPreview').innerHTML = `<img src="${e.target.result}" class="img-preview">`;
+  };
+  reader.readAsDataURL(file);
+};
+
+// Natija saqlash
+window.saveResult = async () => {
+  const name = document.getElementById('resultName').value.trim();
+  const type = document.getElementById('resultType').value;
+  const score = document.getElementById('resultScore').value.trim();
+  const fileInput = document.getElementById('resultImgInput');
+  const msgEl = document.getElementById('saveResultMsg');
+  const btn = document.getElementById('btnSaveResult');
+
+  if(!name) { msgEl.style.color='var(--red)'; msgEl.textContent = '❌ O\'quvchi ismini kiriting'; return; }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Saqlanmoqda...';
+  msgEl.textContent = '';
+
+  try {
+    let imgUrl = '';
+
+    // Rasm bor bo'lsa — canvas orqali kichraytir
+    if(fileInput.files[0]) {
+      imgUrl = await resizeImage(fileInput.files[0], 400, 300, 0.75);
+    }
+
+    await addDoc(collection(db, 'results'), {
+      name, type, score, imgUrl,
+      createdAt: serverTimestamp()
+    });
+
+    // Formni tozala
+    document.getElementById('resultName').value = '';
+    document.getElementById('resultScore').value = '';
+    document.getElementById('resultImgPreview').innerHTML = '<div style="font-size:2rem;margin-bottom:6px;">🖼️</div><div style="font-size:0.8rem;color:var(--muted);">Rasm yuklash uchun bosing</div>';
+    fileInput.value = '';
+
+    msgEl.style.color = 'var(--green)';
+    msgEl.textContent = '✅ Muvaffaqiyatli saqlandi!';
+    showToast('✅ Natija saqlandi!', 'success');
+
+    // Reload
+    await loadResults();
+    await loadDashboard();
+  } catch(e) {
+    msgEl.style.color = 'var(--red)';
+    msgEl.textContent = '❌ ' + e.message;
+    showToast('❌ Xatolik: ' + e.message, 'error');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '💾 Saqlash';
+};
+
+// Natija o'chirish
+window.deleteResult = async (id) => {
+  if(!confirm('Bu natijani o\'chirishni tasdiqlaysizmi?')) return;
+  try {
+    await deleteDoc(doc(db, 'results', id));
+    showToast('🗑️ Natija o\'chirildi', 'success');
+    await loadResults();
+    await loadDashboard();
+  } catch(e) {
+    showToast('❌ ' + e.message, 'error');
+  }
+};
+
+// ===== FOYDALANUVCHILAR =====
+let allUsers = [];
+
+async function loadUsers() {
+  try {
+    // Firestore da users kolleksiyasi bo'lsa
+    const snap = await getDocs(collection(db, 'users'));
+    allUsers = snap.docs.map(d => ({id: d.id, ...d.data()}));
+
+    if(allUsers.length === 0) {
+      document.getElementById('users-table-body').innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">👥</div>
+          <div style="margin-bottom:8px;">Foydalanuvchilar hali Firestore da saqlanmagan</div>
+          <div style="font-size:0.78rem;color:var(--muted);">Foydalanuvchilar saytga kirganda avtomatik qo'shiladi</div>
+        </div>`;
+      document.getElementById('stat-users').textContent = '—';
+      return;
+    }
+
+    document.getElementById('stat-users').textContent = allUsers.length;
+    renderUsersTable(allUsers);
+  } catch(e) {
+    document.getElementById('users-table-body').innerHTML = `<div class="empty"><div class="empty-icon">❌</div><div>${e.message}</div></div>`;
+  }
+}
+
+function renderUsersTable(users) {
+  const tbody = document.getElementById('users-table-body');
+  tbody.innerHTML = `<table>
+    <thead><tr><th>#</th><th>Foydalanuvchi</th><th>Email</th><th>Kirish usuli</th><th>Ro'yxatdan o'tgan</th></tr></thead>
+    <tbody>${users.map((u,i) => `
+      <tr>
+        <td style="color:var(--muted);">${i+1}</td>
+        <td><div class="user-cell">
+          <div class="user-av">${(u.name||u.email||'?').charAt(0).toUpperCase()}</div>
+          <span style="font-weight:600;">${u.name || '—'}</span>
+        </div></td>
+        <td style="color:var(--muted);">${u.email || '—'}</td>
+        <td><span class="badge badge-kirdi">${u.provider || 'Email'}</span></td>
+        <td style="color:var(--muted);font-size:0.78rem;">${u.createdAt ? new Date(u.createdAt.seconds*1000).toLocaleDateString('uz-UZ') : '—'}</td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+window.filterUsers = (q) => {
+  const filtered = allUsers.filter(u =>
+    (u.name||'').toLowerCase().includes(q.toLowerCase()) ||
+    (u.email||'').toLowerCase().includes(q.toLowerCase())
+  );
+  renderUsersTable(filtered);
+};
+
+// ===== HELPERS =====
+function resizeImage(file, maxW, maxH, quality) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if(w > maxW) { h = Math.round(h * maxW/w); w = maxW; }
+        if(h > maxH) { w = Math.round(w * maxH/h); h = maxH; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+window._db = db;
+window._loadResults = loadResults;
+</script>
+
+<script>
+// Date
+document.getElementById('topbarDate').textContent = new Date().toLocaleDateString('uz-UZ', {weekday:'long', day:'numeric', month:'long'});
+
+// Section switch
+function showSection(sec) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('section-'+sec).classList.add('active');
+  document.getElementById('nav-'+sec).classList.add('active');
+  const titles = {dashboard:'Boshqaruv paneli', results:'Natijalar', users:'Foydalanuvchilar'};
+  document.getElementById('topbarTitle').textContent = titles[sec] || sec;
+  closeSidebar();
+}
+
+// Mobile sidebar
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+</script>
+</body>
+</html>
